@@ -5,5 +5,5 @@
 /build
 /coverage
 /logs
-/tmp
-
+/tmpz
+/.next
