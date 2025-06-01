@@ -1,17 +1,22 @@
-import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import { Toaster } from 'react-hot-toast'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
 
-const inter = Inter({ subsets: ['latin', 'cyrillic'] })
+import { Toaster } from 'react-hot-toast';
+
+import type { Metadata, Viewport } from 'next';
+import { Inter } from 'next/font/google';
+
+import './globals.css';
+
+const inter = Inter({ subsets: ['latin', 'cyrillic'] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('http://localhost:3000'),
   title: 'ZerekLab - Образовательные наборы для детей',
-  description: 'Откройте для себя удивительные образовательные наборы, которые помогают детям учиться через практический опыт. Идеально для STEM-образования и творческого обучения.',
-  keywords: 'образовательные наборы, робототехника, для детей, STEM, обучение, электроника, программирование, конструкторы',
+  description:
+    'Откройте для себя удивительные образовательные наборы, которые помогают детям учиться через практический опыт. Идеально для STEM-образования и творческого обучения.',
+  keywords:
+    'образовательные наборы, робототехника, для детей, STEM, обучение, электроника, программирование, конструкторы',
   authors: [{ name: 'ZerekLab' }],
   robots: 'index, follow',
   openGraph: {
@@ -19,37 +24,37 @@ export const metadata: Metadata = {
     locale: 'ru_RU',
     url: 'https://zereklab.com',
     title: 'ZerekLab - Образовательные наборы для детей',
-    description: 'Откройте для себя удивительные образовательные наборы, которые помогают детям учиться через практический опыт.',
+    description:
+      'Откройте для себя удивительные образовательные наборы, которые помогают детям учиться через практический опыт.',
     siteName: 'ZerekLab',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'ZerekLab - Образовательные наборы для детей',
-    description: 'Откройте для себя удивительные образовательные наборы, которые помогают детям учиться через практический опыт.',
+    description:
+      'Откройте для себя удивительные образовательные наборы, которые помогают детям учиться через практический опыт.',
   },
-}
+};
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="ru">
       <body className={inter.className}>
-        <div className="min-h-screen flex flex-col">
+        <div className="flex min-h-screen flex-col">
           <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
+          <main className="flex-1">{children}</main>
           <Footer />
         </div>
-        <Toaster 
+        <Toaster
           position="top-right"
           toastOptions={{
             duration: 4000,
@@ -76,5 +81,5 @@ export default function RootLayout({
         />
       </body>
     </html>
-  )
-} 
+  );
+}

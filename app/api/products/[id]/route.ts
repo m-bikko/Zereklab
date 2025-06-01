@@ -1,38 +1,37 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getDatabase } from '@/lib/mongodb'
-import Product, { validateProduct } from '@/models/Product'
-import mongoose from 'mongoose'
+import { getDatabase } from '@/lib/mongodb';
+import Product, { validateProduct } from '@/models/Product';
+
+import { NextRequest, NextResponse } from 'next/server';
+
+import mongoose from 'mongoose';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    await getDatabase() // Ensure MongoDB connection
-    
+    await getDatabase(); // Ensure MongoDB connection
+
     if (!mongoose.Types.ObjectId.isValid(params.id)) {
       return NextResponse.json(
         { error: 'Invalid product ID' },
         { status: 400 }
-      )
+      );
     }
 
-    const product = await Product.findById(params.id).lean()
+    const product = await Product.findById(params.id).lean();
 
     if (!product) {
-      return NextResponse.json(
-        { error: 'Product not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
 
-    return NextResponse.json(product)
+    return NextResponse.json(product);
   } catch (error) {
-    console.error('Failed to fetch product:', error)
+    console.error('Failed to fetch product:', error);
     return NextResponse.json(
       { error: 'Failed to fetch product' },
       { status: 500 }
-    )
+    );
   }
 }
 
@@ -41,72 +40,71 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    await getDatabase() // Ensure MongoDB connection
-    const body = await request.json()
-    
+    await getDatabase(); // Ensure MongoDB connection
+    const body = await request.json();
+
     if (!mongoose.Types.ObjectId.isValid(params.id)) {
       return NextResponse.json(
         { error: 'Invalid product ID' },
         { status: 400 }
-      )
+      );
     }
 
     // Validate product data
-    const errors = validateProduct(body)
+    const errors = validateProduct(body);
     if (errors.length > 0) {
       return NextResponse.json(
         { error: 'Validation failed', details: errors },
         { status: 400 }
-      )
+      );
     }
 
     // Remove _id and timestamps from body as they are handled by Mongoose
-    const { _id, createdAt, updatedAt, ...updateData } = body
+    const { _id, createdAt, updatedAt, ...updateData } = body;
 
     const updatedProduct = await Product.findByIdAndUpdate(
       params.id,
       updateData,
-      { 
+      {
         new: true, // Return the updated document
-        runValidators: true // Run schema validators
+        runValidators: true, // Run schema validators
       }
-    ).lean()
+    ).lean();
 
     if (!updatedProduct) {
-      return NextResponse.json(
-        { error: 'Product not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
 
     return NextResponse.json({
       message: 'Product updated successfully',
-      product: updatedProduct
-    })
+      product: updatedProduct,
+    });
   } catch (error: any) {
-    console.error('Failed to update product:', error)
-    
+    console.error('Failed to update product:', error);
+
     // Handle Mongoose validation errors
     if (error.name === 'ValidationError') {
-      const validationErrors = Object.values(error.errors).map((err: any) => err.message)
+      const validationErrors = Object.values(error.errors).map(
+        (err: any) => err.message
+      );
       return NextResponse.json(
         { error: 'Validation failed', details: validationErrors },
         { status: 400 }
-      )
+      );
     }
-    
+
     // Handle cast errors (invalid ObjectId, etc.)
     if (error.name === 'CastError') {
       return NextResponse.json(
         { error: 'Invalid product ID format' },
         { status: 400 }
-      )
+      );
     }
-    
+
     return NextResponse.json(
       { error: 'Failed to update product' },
       { status: 500 }
-    )
+    );
   }
 }
 
@@ -115,41 +113,38 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    await getDatabase() // Ensure MongoDB connection
-    
+    await getDatabase(); // Ensure MongoDB connection
+
     if (!mongoose.Types.ObjectId.isValid(params.id)) {
       return NextResponse.json(
         { error: 'Invalid product ID' },
         { status: 400 }
-      )
+      );
     }
 
-    const deletedProduct = await Product.findByIdAndDelete(params.id)
+    const deletedProduct = await Product.findByIdAndDelete(params.id);
 
     if (!deletedProduct) {
-      return NextResponse.json(
-        { error: 'Product not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
 
     return NextResponse.json({
-      message: 'Product deleted successfully'
-    })
+      message: 'Product deleted successfully',
+    });
   } catch (error: any) {
-    console.error('Failed to delete product:', error)
-    
+    console.error('Failed to delete product:', error);
+
     // Handle cast errors (invalid ObjectId, etc.)
     if (error.name === 'CastError') {
       return NextResponse.json(
         { error: 'Invalid product ID format' },
         { status: 400 }
-      )
+      );
     }
-    
+
     return NextResponse.json(
       { error: 'Failed to delete product' },
       { status: 500 }
-    )
+    );
   }
-} 
+}

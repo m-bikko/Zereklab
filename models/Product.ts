@@ -1,4 +1,4 @@
-import mongoose, { Document, Model, Schema } from "mongoose";
+import mongoose, { Document, Model, Schema } from 'mongoose';
 
 export interface IProduct {
   name: string;
@@ -13,7 +13,7 @@ export interface IProduct {
   tags?: string[];
   sku?: string;
   ageRange?: string;
-  difficulty?: "Beginner" | "Intermediate" | "Advanced";
+  difficulty?: 'Beginner' | 'Intermediate' | 'Advanced';
   relatedProducts?: string[];
   stockQuantity?: number;
   dimensions?: {
@@ -58,37 +58,37 @@ const ProductSchema: Schema<IProductDocument> = new Schema(
   {
     name: {
       type: String,
-      required: [true, "Product name is required"],
+      required: [true, 'Product name is required'],
       trim: true,
-      minlength: [2, "Product name must be at least 2 characters long"],
+      minlength: [2, 'Product name must be at least 2 characters long'],
     },
     description: {
       type: String,
-      required: [true, "Product description is required"],
+      required: [true, 'Product description is required'],
       trim: true,
       minlength: [
         10,
-        "Product description must be at least 10 characters long",
+        'Product description must be at least 10 characters long',
       ],
     },
     price: {
       type: Number,
-      required: [true, "Product price is required"],
-      min: [0, "Product price must be greater than 0"],
+      required: [true, 'Product price is required'],
+      min: [0, 'Product price must be greater than 0'],
     },
     images: {
       type: [String],
-      required: [true, "At least one product image is required"],
+      required: [true, 'At least one product image is required'],
       validate: {
         validator: function (images: string[]) {
           return images.length > 0;
         },
-        message: "At least one product image is required",
+        message: 'At least one product image is required',
       },
     },
     category: {
       type: String,
-      required: [true, "Product category is required"],
+      required: [true, 'Product category is required'],
       trim: true,
     },
     subcategory: {
@@ -121,8 +121,8 @@ const ProductSchema: Schema<IProductDocument> = new Schema(
     },
     difficulty: {
       type: String,
-      enum: ["Beginner", "Intermediate", "Advanced"],
-      default: "Beginner",
+      enum: ['Beginner', 'Intermediate', 'Advanced'],
+      default: 'Beginner',
     },
     relatedProducts: {
       type: [String],
@@ -131,7 +131,7 @@ const ProductSchema: Schema<IProductDocument> = new Schema(
     stockQuantity: {
       type: Number,
       default: 0,
-      min: [0, "Stock quantity cannot be negative"],
+      min: [0, 'Stock quantity cannot be negative'],
     },
     dimensions: {
       length: { type: Number, default: 0 },
@@ -146,16 +146,16 @@ const ProductSchema: Schema<IProductDocument> = new Schema(
   },
   {
     timestamps: true,
-    collection: "products",
+    collection: 'products',
   }
 );
 
 // Create indexes for better query performance
 ProductSchema.index({
-  name: "text",
-  description: "text",
-  category: "text",
-  tags: "text",
+  name: 'text',
+  description: 'text',
+  category: 'text',
+  tags: 'text',
 });
 ProductSchema.index({ category: 1, subcategory: 1 });
 ProductSchema.index({ price: 1 });
@@ -165,103 +165,103 @@ ProductSchema.index({ createdAt: -1 });
 // Prevent recompilation of the model if it already exists
 const Product: Model<IProductDocument> =
   mongoose.models.Product ||
-  mongoose.model<IProductDocument>("Product", ProductSchema);
+  mongoose.model<IProductDocument>('Product', ProductSchema);
 
 // Default categories - will be moved to database
 export const defaultCategories = [
   {
-    name: "Electronics",
-    subcategories: ["Sensors", "Microcontrollers", "Components", "Kits"],
+    name: 'Electronics',
+    subcategories: ['Sensors', 'Microcontrollers', 'Components', 'Kits'],
     parameters: {
-      "Sensor Type": ["Temperature", "Humidity", "Motion", "Light"],
-      Voltage: ["3.3V", "5V", "12V"],
-      Interface: ["I2C", "SPI", "UART", "Digital", "Analog"],
+      'Sensor Type': ['Temperature', 'Humidity', 'Motion', 'Light'],
+      Voltage: ['3.3V', '5V', '12V'],
+      Interface: ['I2C', 'SPI', 'UART', 'Digital', 'Analog'],
     },
   },
   {
-    name: "Robotics",
-    subcategories: ["Mobile Robots", "Humanoid", "Drones", "Arms"],
+    name: 'Robotics',
+    subcategories: ['Mobile Robots', 'Humanoid', 'Drones', 'Arms'],
     parameters: {
-      "Control Method": ["Remote", "Autonomous", "Programmable"],
-      "Power Source": ["Battery", "Solar", "USB"],
-      Material: ["Plastic", "Metal", "Wood", "Carbon Fiber"],
+      'Control Method': ['Remote', 'Autonomous', 'Programmable'],
+      'Power Source': ['Battery', 'Solar', 'USB'],
+      Material: ['Plastic', 'Metal', 'Wood', 'Carbon Fiber'],
     },
   },
   {
-    name: "Programming",
+    name: 'Programming',
     subcategories: [
-      "Beginner Kits",
-      "Advanced",
-      "Game Development",
-      "Web Development",
+      'Beginner Kits',
+      'Advanced',
+      'Game Development',
+      'Web Development',
     ],
     parameters: {
-      Language: ["Python", "JavaScript", "Scratch", "C++", "Arduino IDE"],
-      Platform: ["Windows", "Mac", "Linux", "Web", "Mobile"],
-      "Project Type": ["Games", "Apps", "Websites", "IoT", "AI"],
+      Language: ['Python', 'JavaScript', 'Scratch', 'C++', 'Arduino IDE'],
+      Platform: ['Windows', 'Mac', 'Linux', 'Web', 'Mobile'],
+      'Project Type': ['Games', 'Apps', 'Websites', 'IoT', 'AI'],
     },
   },
   {
-    name: "Science",
-    subcategories: ["Chemistry", "Physics", "Biology", "Earth Science"],
+    name: 'Science',
+    subcategories: ['Chemistry', 'Physics', 'Biology', 'Earth Science'],
     parameters: {
-      "Experiment Type": ["Lab", "Field", "Demonstration", "Research"],
-      "Safety Level": ["Safe", "Adult Supervision", "Lab Required"],
-      "Equipment Needed": ["Basic", "Intermediate", "Advanced"],
+      'Experiment Type': ['Lab', 'Field', 'Demonstration', 'Research'],
+      'Safety Level': ['Safe', 'Adult Supervision', 'Lab Required'],
+      'Equipment Needed': ['Basic', 'Intermediate', 'Advanced'],
     },
   },
   {
-    name: "Engineering",
-    subcategories: ["Mechanical", "Civil", "Electrical", "Software"],
+    name: 'Engineering',
+    subcategories: ['Mechanical', 'Civil', 'Electrical', 'Software'],
     parameters: {
-      "Build Complexity": ["Simple", "Medium", "Complex"],
-      "Tools Required": ["None", "Basic", "Advanced"],
-      Materials: ["Cardboard", "Wood", "Metal", "Plastic", "3D Printed"],
+      'Build Complexity': ['Simple', 'Medium', 'Complex'],
+      'Tools Required': ['None', 'Basic', 'Advanced'],
+      Materials: ['Cardboard', 'Wood', 'Metal', 'Plastic', '3D Printed'],
     },
   },
   {
-    name: "Mathematics",
-    subcategories: ["Geometry", "Algebra", "Statistics", "Calculus"],
+    name: 'Mathematics',
+    subcategories: ['Geometry', 'Algebra', 'Statistics', 'Calculus'],
     parameters: {
-      "Grade Level": ["Elementary", "Middle School", "High School", "College"],
-      "Learning Style": ["Visual", "Hands-on", "Digital", "Traditional"],
-      "Skill Focus": ["Problem Solving", "Logic", "Calculation", "Modeling"],
+      'Grade Level': ['Elementary', 'Middle School', 'High School', 'College'],
+      'Learning Style': ['Visual', 'Hands-on', 'Digital', 'Traditional'],
+      'Skill Focus': ['Problem Solving', 'Logic', 'Calculation', 'Modeling'],
     },
   },
   {
-    name: "Art & Craft",
-    subcategories: ["Digital Art", "Traditional Art", "Crafts", "3D Design"],
+    name: 'Art & Craft',
+    subcategories: ['Digital Art', 'Traditional Art', 'Crafts', '3D Design'],
     parameters: {
-      Medium: ["Digital", "Paint", "Clay", "Paper", "Fabric", "3D Printing"],
-      "Skill Level": ["Beginner", "Intermediate", "Advanced"],
-      "Age Group": ["5-8", "9-12", "13-16", "17+"],
+      Medium: ['Digital', 'Paint', 'Clay', 'Paper', 'Fabric', '3D Printing'],
+      'Skill Level': ['Beginner', 'Intermediate', 'Advanced'],
+      'Age Group': ['5-8', '9-12', '13-16', '17+'],
     },
   },
 ] as const;
 
-export type ProductCategory = (typeof defaultCategories)[number]["name"];
+export type ProductCategory = (typeof defaultCategories)[number]['name'];
 
 export const validateProduct = (product: Partial<IProduct>): string[] => {
   const errors: string[] = [];
 
   if (!product.name || product.name.trim().length < 2) {
-    errors.push("Product name must be at least 2 characters long");
+    errors.push('Product name must be at least 2 characters long');
   }
 
   if (!product.description || product.description.trim().length < 10) {
-    errors.push("Product description must be at least 10 characters long");
+    errors.push('Product description must be at least 10 characters long');
   }
 
   if (!product.price || product.price <= 0) {
-    errors.push("Product price must be greater than 0 KZT");
+    errors.push('Product price must be greater than 0 KZT');
   }
 
   if (!product.category || product.category.trim().length === 0) {
-    errors.push("Product category is required");
+    errors.push('Product category is required');
   }
 
   if (!product.images || product.images.length === 0) {
-    errors.push("At least one product image is required");
+    errors.push('At least one product image is required');
   }
 
   return errors;

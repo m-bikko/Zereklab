@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
-import { parsedEnv } from "./parsedEnv";
+import mongoose from 'mongoose';
+
+import { parsedEnv } from './parsedEnv';
 
 const uri = parsedEnv.MONGODB_URI;
 
@@ -31,12 +32,12 @@ export async function getDatabase() {
 
     mongooseCache.promise = mongoose
       .connect(uri, options)
-      .then((mongoose) => {
-        console.log("✅ MongoDB connected successfully");
+      .then(mongoose => {
+        console.log('✅ MongoDB connected successfully');
         return mongoose;
       })
-      .catch((error) => {
-        console.error("❌ MongoDB connection failed:", error);
+      .catch(error => {
+        console.error('❌ MongoDB connection failed:', error);
         // Reset promise on error so we can retry
         mongooseCache.promise = null;
         throw error;
@@ -60,7 +61,7 @@ export async function closeDatabase() {
     await mongooseCache.conn.disconnect();
     mongooseCache.conn = null;
     mongooseCache.promise = null;
-    console.log("🔒 MongoDB connection closed");
+    console.log('🔒 MongoDB connection closed');
   }
 }
 

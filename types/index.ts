@@ -14,7 +14,7 @@ export interface IProduct {
   tags: string[];
   sku: string;
   ageRange: string;
-  difficulty: "Beginner" | "Intermediate" | "Advanced";
+  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   relatedProducts: string[];
   stockQuantity: number;
   dimensions: {
@@ -43,19 +43,19 @@ export const validateProduct = (product: Partial<IProduct>): string[] => {
   const errors: string[] = [];
 
   if (!product.name?.trim() || product.name.trim().length < 2) {
-    errors.push("Название товара должно содержать минимум 2 символа");
+    errors.push('Название товара должно содержать минимум 2 символа');
   }
 
   if (!product.description?.trim() || product.description.trim().length < 10) {
-    errors.push("Описание товара должно содержать минимум 10 символов");
+    errors.push('Описание товара должно содержать минимум 10 символов');
   }
 
   if (!product.price || product.price <= 0) {
-    errors.push("Цена должна быть больше 0 ₸");
+    errors.push('Цена должна быть больше 0 ₸');
   }
 
   if (!product.category?.trim()) {
-    errors.push("Категория обязательна");
+    errors.push('Категория обязательна');
   }
 
   if (
@@ -63,7 +63,7 @@ export const validateProduct = (product: Partial<IProduct>): string[] => {
     product.images.length === 0 ||
     (product.images.length === 1 && !product.images[0]?.trim())
   ) {
-    errors.push("Необходимо добавить минимум одно изображение товара");
+    errors.push('Необходимо добавить минимум одно изображение товара');
   }
 
   return errors;

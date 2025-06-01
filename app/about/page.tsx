@@ -1,47 +1,67 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import { Lightbulb, Users, Target, Heart, BookOpen, ShieldCheck, Puzzle } from 'lucide-react'
+import Image from 'next/image';
+
+import {
+  BookOpen,
+  Heart,
+  Lightbulb,
+  Puzzle,
+  ShieldCheck,
+  Target,
+  Users,
+} from 'lucide-react';
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-20 sm:py-24">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 tracking-tight">
+      <section className="bg-gradient-to-r from-primary-500 to-secondary-500 py-20 text-white sm:py-24">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
             О ZerekLab
           </h1>
-          <p className="text-xl sm:text-2xl opacity-90 max-w-2xl mx-auto">
-            Вдохновляем следующее поколение инноваторов и создателей через практическое обучение.
+          <p className="mx-auto max-w-2xl text-xl opacity-90 sm:text-2xl">
+            Вдохновляем следующее поколение инноваторов и создателей через
+            практическое обучение.
           </p>
         </div>
       </section>
 
       {/* Mission & Vision Section */}
       <section className="py-16 sm:py-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6 p-8 bg-white rounded-xl shadow-xl hover:shadow-2xl transition-shadow">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-12 md:grid-cols-2">
+            <div className="space-y-6 rounded-xl bg-white p-8 shadow-xl transition-shadow hover:shadow-2xl">
               <div className="flex items-center space-x-4">
-                <div className="p-3 bg-primary-100 rounded-full">
-                  <Lightbulb className="w-8 h-8 text-primary-600" />
+                <div className="rounded-full bg-primary-100 p-3">
+                  <Lightbulb className="h-8 w-8 text-primary-600" />
                 </div>
-                <h2 className="text-3xl font-bold text-gray-800">Наша Миссия</h2>
+                <h2 className="text-3xl font-bold text-gray-800">
+                  Наша Миссия
+                </h2>
               </div>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                В ZerekLab наша миссия — сделать STEM-образование доступным, увлекательным и веселым для детей во всем мире. Мы верим, что практический опыт — ключ к раскрытию потенциала ребенка и воспитанию любви к обучению и открытиям на всю жизнь.
+              <p className="text-lg leading-relaxed text-gray-600">
+                В ZerekLab наша миссия — сделать STEM-образование доступным,
+                увлекательным и веселым для детей во всем мире. Мы верим, что
+                практический опыт — ключ к раскрытию потенциала ребенка и
+                воспитанию любви к обучению и открытиям на всю жизнь.
               </p>
             </div>
-            <div className="space-y-6 p-8 bg-white rounded-xl shadow-xl hover:shadow-2xl transition-shadow">
+            <div className="space-y-6 rounded-xl bg-white p-8 shadow-xl transition-shadow hover:shadow-2xl">
               <div className="flex items-center space-x-4">
-                <div className="p-3 bg-secondary-100 rounded-full">
-                  <Target className="w-8 h-8 text-secondary-600" />
+                <div className="rounded-full bg-secondary-100 p-3">
+                  <Target className="h-8 w-8 text-secondary-600" />
                 </div>
-                <h2 className="text-3xl font-bold text-gray-800">Наше Видение</h2>
+                <h2 className="text-3xl font-bold text-gray-800">
+                  Наше Видение
+                </h2>
               </div>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                Мы видим мир, где каждый ребенок имеет возможность исследовать свое любопытство, развивать критическое мышление и становиться уверенным решателем проблем. Наши образовательные наборы призваны стать искрой, зажигающей этот путь.
+              <p className="text-lg leading-relaxed text-gray-600">
+                Мы видим мир, где каждый ребенок имеет возможность исследовать
+                свое любопытство, развивать критическое мышление и становиться
+                уверенным решателем проблем. Наши образовательные наборы
+                призваны стать искрой, зажигающей этот путь.
               </p>
             </div>
           </div>
@@ -50,9 +70,11 @@ export default function AboutPage() {
 
       {/* Why Choose Us Section */}
       <section className="bg-gray-100 py-16 sm:py-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 text-center mb-12 sm:mb-16">Почему ZerekLab?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-12 text-center text-3xl font-bold text-gray-800 sm:mb-16 sm:text-4xl">
+            Почему ZerekLab?
+          </h2>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             <FeatureCard
               icon={Heart}
               title="Страсть к Образованию"
@@ -68,18 +90,18 @@ export default function AboutPage() {
               title="Инновационное Обучение"
               description="Мы постоянно внедряем инновации, чтобы воплощать новейшие концепции STEM в жизнь с помощью интерактивных и захватывающих проектов."
             />
-             <FeatureCard
+            <FeatureCard
               icon={ShieldCheck}
               title="Качество и Безопасность"
               description="Все наши продукты проходят строгий контроль качества и изготовлены из безопасных, прочных материалов."
             />
-             <FeatureCard
-              icon={Puzzle} 
+            <FeatureCard
+              icon={Puzzle}
               title="Развитие Навыков"
               description="Наши наборы способствуют развитию критического мышления, решения проблем и творческих способностей."
             />
-             <FeatureCard
-              icon={Lightbulb} 
+            <FeatureCard
+              icon={Lightbulb}
               title="Вдохновение на Будущее"
               description="Мы стремимся вдохновить детей на изучение науки и технологий, открывая перед ними новые горизонты."
             />
@@ -88,15 +110,26 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story Section */}
-      <section className="py-16 sm:py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-8">Наша История</h2>
-          <div className="prose prose-lg text-gray-600 mx-auto leading-relaxed">
+      <section className="bg-white py-16 sm:py-20">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <h2 className="mb-8 text-3xl font-bold text-gray-800 sm:text-4xl">
+            Наша История
+          </h2>
+          <div className="prose prose-lg mx-auto leading-relaxed text-gray-600">
             <p>
-              ZerekLab была основана группой энтузиастов – педагогов и инженеров, которые осознали потребность в лучших инструментах для обучения детей основам STEM. Разочарованные отсутствием увлекательных и доступных вариантов, мы решили создать свои собственные. То, что начиналось как небольшой проект, выросло в компанию, посвященную расширению возможностей юных умов.
+              ZerekLab была основана группой энтузиастов – педагогов и
+              инженеров, которые осознали потребность в лучших инструментах для
+              обучения детей основам STEM. Разочарованные отсутствием
+              увлекательных и доступных вариантов, мы решили создать свои
+              собственные. То, что начиналось как небольшой проект, выросло в
+              компанию, посвященную расширению возможностей юных умов.
             </p>
             <p>
-              Наш путь подпитывается радостью, которую мы видим у детей, когда они строят, экспериментируют и учатся с нашими наборами. Мы гордимся тем, что являемся частью их образовательного приключения и стремимся сделать обучение не только полезным, но и по-настоящему захватывающим.
+              Наш путь подпитывается радостью, которую мы видим у детей, когда
+              они строят, экспериментируют и учатся с нашими наборами. Мы
+              гордимся тем, что являемся частью их образовательного приключения
+              и стремимся сделать обучение не только полезным, но и
+              по-настоящему захватывающим.
             </p>
           </div>
         </div>
@@ -128,18 +161,28 @@ export default function AboutPage() {
       </section>
       */}
     </div>
-  )
+  );
 }
 
 // Helper component for consistent feature card styling
-const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ElementType, title: string, description: string }) => (
-  <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:shadow-primary-500/10 transition-all duration-300 transform hover:scale-105">
-    <div className="flex justify-center items-center mb-4">
-      <div className="p-4 bg-primary-100 rounded-full">
-        <Icon className="w-8 h-8 text-primary-600" />
+const FeatureCard = ({
+  icon: Icon,
+  title,
+  description,
+}: {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}) => (
+  <div className="transform rounded-xl bg-white p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary-500/10">
+    <div className="mb-4 flex items-center justify-center">
+      <div className="rounded-full bg-primary-100 p-4">
+        <Icon className="h-8 w-8 text-primary-600" />
       </div>
     </div>
-    <h3 className="text-xl font-semibold text-gray-800 text-center mb-2">{title}</h3>
-    <p className="text-gray-600 text-center leading-relaxed">{description}</p>
+    <h3 className="mb-2 text-center text-xl font-semibold text-gray-800">
+      {title}
+    </h3>
+    <p className="text-center leading-relaxed text-gray-600">{description}</p>
   </div>
-) 
+);

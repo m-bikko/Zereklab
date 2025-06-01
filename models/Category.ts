@@ -8,7 +8,7 @@ export interface ICategory extends Document {
   subcategories: string[];
   // Parameters can be complex, for now, let's keep the structure
   // but UI for this might be simplified initially.
-  parameters: Record<string, string[]>; 
+  parameters: Record<string, string[]>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -38,6 +38,8 @@ const CategorySchema: Schema<ICategory> = new Schema(
 );
 
 // Prevent recompilation of the model if it already exists
-const Category: Model<ICategory> = mongoose.models.Category || mongoose.model<ICategory>('Category', CategorySchema);
+const Category: Model<ICategory> =
+  mongoose.models.Category ||
+  mongoose.model<ICategory>('Category', CategorySchema);
 
-export default Category; 
+export default Category;
