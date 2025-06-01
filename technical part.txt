@@ -1,0 +1,34 @@
+We need to make the selling web application, the requirements are:
+
+Database: Use MongoDB as the primary database for storing product and application data.
+Frontend Framework: Build the frontend using Next.js with App Router and Static Site Generation (SSG) where applicable.
+Shopping Cart: Implement a persisted shopping cart that retains items across user sessions.
+Admin Panel: Provide an admin interface where a non-developer can easily add, update, and delete products.
+Product Images: Each product must support multiple images.
+Image Slider: The product detail page must include an image slider for browsing product photos.
+Buy Button: Each product must have a “Buy” button that redirects to WhatsApp with a pre-filled message referencing the product.
+Branding Colors: Use orange and blue as the primary branding colors across the site.
+Filters & Pagination: The products page must support filtering options (e.g., category, price) and pagination for navigating product listings.
+Clear Filters: Include a “Clear Filters” button to reset all active filters.
+Navigation: Add a navbar for site-wide navigation.
+Footer: Include a footer with social media links (e.g., Instagram, Facebook, WhatsApp).
+Core Pages:
+- Landing Page with promotional content or featured categories.
+- Products Page with filtering and pagination.
+- Individual Product Page with image slider, product details, and buy button.
+Responsive Design: The site must be fully responsive and optimized for mobile, tablet, and desktop devices.
+API Layer: Use a REST API for all backend communication between the frontend and server/database.
+Search Functionality: Implement a basic search bar in the navbar with case-insensitive search that matches partial content.
+Cart Modal: Clicking on the cart icon should open a modal displaying all items in the cart. 
+Image Hosting: Use Amazon S3 for image storage and delivery.
+
+Make the mobile first pattern, since many of users will use through the phone.
+Make super strong UI. You can use any of the other shops UI. Just Make Super attractive and outstanding UI.
+
+We are selling educational hardware kits, that will be used benefitly by kids for educational purposes.
+
+I need seeling application and admin panel for it. Make also landing page for this project. Make super attractive UI.
+
+After completing the project, check if it is all working properly
+
+Don't forget about super good Landing page
