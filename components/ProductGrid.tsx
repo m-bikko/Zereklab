@@ -9,7 +9,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { motion } from 'framer-motion';
-import { AlertTriangle, Eye, ShoppingCart, Star } from 'lucide-react';
+import { AlertTriangle, Eye, ShoppingCart } from 'lucide-react';
 
 interface ProductGridProps {
   products: IProduct[];

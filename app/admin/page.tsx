@@ -18,9 +18,7 @@ import {
   Package,
   Plus,
   Save,
-  Settings,
   Trash2,
-  Upload,
   X,
 } from 'lucide-react';
 
@@ -164,7 +162,10 @@ const ProductFormSection: React.FC<ProductFormSectionProps> = ({
     if (newSpecKey && newSpecValue) {
       if (
         productForm.specifications &&
-        productForm.specifications.hasOwnProperty(newSpecKey)
+        Object.prototype.hasOwnProperty.call(
+          productForm.specifications,
+          newSpecKey
+        )
       ) {
         toast.error('Характеристика с таким ключом уже существует.');
         return;
@@ -874,10 +875,13 @@ export default function AdminPage() {
           .catch(() => ({ message: 'Не удалось сохранить товар' }));
         throw new Error(errorData.message);
       }
-    } catch (error: any) {
-      toast.error(error.message || 'Не удалось сохранить товар.', {
-        id: toastId,
-      });
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'Не удалось сохранить товар.',
+        {
+          id: toastId,
+        }
+      );
     }
   };
 
@@ -905,8 +909,10 @@ export default function AdminPage() {
           .catch(() => ({ message: 'Не удалось удалить товар.' }));
         throw new Error(errorData.message);
       }
-    } catch (error: any) {
-      toast.error(error.message || 'Не удалось удалить товар.', {
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
+      toast.error(errorMessage || 'Не удалось удалить товар.', {
         id: toastId,
       });
     }
@@ -933,8 +939,10 @@ export default function AdminPage() {
   const openEditProductForm = (product: IProduct) => {
     const formValues: Partial<IProduct> = { ...initialProductForm };
     for (const key in initialProductForm) {
-      if (product.hasOwnProperty(key)) {
-        (formValues as any)[key] = (product as any)[key];
+      if (Object.prototype.hasOwnProperty.call(product, key)) {
+        formValues[key as keyof IProduct] = product[
+          key as keyof IProduct
+        ] as never;
       }
     }
     formValues.images = Array.isArray(product.images) ? product.images : [];
@@ -1066,8 +1074,10 @@ export default function AdminPage() {
           .catch(() => ({ message: 'Не удалось сохранить категорию' }));
         throw new Error(errorData.message || 'Произошла неизвестная ошибка');
       }
-    } catch (error: any) {
-      toast.error(error.message || 'Не удалось сохранить категорию.', {
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
+      toast.error(errorMessage || 'Не удалось сохранить категорию.', {
         id: toastId,
       });
     }
@@ -1115,8 +1125,10 @@ export default function AdminPage() {
           .catch(() => ({ message: 'Не удалось удалить категорию.' }));
         throw new Error(errorData.message);
       }
-    } catch (error: any) {
-      toast.error(error.message || 'Не удалось удалить категорию.', {
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
+      toast.error(errorMessage || 'Не удалось удалить категорию.', {
         id: toastId,
       });
     }

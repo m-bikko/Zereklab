@@ -1,7 +1,7 @@
 import { getDatabase } from '@/lib/mongodb';
 import Category from '@/models/Category';
+
 // Using the new Category model
-import { ICategory as ICategoryInterface } from '@/models/Product';
 
 import { NextResponse } from 'next/server';
 
@@ -15,12 +15,14 @@ export async function GET() {
       { success: true, data: categories },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
     console.error('[API_CATEGORIES_GET]', error);
     return NextResponse.json(
       {
         success: false,
-        message: 'Ошибка получения категорий: ' + error.message,
+        message: 'Ошибка получения категорий: ' + errorMessage,
       },
       { status: 500 }
     );
@@ -60,9 +62,16 @@ export async function POST(request: Request) {
       { success: true, data: newCategory },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
     console.error('[API_CATEGORIES_POST]', error);
-    if (error.code === 11000) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      error.code === 11000
+    ) {
       // Duplicate key error
       return NextResponse.json(
         {
@@ -75,7 +84,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: false,
-        message: 'Ошибка создания категории: ' + error.message,
+        message: 'Ошибка создания категории: ' + errorMessage,
       },
       { status: 500 }
     );

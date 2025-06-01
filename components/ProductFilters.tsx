@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { ChevronDown, ChevronUp, RotateCcw, X } from 'lucide-react';
+import { ChevronDown, ChevronUp, RotateCcw } from 'lucide-react';
 
 interface ProductFiltersProps {
   onApplyFilters?: () => void;
@@ -20,9 +20,7 @@ export default function ProductFilters({
   const searchParams = useSearchParams();
 
   const [isExpanded, setIsExpanded] = useState(true);
-  const [availableCategories, setAvailableCategories] = useState<ICategory[]>(
-    []
-  );
+  const [availableCategories] = useState<ICategory[]>([]);
   const [filters, setFilters] = useState(() => ({
     category: searchParams.get('category') || '',
     subcategory: searchParams.get('subcategory') || '',

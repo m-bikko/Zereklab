@@ -11,7 +11,7 @@ interface MongooseCache {
 }
 
 // Use module-level caching instead of global caching
-let mongooseCache: MongooseCache = {
+const mongooseCache: MongooseCache = {
   conn: null,
   promise: null,
 };

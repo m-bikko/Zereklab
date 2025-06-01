@@ -31,12 +31,14 @@ export async function GET(request: Request, { params }: { params: Params }) {
       { success: true, data: category },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
     console.error(`[API_CATEGORIES_ID_GET] ID: ${id}`, error);
     return NextResponse.json(
       {
         success: false,
-        message: 'Ошибка получения категории: ' + error.message,
+        message: 'Ошибка получения категории: ' + errorMessage,
       },
       { status: 500 }
     );
@@ -68,7 +70,7 @@ export async function PUT(request: Request, { params }: { params: Params }) {
     }
 
     // Prepare update data to avoid overwriting fields with undefined
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
     if (body.name !== undefined) updateData.name = body.name;
     if (body.description !== undefined)
       updateData.description = body.description;
@@ -98,9 +100,16 @@ export async function PUT(request: Request, { params }: { params: Params }) {
       { success: true, data: updatedCategory },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
     console.error(`[API_CATEGORIES_ID_PUT] ID: ${id}`, error);
-    if (error.code === 11000) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      error.code === 11000
+    ) {
       return NextResponse.json(
         {
           success: false,
@@ -112,7 +121,7 @@ export async function PUT(request: Request, { params }: { params: Params }) {
     return NextResponse.json(
       {
         success: false,
-        message: 'Ошибка обновления категории: ' + error.message,
+        message: 'Ошибка обновления категории: ' + errorMessage,
       },
       { status: 500 }
     );
@@ -144,12 +153,14 @@ export async function DELETE(request: Request, { params }: { params: Params }) {
       { success: true, message: 'Категория успешно удалена.' },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
     console.error(`[API_CATEGORIES_ID_DELETE] ID: ${id}`, error);
     return NextResponse.json(
       {
         success: false,
-        message: 'Ошибка удаления категории: ' + error.message,
+        message: 'Ошибка удаления категории: ' + errorMessage,
       },
       { status: 500 }
     );

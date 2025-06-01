@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -30,7 +30,6 @@ import {
 
 export default function ProductPage() {
   const params = useParams();
-  const router = useRouter();
   const [product, setProduct] = useState<IProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);

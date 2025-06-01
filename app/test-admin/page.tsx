@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from 'react';
 
+import { ICategory, IProduct } from '../../types';
+
 export default function TestAdminPage() {
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [logs, setLogs] = useState<string[]>([]);
@@ -71,9 +73,14 @@ export default function TestAdminPage() {
           );
           setError(`Categories fetch failed: ${categoriesResponse.status}`);
         }
-      } catch (err: any) {
-        addLog(`Fetch error: ${err.message}`);
-        setError('Network error: ' + err.message);
+      } catch (err) {
+        addLog(
+          `Fetch error: ${err instanceof Error ? err.message : 'Unknown error'}`
+        );
+        setError(
+          'Network error: ' +
+            (err instanceof Error ? err.message : 'Unknown error')
+        );
       } finally {
         setLoading(false);
         addLog('Fetch completed');
@@ -117,7 +124,7 @@ export default function TestAdminPage() {
         <>
           <h2>Products ({products.length})</h2>
           <ul>
-            {products.slice(0, 3).map((product: any) => (
+            {products.slice(0, 3).map(product => (
               <li key={product._id}>
                 {product.name} - ${product.price}
               </li>
@@ -126,7 +133,7 @@ export default function TestAdminPage() {
 
           <h2>Categories ({categories.length})</h2>
           <ul>
-            {categories.map((category: any) => (
+            {categories.map(category => (
               <li key={category._id}>{category.name}</li>
             ))}
           </ul>

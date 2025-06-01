@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 import {
@@ -10,7 +9,6 @@ import {
   Lightbulb,
   Rocket,
   Star,
-  Users,
   Wrench,
 } from 'lucide-react';
 

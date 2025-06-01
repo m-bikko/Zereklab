@@ -3,6 +3,8 @@ import Product, { IProduct, validateProduct } from '@/models/Product';
 
 import { NextRequest, NextResponse } from 'next/server';
 
+import mongoose, { FilterQuery, SortOrder } from 'mongoose';
+
 export async function GET(request: NextRequest) {
   try {
     await getDatabase(); // Ensure MongoDB connection
@@ -23,7 +25,7 @@ export async function GET(request: NextRequest) {
     const sortOrder = searchParams.get('sortOrder') || 'desc';
 
     // Build filter object
-    const filter: any = {};
+    const filter: FilterQuery<IProduct> = {};
 
     if (category) {
       filter.category = category;
@@ -60,8 +62,7 @@ export async function GET(request: NextRequest) {
       filter.inStock = true;
     }
 
-    // Build sort object
-    const sort: any = {};
+    const sort: Record<string, SortOrder> = {};
     sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
 
     // Calculate skip for pagination
@@ -122,13 +123,13 @@ export async function POST(request: NextRequest) {
       { message: 'Product created successfully', product: savedProduct },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Failed to create product:', error);
 
     // Handle Mongoose validation errors
-    if (error.name === 'ValidationError') {
+    if (error instanceof mongoose.Error.ValidationError) {
       const validationErrors = Object.values(error.errors).map(
-        (err: any) => err.message
+        (err: Error) => err.message
       );
       return NextResponse.json(
         { error: 'Validation failed', details: validationErrors },
@@ -137,7 +138,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Handle duplicate key errors
-    if (error.code === 11000) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      error.code === 11000
+    ) {
       return NextResponse.json(
         { error: 'Product with this data already exists' },
         { status: 409 }

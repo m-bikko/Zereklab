@@ -59,8 +59,10 @@ export async function PUT(
       );
     }
 
-    // Remove _id and timestamps from body as they are handled by Mongoose
-    const { _id, createdAt, updatedAt, ...updateData } = body;
+    const updateData = body;
+    delete updateData._id;
+    delete updateData.createdAt;
+    delete updateData.updatedAt;
 
     const updatedProduct = await Product.findByIdAndUpdate(
       params.id,
@@ -79,13 +81,13 @@ export async function PUT(
       message: 'Product updated successfully',
       product: updatedProduct,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Failed to update product:', error);
 
     // Handle Mongoose validation errors
-    if (error.name === 'ValidationError') {
+    if (error instanceof mongoose.Error.ValidationError) {
       const validationErrors = Object.values(error.errors).map(
-        (err: any) => err.message
+        (err: Error) => err.message
       );
       return NextResponse.json(
         { error: 'Validation failed', details: validationErrors },
@@ -94,7 +96,7 @@ export async function PUT(
     }
 
     // Handle cast errors (invalid ObjectId, etc.)
-    if (error.name === 'CastError') {
+    if (error instanceof mongoose.Error.CastError) {
       return NextResponse.json(
         { error: 'Invalid product ID format' },
         { status: 400 }
@@ -131,11 +133,13 @@ export async function DELETE(
     return NextResponse.json({
       message: 'Product deleted successfully',
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
     console.error('Failed to delete product:', error);
 
     // Handle cast errors (invalid ObjectId, etc.)
-    if (error.name === 'CastError') {
+    if (error instanceof mongoose.Error.CastError) {
       return NextResponse.json(
         { error: 'Invalid product ID format' },
         { status: 400 }
@@ -143,7 +147,7 @@ export async function DELETE(
     }
 
     return NextResponse.json(
-      { error: 'Failed to delete product' },
+      { error: 'Failed to delete product: ' + errorMessage },
       { status: 500 }
     );
   }
