@@ -60,7 +60,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center space-x-3">
               <div className="relative h-12 w-12">
                 <Image
-                  src="/logo/zereklab.jpg"
+                  src="/logo/zereklab.png"
                   alt="Логотип ZerekLab"
                   fill
                   className="rounded-lg object-contain"

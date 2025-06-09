@@ -5,25 +5,27 @@ export interface IProduct {
   name: string;
   description: string;
   price: number;
-  images: string[];
+  salePrice?: number;
+  images?: string[];
   category: string;
-  subcategory: string;
+  subcategory?: string;
   inStock: boolean;
-  features: string[];
-  specifications: Record<string, string>;
-  tags: string[];
+  features?: string[];
+  specifications?: Record<string, string>;
+  tags?: string[];
   sku: string;
-  ageRange: string;
-  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
-  relatedProducts: string[];
-  stockQuantity: number;
-  dimensions: {
+  ageRange?: string;
+  difficulty?: 'Beginner' | 'Intermediate' | 'Advanced';
+  relatedProducts?: string[];
+  stockQuantity?: number;
+  estimatedDelivery?: string;
+  dimensions?: {
     length: number;
     width: number;
     height: number;
     weight: number;
   };
-  parameters: Record<string, any>;
+  parameters?: Record<string, any>;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -31,9 +33,10 @@ export interface IProduct {
 export interface ICategory {
   _id?: string;
   name: string;
-  description: string;
-  subcategories: string[];
-  parameters: Record<string, any>;
+  description?: string;
+  subcategories?: string[];
+  parentCategory?: string;
+  parameters?: Record<string, any>;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -58,12 +61,18 @@ export const validateProduct = (product: Partial<IProduct>): string[] => {
     errors.push('Категория обязательна');
   }
 
-  if (
-    !product.images ||
-    product.images.length === 0 ||
-    (product.images.length === 1 && !product.images[0]?.trim())
-  ) {
-    errors.push('Необходимо добавить минимум одно изображение товара');
+  if (!product.sku?.trim()) {
+    errors.push('SKU обязателен');
+  }
+
+  return errors;
+};
+
+export const validateCategory = (category: Partial<ICategory>): string[] => {
+  const errors: string[] = [];
+
+  if (!category.name?.trim() || category.name.trim().length < 2) {
+    errors.push('Название категории должно содержать минимум 2 символа');
   }
 
   return errors;

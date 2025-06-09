@@ -23,6 +23,7 @@ export async function GET(request: NextRequest) {
     const ageRange = searchParams.get('ageRange');
     const sortBy = searchParams.get('sortBy') || 'createdAt';
     const sortOrder = searchParams.get('sortOrder') || 'desc';
+    const simple = searchParams.get('simple'); // For admin panel
 
     // Build filter object
     const filter: FilterQuery<IProduct> = {};
@@ -64,6 +65,12 @@ export async function GET(request: NextRequest) {
 
     const sort: Record<string, SortOrder> = {};
     sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
+
+    // For admin panel, return all products without pagination
+    if (simple === 'true') {
+      const products = await Product.find(filter).sort(sort).lean();
+      return NextResponse.json(products);
+    }
 
     // Calculate skip for pagination
     const skip = (page - 1) * limit;
@@ -119,10 +126,7 @@ export async function POST(request: NextRequest) {
     const product = new Product(body);
     const savedProduct = await product.save();
 
-    return NextResponse.json(
-      { message: 'Product created successfully', product: savedProduct },
-      { status: 201 }
-    );
+    return NextResponse.json(savedProduct, { status: 201 });
   } catch (error: unknown) {
     console.error('Failed to create product:', error);
 

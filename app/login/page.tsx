@@ -1,6 +1,8 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+
+import { FormEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import Image from 'next/image';
@@ -13,6 +15,14 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { isAuthenticated, login } = useAuth();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace('/admin');
+    }
+  }, [isAuthenticated, router]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -20,22 +30,13 @@ export default function LoginPage() {
     const toastId = toast.loading('Выполняется вход...');
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      });
+      const success = await login(username, password);
 
-      if (response.ok) {
-        // const data = await response.json() // Token is in HttpOnly cookie
+      if (success) {
         toast.success('Вход выполнен успешно!', { id: toastId });
         router.push('/admin');
       } else {
-        const errorData = await response.json().catch(() => ({})); // Catch if response is not json
-        toast.error(
-          errorData.error || 'Ошибка входа. Проверьте ваши учетные данные.',
-          { id: toastId }
-        );
+        toast.error('Неверное имя пользователя или пароль', { id: toastId });
       }
     } catch (error) {
       console.error('Ошибка входа:', error);
@@ -48,12 +49,17 @@ export default function LoginPage() {
     }
   };
 
+  // Don't render if already authenticated
+  if (isAuthenticated) {
+    return null;
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary-600 via-primary-500 to-secondary-500 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md transform space-y-8 rounded-xl bg-white p-8 shadow-2xl transition-all duration-300 hover:scale-[1.01] sm:p-10">
         <div className="text-center">
           <Image
-            src="/logo/zereklab.jpg" // Corrected logo path
+            src="/logo/zereklab.jpg"
             alt="ZerekLab Logo"
             width={80}
             height={80}
@@ -92,6 +98,7 @@ export default function LoginPage() {
                 />
               </div>
             </div>
+
             <div>
               <label
                 htmlFor="password"
@@ -112,7 +119,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-3 pl-10 text-gray-900 placeholder-gray-400 shadow-sm transition-shadow duration-150 ease-in-out hover:shadow-md focus:z-10 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm"
-                  placeholder="••••••••"
+                  placeholder="Введите пароль"
                 />
               </div>
             </div>

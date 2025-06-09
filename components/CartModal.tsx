@@ -149,7 +149,8 @@ export default function CartModal() {
                       <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 sm:h-24 sm:w-24">
                         <Image
                           src={
-                            item.images[0] || '/images/placeholder-product.svg'
+                            (item.images && item.images[0]) ||
+                            '/images/placeholder-product.svg'
                           }
                           alt={item.name || 'Изображение товара'}
                           fill

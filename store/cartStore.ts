@@ -103,7 +103,7 @@ export const useCartStore = create<CartStore>()(
           _id: item._id,
           name: item.name,
           price: item.price,
-          images: item.images.slice(0, 1),
+          images: item.images ? item.images.slice(0, 1) : [],
           quantity: item.quantity,
           category: item.category,
           inStock: item.inStock,

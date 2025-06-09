@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-import { parsedEnv } from './parsedEnv';
+import { config } from './config';
 
-const uri = parsedEnv.MONGODB_URI;
+const uri = config.MONGODB_URI;
 
 // Define the cache type
 interface MongooseCache {

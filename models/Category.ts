@@ -6,6 +6,7 @@ export interface ICategory extends Document {
   name: string;
   description?: string;
   subcategories: string[];
+  parentCategory?: string;
   // Parameters can be complex, for now, let's keep the structure
   // but UI for this might be simplified initially.
   parameters: Record<string, string[]>;
@@ -28,6 +29,10 @@ const CategorySchema: Schema<ICategory> = new Schema(
     subcategories: {
       type: [String],
       default: [],
+    },
+    parentCategory: {
+      type: String,
+      trim: true,
     },
     parameters: {
       type: Schema.Types.Mixed, // Allows for flexible key-value pairs

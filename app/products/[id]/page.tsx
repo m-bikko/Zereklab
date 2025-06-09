@@ -1,6 +1,5 @@
 'use client';
 
-import { parsedEnv } from '@/lib/parsedEnv';
 import { useCartStore } from '@/store/cartStore';
 import { IProduct } from '@/types';
 
@@ -91,7 +90,7 @@ export default function ProductPage() {
     if (product.sku) message += `- Артикул: ${product.sku}\n`;
     message += `\nПожалуйста, предоставьте информацию о наличии и способах оплаты. Спасибо!`;
 
-    const whatsappNumber = parsedEnv.NEXT_PUBLIC_WHATSAPP_NUMBER;
+    const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       message
     )}`;
@@ -99,17 +98,17 @@ export default function ProductPage() {
   };
 
   const nextImage = () => {
-    if (product && product.images && product.images.length > 1) {
+    if (product?.images && product.images.length > 1) {
       setSelectedImageIndex(prev =>
-        prev === product.images.length - 1 ? 0 : prev + 1
+        prev === product.images!.length - 1 ? 0 : prev + 1
       );
     }
   };
 
   const prevImage = () => {
-    if (product && product.images && product.images.length > 1) {
+    if (product?.images && product.images.length > 1) {
       setSelectedImageIndex(prev =>
-        prev === 0 ? product.images.length - 1 : prev - 1
+        prev === 0 ? product.images!.length - 1 : prev - 1
       );
     }
   };

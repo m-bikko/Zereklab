@@ -4,6 +4,7 @@ export interface IProduct {
   name: string;
   description: string;
   price: number; // Price in KZT (Kazakhstani Tenge)
+  salePrice?: number; // Sale price in KZT
   images: string[];
   category: string;
   subcategory?: string;
@@ -16,6 +17,7 @@ export interface IProduct {
   difficulty?: 'Beginner' | 'Intermediate' | 'Advanced';
   relatedProducts?: string[];
   stockQuantity?: number;
+  estimatedDelivery?: string;
   dimensions?: {
     length: number;
     width: number;
@@ -76,6 +78,10 @@ const ProductSchema: Schema<IProductDocument> = new Schema(
       required: [true, 'Product price is required'],
       min: [0, 'Product price must be greater than 0'],
     },
+    salePrice: {
+      type: Number,
+      min: [0, 'Sale price must be greater than 0'],
+    },
     images: {
       type: [String],
       required: [true, 'At least one product image is required'],
@@ -113,7 +119,9 @@ const ProductSchema: Schema<IProductDocument> = new Schema(
     },
     sku: {
       type: String,
+      required: [true, 'SKU is required'],
       trim: true,
+      unique: true,
     },
     ageRange: {
       type: String,
@@ -132,6 +140,10 @@ const ProductSchema: Schema<IProductDocument> = new Schema(
       type: Number,
       default: 0,
       min: [0, 'Stock quantity cannot be negative'],
+    },
+    estimatedDelivery: {
+      type: String,
+      trim: true,
     },
     dimensions: {
       length: { type: Number, default: 0 },

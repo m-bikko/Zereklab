@@ -1,19 +1,8 @@
-import { parsedEnv } from '@/lib/parsedEnv';
-import { validateAdminCredentials } from '@/lib/userStore';
+import { validateAdminCredentials } from '@/lib/config';
 
 import { NextRequest, NextResponse } from 'next/server';
 
-import jwt from 'jsonwebtoken';
-
 export async function POST(request: NextRequest) {
-  if (!parsedEnv.JWT_SECRET) {
-    console.error('JWT_SECRET is not defined in environment variables');
-    return NextResponse.json(
-      { error: 'Server configuration error' },
-      { status: 500 }
-    );
-  }
-
   try {
     const { username, password } = await request.json();
 
@@ -33,22 +22,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate JWT
-    const token = jwt.sign({ username }, parsedEnv.JWT_SECRET, {
-      expiresIn: '1h',
-    }); // Token expires in 1 hour
-
-    // Set token in a cookie (HttpOnly for security)
-    const response = NextResponse.json({ message: 'Login successful', token });
-    response.cookies.set('authToken', token, {
-      httpOnly: true,
-      secure: parsedEnv.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60, // 1 hour in seconds
-      path: '/',
+    return NextResponse.json({
+      message: 'Login successful',
+      success: true,
     });
-
-    return response;
   } catch (error) {
     console.error('Login API error:', error);
     return NextResponse.json(
