@@ -85,7 +85,7 @@ export default function ProductsPage() {
         <div className="mb-8 flex flex-col items-start justify-between sm:flex-row sm:items-center">
           <div>
             <h1 className="mb-1 text-3xl font-bold text-gray-900 sm:mb-2">
-              Образовательные Наборы
+              Наборы
             </h1>
             <p className="text-gray-600">
               {pagination
@@ -143,7 +143,6 @@ export default function ProductsPage() {
               onClick={e => e.stopPropagation()}
             >
               <div className="mb-6 flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-gray-800">Фильтры</h2>
                 <button
                   onClick={() => setShowFilters(false)}
                   className="p-1 text-gray-500 hover:text-gray-700"
@@ -160,9 +159,6 @@ export default function ProductsPage() {
           {/* Filters Sidebar for Desktop */}
           <div className="hidden lg:block lg:w-64 xl:w-72">
             <div className="sticky top-24 rounded-xl bg-white p-6 shadow-lg">
-              <h2 className="mb-6 text-xl font-semibold text-gray-800">
-                Фильтры
-              </h2>
               <ProductFilters />
             </div>
           </div>

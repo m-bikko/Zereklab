@@ -119,16 +119,6 @@ export default function ProductManagement({
     setNewImageUrl('');
   };
 
-  const handleSpecificationChange = (key: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      specifications: {
-        ...prev.specifications,
-        [key]: value,
-      },
-    }));
-  };
-
   const openForm = (product?: IProduct) => {
     if (product) {
       setEditingProduct(product);
@@ -368,7 +358,7 @@ export default function ProductManagement({
                         </button>
                         <button
                           onClick={() =>
-                            handleDelete(product._id!, product.name)
+                            handleDelete(product._id || '', product.name)
                           }
                           className="p-1 text-red-600 hover:text-red-900"
                           title="Удалить"

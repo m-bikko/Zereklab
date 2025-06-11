@@ -196,8 +196,6 @@ export default function CategoryManagement({
   };
 
   const mainCategories = categories.filter(cat => !cat.parentCategory);
-  const getSubcategories = (parentId: string) =>
-    categories.filter(cat => cat.parentCategory === parentId);
 
   return (
     <div className="space-y-6">
@@ -219,15 +217,14 @@ export default function CategoryManagement({
           <div className="p-6">
             <div className="space-y-4">
               {mainCategories.map(category => {
-                const subcategories = getSubcategories(category._id!);
-                const isExpanded = expandedCategories.has(category._id!);
+                const isExpanded = expandedCategories.has(category._id || '');
 
                 return (
                   <div key={category._id} className="rounded-lg border">
                     <div className="flex items-center justify-between bg-gray-50 p-4">
                       <div className="flex items-center space-x-3">
                         <button
-                          onClick={() => toggleCategoryExpansion(category._id!)}
+                          onClick={() => toggleCategoryExpansion(category._id || '')}
                           className="text-gray-500 hover:text-gray-700"
                         >
                           {isExpanded ? (
@@ -260,7 +257,7 @@ export default function CategoryManagement({
                         </button>
                         <button
                           onClick={() =>
-                            handleDelete(category._id!, category.name)
+                            handleDelete(category._id || '', category.name)
                           }
                           className="p-1 text-red-600 hover:text-red-900"
                           title="Удалить"

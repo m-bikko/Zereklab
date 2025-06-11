@@ -99,17 +99,19 @@ export default function ProductPage() {
 
   const nextImage = () => {
     if (product?.images && product.images.length > 1) {
-      setSelectedImageIndex(prev =>
-        prev === product.images!.length - 1 ? 0 : prev + 1
-      );
+      setSelectedImageIndex(prev => {
+        const imagesLength = product.images?.length || 0;
+        return prev === imagesLength - 1 ? 0 : prev + 1;
+      });
     }
   };
 
   const prevImage = () => {
     if (product?.images && product.images.length > 1) {
-      setSelectedImageIndex(prev =>
-        prev === 0 ? product.images!.length - 1 : prev - 1
-      );
+      setSelectedImageIndex(prev => {
+        const imagesLength = product.images?.length || 0;
+        return prev === 0 ? imagesLength - 1 : prev - 1;
+      });
     }
   };
 

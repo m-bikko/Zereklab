@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
       pagination: {
         currentPage: page,
         totalPages,
-        total,
+        totalProducts: total,
         hasNextPage,
         hasPrevPage,
         limit,

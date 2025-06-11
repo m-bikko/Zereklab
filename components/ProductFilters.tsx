@@ -8,19 +8,14 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { ChevronDown, ChevronUp, RotateCcw } from 'lucide-react';
 
-interface ProductFiltersProps {
-  onApplyFilters?: () => void;
-}
-
-export default function ProductFilters({
-  onApplyFilters,
-}: ProductFiltersProps) {
+export default function ProductFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const [isExpanded, setIsExpanded] = useState(true);
-  const [availableCategories] = useState<ICategory[]>([]);
+  const [availableCategories, setAvailableCategories] = useState<ICategory[]>([]);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState(() => ({
     category: searchParams.get('category') || '',
     subcategory: searchParams.get('subcategory') || '',
@@ -31,9 +26,30 @@ export default function ProductFilters({
     ageRange: searchParams.get('ageRange') || '',
   }));
 
+  // Fetch categories from API
+  const fetchCategories = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/categories');
+      if (response.ok) {
+        const categories = await response.json();
+        setAvailableCategories(categories);
+      } else {
+        console.error('Failed to fetch categories');
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // Set initial filters from searchParams
-    // fetchAvailableCategories() // This was causing issues, let's rely on defaultCategories or a dedicated API later
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    // Update filters when searchParams change
     const currentCategory = searchParams.get('category') || '';
     const currentSubcategory = searchParams.get('subcategory') || '';
     const currentMinPrice = searchParams.get('minPrice') || '';
@@ -52,32 +68,6 @@ export default function ProductFilters({
       ageRange: currentAgeRange,
     });
   }, [searchParams]);
-
-  // const fetchAvailableCategories = async () => {
-  //   try {
-  //     // For now, using defaultCategories.
-  //     // In a real app, you might fetch this from a dedicated API endpoint.
-  //     // const response = await fetch('/api/products?distinct=category'); // Example for dedicated endpoint
-  //     // if (response.ok) {
-  //     //   const data = await response.json();
-  //     //   setAvailableCategories(data.categories); // Assuming API returns { categories: ["Electronics", "Robotics"] }
-  //     // } else {
-  //     //   console.warn("Could not fetch dynamic categories, using defaults.");
-  //     //   setAvailableCategories(defaultCategories);
-  //     // }
-  //   } catch (error) {
-  //     console.error('Error fetching categories:', error)
-  //     // Fallback to default categories
-  //     setAvailableCategories(defaultCategories)
-  //   }
-  // };
-
-  const handleApplyButtonClick = () => {
-    updateURL(filters);
-    if (onApplyFilters) {
-      onApplyFilters();
-    }
-  };
 
   const updateURL = useCallback(
     (newFilters: typeof filters) => {
@@ -135,7 +125,7 @@ export default function ProductFilters({
   const selectedCategoryData = getSelectedCategoryData();
 
   return (
-    <div className="space-y-6 rounded-xl bg-white p-5 shadow-md">
+    <div className="space-y-6">
       <div className="flex items-center justify-between border-b border-gray-200 pb-3">
         <h3 className="text-lg font-semibold text-gray-800">Фильтры</h3>
         <button
@@ -157,35 +147,43 @@ export default function ProductFilters({
           <h4 className="mb-2.5 text-sm font-medium text-gray-700">
             Категория
           </h4>
-          <div className="space-y-1.5">
-            {availableCategories.map(category => (
-              <label
-                key={category.name}
-                className="flex cursor-pointer items-center space-x-2 rounded-md p-1 hover:bg-gray-50"
-              >
+          {loading ? (
+            <div className="space-y-2">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="h-6 animate-pulse rounded bg-gray-200"></div>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-1.5">
+              <label className="flex cursor-pointer items-center space-x-2 rounded-md p-1 hover:bg-gray-50">
                 <input
                   type="radio"
                   name="category"
-                  value={category.name}
-                  checked={filters.category === category.name}
+                  value=""
+                  checked={filters.category === ''}
                   onChange={e => handleFilterChange('category', e.target.value)}
                   className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-1"
                 />
-                <span className="text-sm text-gray-600">{category.name}</span>
+                <span className="text-sm text-gray-600">Все категории</span>
               </label>
-            ))}
-            <label className="flex cursor-pointer items-center space-x-2 rounded-md p-1 hover:bg-gray-50">
-              <input
-                type="radio"
-                name="category"
-                value=""
-                checked={filters.category === ''}
-                onChange={e => handleFilterChange('category', e.target.value)}
-                className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-1"
-              />
-              <span className="text-sm text-gray-600">Все категории</span>
-            </label>
-          </div>
+              {availableCategories.map(category => (
+                <label
+                  key={category._id || category.name}
+                  className="flex cursor-pointer items-center space-x-2 rounded-md p-1 hover:bg-gray-50"
+                >
+                  <input
+                    type="radio"
+                    name="category"
+                    value={category.name}
+                    checked={filters.category === category.name}
+                    onChange={e => handleFilterChange('category', e.target.value)}
+                    className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-1"
+                  />
+                  <span className="text-sm text-gray-600">{category.name}</span>
+                </label>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Subcategory Filter */}
@@ -197,6 +195,21 @@ export default function ProductFilters({
                 Подкатегория
               </h4>
               <div className="space-y-1.5">
+                <label className="flex cursor-pointer items-center space-x-2 rounded-md p-1 hover:bg-gray-50">
+                  <input
+                    type="radio"
+                    name="subcategory"
+                    value=""
+                    checked={filters.subcategory === ''}
+                    onChange={e =>
+                      handleFilterChange('subcategory', e.target.value)
+                    }
+                    className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-1"
+                  />
+                  <span className="text-sm text-gray-600">
+                    Все подкатегории
+                  </span>
+                </label>
                 {selectedCategoryData.subcategories.map(subcategory => (
                   <label
                     key={subcategory}
@@ -215,21 +228,6 @@ export default function ProductFilters({
                     <span className="text-sm text-gray-600">{subcategory}</span>
                   </label>
                 ))}
-                <label className="flex cursor-pointer items-center space-x-2 rounded-md p-1 hover:bg-gray-50">
-                  <input
-                    type="radio"
-                    name="subcategory"
-                    value=""
-                    checked={filters.subcategory === ''}
-                    onChange={e =>
-                      handleFilterChange('subcategory', e.target.value)
-                    }
-                    className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-1"
-                  />
-                  <span className="text-sm text-gray-600">
-                    Все подкатегории
-                  </span>
-                </label>
               </div>
             </div>
           )}
@@ -271,14 +269,13 @@ export default function ProductFilters({
                 <button
                   key={range.label}
                   onClick={() => {
-                    setFilters(prev => ({
-                      ...prev,
+                    const newFilters = {
+                      ...filters,
                       minPrice: range.min,
                       maxPrice: range.max,
-                    }));
-                    // Update URL immediately or wait for apply button
-                    // handleFilterChange('minPrice', range.min);
-                    // handleFilterChange('maxPrice', range.max);
+                    };
+                    setFilters(newFilters);
+                    updateURL(newFilters);
                   }}
                   className={`rounded-full border px-2.5 py-1.5 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-1 ${
                     filters.minPrice === range.min &&
@@ -300,23 +297,28 @@ export default function ProductFilters({
             Сложность
           </h4>
           <div className="space-y-1.5">
-            {['', 'Beginner', 'Intermediate', 'Advanced'].map(difficulty => (
+            {[
+              { value: '', label: 'Любая сложность' },
+              { value: 'Beginner', label: 'Начинающий' },
+              { value: 'Intermediate', label: 'Средний' },
+              { value: 'Advanced', label: 'Продвинутый' },
+            ].map(difficulty => (
               <label
-                key={difficulty || 'all-difficulty'}
+                key={difficulty.value || 'all-difficulty'}
                 className="flex cursor-pointer items-center space-x-2 rounded-md p-1 hover:bg-gray-50"
               >
                 <input
                   type="radio"
                   name="difficulty"
-                  value={difficulty}
-                  checked={filters.difficulty === difficulty}
+                  value={difficulty.value}
+                  checked={filters.difficulty === difficulty.value}
                   onChange={e =>
                     handleFilterChange('difficulty', e.target.value)
                   }
                   className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-1"
                 />
                 <span className="text-sm text-gray-600">
-                  {difficulty || 'Любая сложность'}
+                  {difficulty.label}
                 </span>
               </label>
             ))}
@@ -329,21 +331,26 @@ export default function ProductFilters({
             Возрастной диапазон
           </h4>
           <div className="space-y-1.5">
-            {['', '6-8', '9-12', '13+'].map(age => (
+            {[
+              { value: '', label: 'Любой возраст' },
+              { value: '6-8', label: '6-8 лет' },
+              { value: '9-12', label: '9-12 лет' },
+              { value: '13+', label: '13+ лет' },
+            ].map(age => (
               <label
-                key={age || 'all-ages'}
+                key={age.value || 'all-ages'}
                 className="flex cursor-pointer items-center space-x-2 rounded-md p-1 hover:bg-gray-50"
               >
                 <input
                   type="radio"
                   name="ageRange"
-                  value={age}
-                  checked={filters.ageRange === age}
+                  value={age.value}
+                  checked={filters.ageRange === age.value}
                   onChange={e => handleFilterChange('ageRange', e.target.value)}
                   className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-1"
                 />
                 <span className="text-sm text-gray-600">
-                  {age ? `${age} лет` : 'Любой возраст'}
+                  {age.label}
                 </span>
               </label>
             ))}
@@ -363,15 +370,9 @@ export default function ProductFilters({
           </label>
         </div>
 
-        {/* Action Buttons */}
-        <div className="space-y-3 border-t border-gray-200 pt-5">
-          <button
-            onClick={handleApplyButtonClick}
-            className="w-full rounded-lg bg-primary-500 px-4 py-2.5 font-medium text-white shadow-sm transition-colors hover:bg-primary-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2"
-          >
-            Применить фильтры
-          </button>
-          {hasActiveFilters && (
+        {/* Clear Filters Button */}
+        {hasActiveFilters && (
+          <div className="border-t border-gray-200 pt-5">
             <button
               onClick={clearFilters}
               className="flex w-full items-center justify-center space-x-1.5 rounded-lg bg-gray-200 px-4 py-2 font-medium text-gray-700 transition-colors hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
@@ -379,8 +380,8 @@ export default function ProductFilters({
               <RotateCcw className="h-3.5 w-3.5" />
               <span>Сбросить все</span>
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

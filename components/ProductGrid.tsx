@@ -82,8 +82,8 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
               </Link>
 
               {/* Product Info */}
-              <div className="flex flex-1 flex-col justify-between p-4 sm:p-6">
-                <div>
+              <div className="flex flex-1 flex-col p-4 sm:p-6">
+                <div className="flex-1">
                   <Link
                     href={`/products/${product._id}`}
                     className="mb-1.5 block"
@@ -97,22 +97,25 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
                       {product.category}
                     </span>
                   )}
-                  <p className="mb-3 line-clamp-3 text-sm text-gray-600 sm:line-clamp-2">
+                  <p className="mb-4 line-clamp-3 text-sm text-gray-600 sm:line-clamp-2">
                     {product.description}
                   </p>
                 </div>
 
-                <div className="mt-auto flex flex-col pt-3 sm:flex-row sm:items-end sm:justify-between">
-                  <div className="mb-3 sm:mb-0">
+                {/* Price and Actions - Better positioned */}
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  {/* Price Section */}
+                  <div className="flex items-center">
                     <span className="text-2xl font-bold text-primary-600 lg:text-3xl">
                       ₸{product.price.toLocaleString()}
                     </span>
                   </div>
 
-                  <div className="xs:flex-row xs:w-auto flex w-full flex-col gap-2 sm:gap-3">
+                  {/* Action Buttons */}
+                  <div className="flex gap-2 sm:gap-3">
                     <Link
                       href={`/products/${product._id}`}
-                      className="xs:flex-none flex flex-1 items-center justify-center rounded-lg bg-gray-100 px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-200"
+                      className="flex flex-1 items-center justify-center rounded-lg bg-gray-100 px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-200 sm:flex-none"
                     >
                       <Eye className="mr-2 h-4 w-4" />
                       Смотреть
@@ -120,7 +123,7 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
                     <button
                       onClick={() => handleAddToCart(product)}
                       disabled={!product.inStock}
-                      className="xs:flex-none flex flex-1 items-center justify-center rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-medium text-white shadow-md transition-colors hover:bg-primary-600 hover:shadow-lg disabled:cursor-not-allowed disabled:bg-gray-400"
+                      className="flex flex-1 items-center justify-center rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-medium text-white shadow-md transition-colors hover:bg-primary-600 hover:shadow-lg disabled:cursor-not-allowed disabled:bg-gray-400 sm:flex-none"
                     >
                       <ShoppingCart className="mr-2 h-4 w-4" />
                       {product.inStock ? 'В корзину' : 'Нет в наличии'}
@@ -145,9 +148,10 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
           transition={{ delay: index * 0.05, duration: 0.3 }}
           className="group flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg transition-all duration-300 hover:shadow-xl"
         >
+          {/* Product Image with 1:1 aspect ratio */}
           <Link
             href={`/products/${product._id}`}
-            className="aspect-w-1 aspect-h-1 group relative block w-full overflow-hidden bg-gray-100"
+            className="group relative block aspect-square w-full overflow-hidden bg-gray-100"
           >
             <Image
               src={product.images?.[0] || placeholderImage}
