@@ -16,6 +16,33 @@ interface ProductGridProps {
   viewMode: 'grid' | 'list';
 }
 
+// Helper function to get image from localStorage
+const getStoredImage = (imageId: string): string | null => {
+  try {
+    const imageData = localStorage.getItem(`zereklab_image_${imageId}`);
+    if (imageData) {
+      const parsed = JSON.parse(imageData);
+      return parsed.data;
+    }
+  } catch (error) {
+    console.error('Error retrieving stored image:', error);
+  }
+  return null;
+};
+
+// Function to get image source (either stored locally or external URL)
+const getImageSrc = (imageId: string): string => {
+  // Check if it's a stored image ID
+  if (imageId && imageId.startsWith('img_')) {
+    const storedImage = getStoredImage(imageId);
+    if (storedImage) {
+      return storedImage;
+    }
+  }
+  // Return as-is if it's a URL or fallback
+  return imageId || '/images/placeholder-product.svg';
+};
+
 export default function ProductGrid({ products, viewMode }: ProductGridProps) {
   const { addItem } = useCartStore();
 
@@ -48,131 +75,70 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
 
   const placeholderImage = '/images/placeholder-product.svg';
 
-  if (viewMode === 'list') {
-    return (
-      <div className="space-y-4 sm:space-y-6">
-        {products.map((product, index) => (
-          <motion.div
-            key={product._id || `product-${index}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.05, duration: 0.3 }}
-            className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg transition-all duration-300 hover:shadow-xl"
-          >
-            <div className="flex flex-col sm:flex-row">
-              {/* Product Image */}
-              <Link
-                href={`/products/${product._id}`}
-                className="group relative block h-48 flex-shrink-0 overflow-hidden bg-gray-100 sm:h-auto sm:w-48 md:w-56 lg:w-64"
-              >
-                <Image
-                  src={product.images?.[0] || placeholderImage}
-                  alt={product.name || 'Изображение товара'}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 192px, 256px"
-                  className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                />
-                {!product.inStock && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60">
-                    <span className="rounded-md bg-red-500 px-3 py-1 text-sm font-semibold text-white">
-                      Нет в наличии
-                    </span>
-                  </div>
-                )}
-              </Link>
-
-              {/* Product Info */}
-              <div className="flex flex-1 flex-col p-4 sm:p-6">
-                <div className="flex-1">
-                  <Link
-                    href={`/products/${product._id}`}
-                    className="mb-1.5 block"
-                  >
-                    <h3 className="line-clamp-2 text-lg font-semibold text-gray-800 transition-colors hover:text-primary-600 lg:text-xl">
-                      {product.name}
-                    </h3>
-                  </Link>
-                  {product.category && (
-                    <span className="mb-2 inline-block rounded-full bg-primary-100 px-2 py-0.5 text-xs font-medium text-primary-600">
-                      {product.category}
-                    </span>
-                  )}
-                  <p className="mb-4 line-clamp-3 text-sm text-gray-600 sm:line-clamp-2">
-                    {product.description}
-                  </p>
-                </div>
-
-                {/* Price and Actions - Better positioned */}
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  {/* Price Section */}
-                  <div className="flex items-center">
-                    <span className="text-2xl font-bold text-primary-600 lg:text-3xl">
-                      ₸{product.price.toLocaleString()}
-                    </span>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-2 sm:gap-3">
-                    <Link
-                      href={`/products/${product._id}`}
-                      className="flex flex-1 items-center justify-center rounded-lg bg-gray-100 px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-200 sm:flex-none"
-                    >
-                      <Eye className="mr-2 h-4 w-4" />
-                      Смотреть
-                    </Link>
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      disabled={!product.inStock}
-                      className="flex flex-1 items-center justify-center rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-medium text-white shadow-md transition-colors hover:bg-primary-600 hover:shadow-lg disabled:cursor-not-allowed disabled:bg-gray-400 sm:flex-none"
-                    >
-                      <ShoppingCart className="mr-2 h-4 w-4" />
-                      {product.inStock ? 'В корзину' : 'Нет в наличии'}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    );
-  }
-
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
+    <div
+      className={`grid gap-6 ${
+        viewMode === 'grid'
+          ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+          : 'grid-cols-1'
+      }`}
+    >
       {products.map((product, index) => (
         <motion.div
-          key={product._id || `product-grid-${index}`}
+          key={product._id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.05, duration: 0.3 }}
-          className="group flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg transition-all duration-300 hover:shadow-xl"
+          transition={{ duration: 0.3, delay: index * 0.05 }}
+          className={`group overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:shadow-lg ${
+            viewMode === 'list' ? 'flex' : 'flex flex-col'
+          }`}
         >
-          {/* Product Image with 1:1 aspect ratio */}
-          <Link
-            href={`/products/${product._id}`}
-            className="group relative block aspect-square w-full overflow-hidden bg-gray-100"
+          <div
+            className={`relative overflow-hidden bg-gray-100 ${
+              viewMode === 'list' ? 'h-32 w-32 flex-shrink-0' : 'aspect-square'
+            }`}
           >
             <Image
-              src={product.images?.[0] || placeholderImage}
-              alt={product.name || 'Изображение товара'}
+              src={getImageSrc(product.images?.[0] || placeholderImage)}
+              alt={product.name}
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes={
+                viewMode === 'list'
+                  ? '128px'
+                  : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw'
+              }
+              onError={e => {
+                (e.target as HTMLImageElement).src = placeholderImage;
+              }}
             />
-            {!product.inStock && (
-              <div className="absolute inset-0 z-10 flex items-center justify-center bg-black bg-opacity-60">
-                <span className="rounded-md bg-red-500 px-3 py-1 text-sm font-semibold text-white">
-                  Нет в наличии
-                </span>
-              </div>
-            )}
-            <div className="absolute right-3 top-3 z-20 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <div className="rounded-full bg-white p-2 shadow-md transition-colors hover:bg-gray-100">
-                <Eye className="h-5 w-5 text-gray-700" />
+
+            {/* Overlay with actions */}
+            <div className="absolute inset-0 bg-black bg-opacity-0 transition-all duration-300 group-hover:bg-opacity-20">
+              <div className="flex h-full items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <Link
+                  href={`/products/${product._id}`}
+                  className="rounded-full bg-white p-2 shadow-md transition-transform hover:scale-110"
+                >
+                  <Eye className="h-5 w-5 text-gray-700" />
+                </Link>
               </div>
             </div>
-          </Link>
+
+            {/* Sale badge */}
+            {product.salePrice && (
+              <div className="absolute left-2 top-2 rounded-full bg-red-500 px-2 py-1 text-xs font-medium text-white">
+                Скидка
+              </div>
+            )}
+
+            {/* Stock status */}
+            {!product.inStock && (
+              <div className="absolute right-2 top-2 rounded-full bg-gray-500 px-2 py-1 text-xs font-medium text-white">
+                Нет в наличии
+              </div>
+            )}
+          </div>
 
           <div className="flex flex-grow flex-col p-4">
             <Link href={`/products/${product._id}`} className="mb-1.5 block">
@@ -188,9 +154,20 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
 
             <div className="mt-auto">
               <div className="mb-3">
-                <span className="text-xl font-bold text-primary-600">
-                  ₸{product.price.toLocaleString()}
-                </span>
+                {product.salePrice ? (
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xl font-bold text-red-600">
+                      ₸{product.salePrice.toLocaleString()}
+                    </span>
+                    <span className="text-sm text-gray-500 line-through">
+                      ₸{product.price.toLocaleString()}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="text-xl font-bold text-primary-600">
+                    ₸{product.price.toLocaleString()}
+                  </span>
+                )}
               </div>
 
               <button

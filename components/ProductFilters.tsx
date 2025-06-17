@@ -14,7 +14,9 @@ export default function ProductFilters() {
   const searchParams = useSearchParams();
 
   const [isExpanded, setIsExpanded] = useState(true);
-  const [availableCategories, setAvailableCategories] = useState<ICategory[]>([]);
+  const [availableCategories, setAvailableCategories] = useState<ICategory[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState(() => ({
     category: searchParams.get('category') || '',
@@ -150,7 +152,10 @@ export default function ProductFilters() {
           {loading ? (
             <div className="space-y-2">
               {[...Array(3)].map((_, i) => (
-                <div key={i} className="h-6 animate-pulse rounded bg-gray-200"></div>
+                <div
+                  key={i}
+                  className="h-6 animate-pulse rounded bg-gray-200"
+                ></div>
               ))}
             </div>
           ) : (
@@ -176,7 +181,9 @@ export default function ProductFilters() {
                     name="category"
                     value={category.name}
                     checked={filters.category === category.name}
-                    onChange={e => handleFilterChange('category', e.target.value)}
+                    onChange={e =>
+                      handleFilterChange('category', e.target.value)
+                    }
                     className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-1"
                   />
                   <span className="text-sm text-gray-600">{category.name}</span>
@@ -349,9 +356,7 @@ export default function ProductFilters() {
                   onChange={e => handleFilterChange('ageRange', e.target.value)}
                   className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-1"
                 />
-                <span className="text-sm text-gray-600">
-                  {age.label}
-                </span>
+                <span className="text-sm text-gray-600">{age.label}</span>
               </label>
             ))}
           </div>

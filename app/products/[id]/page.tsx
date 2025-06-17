@@ -27,6 +27,33 @@ import {
   Zap,
 } from 'lucide-react';
 
+// Helper function to get image from localStorage
+const getStoredImage = (imageId: string): string | null => {
+  try {
+    const imageData = localStorage.getItem(`zereklab_image_${imageId}`);
+    if (imageData) {
+      const parsed = JSON.parse(imageData);
+      return parsed.data;
+    }
+  } catch (error) {
+    console.error('Error retrieving stored image:', error);
+  }
+  return null;
+};
+
+// Function to get image source (either stored locally or external URL)
+const getImageSrc = (imageId: string): string => {
+  // Check if it's a stored image ID
+  if (imageId && imageId.startsWith('img_')) {
+    const storedImage = getStoredImage(imageId);
+    if (storedImage) {
+      return storedImage;
+    }
+  }
+  // Return as-is if it's a URL or fallback
+  return imageId || '/images/placeholder-product.svg';
+};
+
 export default function ProductPage() {
   const params = useParams();
   const [product, setProduct] = useState<IProduct | null>(null);
@@ -184,10 +211,9 @@ export default function ProductPage() {
     );
   }
 
-  const productImages =
-    product.images && product.images.length > 0
-      ? product.images
-      : [placeholderImage];
+  const productImages = product?.images && product.images.length > 0 
+    ? product.images 
+    : [placeholderImage];
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -212,44 +238,33 @@ export default function ProductPage() {
         <div className="rounded-xl bg-white p-6 shadow-2xl sm:p-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
             <div className="space-y-4">
-              <div className="group relative aspect-square overflow-hidden rounded-lg bg-gray-100 shadow-lg">
-                <AnimatePresence initial={false} mode="wait">
-                  <motion.div
-                    key={selectedImageIndex}
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -50 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    className="absolute inset-0"
-                  >
-                    <Image
-                      src={productImages[selectedImageIndex]}
-                      alt={`${product.name} - изображение ${
-                        selectedImageIndex + 1
-                      }`}
-                      fill
-                      className="object-contain"
-                      priority={selectedImageIndex === 0}
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                  </motion.div>
-                </AnimatePresence>
+              <div className="relative aspect-square overflow-hidden rounded-2xl bg-white shadow-lg">
+                <Image
+                  src={getImageSrc(productImages[selectedImageIndex])}
+                  alt={product?.name || 'Product image'}
+                  fill
+                  className="object-cover transition-transform duration-300 hover:scale-105"
+                  priority
+                  onError={e => {
+                    (e.target as HTMLImageElement).src = placeholderImage;
+                  }}
+                />
 
                 {productImages.length > 1 && (
                   <>
                     <button
                       onClick={prevImage}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                       aria-label="Предыдущее изображение"
-                      className="absolute left-2 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-white/70 p-2 opacity-80 shadow-md transition-all duration-200 hover:bg-white hover:shadow-lg group-hover:opacity-100 sm:left-3 sm:p-2.5"
                     >
-                      <ArrowLeft className="h-5 w-5 text-gray-700 sm:h-6 sm:w-6" />
+                      <ArrowLeft className="h-5 w-5 text-gray-700" />
                     </button>
                     <button
                       onClick={nextImage}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                       aria-label="Следующее изображение"
-                      className="absolute right-2 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-white/70 p-2 opacity-80 shadow-md transition-all duration-200 hover:bg-white hover:shadow-lg group-hover:opacity-100 sm:right-3 sm:p-2.5"
                     >
-                      <ArrowRight className="h-5 w-5 text-gray-700 sm:h-6 sm:w-6" />
+                      <ArrowRight className="h-5 w-5 text-gray-700" />
                     </button>
                   </>
                 )}
@@ -276,11 +291,14 @@ export default function ProductPage() {
                       }`}
                     >
                       <Image
-                        src={image}
-                        alt={`${product.name} эскиз ${index + 1}`}
+                        src={getImageSrc(image)}
+                        alt={`${product?.name} эскиз ${index + 1}`}
                         fill
                         className="object-cover"
                         sizes="80px"
+                        onError={e => {
+                          (e.target as HTMLImageElement).src = placeholderImage;
+                        }}
                       />
                     </button>
                   ))}

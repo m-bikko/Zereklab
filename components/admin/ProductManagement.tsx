@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 import Image from 'next/image';
 
-import { Edit, Plus, Save, Trash2, Upload, X } from 'lucide-react';
+import { Edit, Plus, Save, Trash2, Upload, X, ImageIcon } from 'lucide-react';
 
 interface ProductManagementProps {
   products: IProduct[];
@@ -54,6 +54,51 @@ const initialFormData: ProductFormData = {
   estimatedDelivery: '',
 };
 
+// Helper function to convert file to base64
+const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = error => reject(error);
+  });
+};
+
+// Helper function to store image in localStorage
+const storeImageLocally = (base64Image: string, filename: string): string => {
+  const imageId = `img_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  const imageData = {
+    id: imageId,
+    data: base64Image,
+    filename: filename,
+    timestamp: Date.now()
+  };
+  
+  // Store in localStorage
+  localStorage.setItem(`zereklab_image_${imageId}`, JSON.stringify(imageData));
+  
+  // Keep track of all stored images
+  const storedImages = JSON.parse(localStorage.getItem('zereklab_stored_images') || '[]');
+  storedImages.push(imageId);
+  localStorage.setItem('zereklab_stored_images', JSON.stringify(storedImages));
+  
+  return imageId;
+};
+
+// Helper function to get image from localStorage
+const getStoredImage = (imageId: string): string | null => {
+  try {
+    const imageData = localStorage.getItem(`zereklab_image_${imageId}`);
+    if (imageData) {
+      const parsed = JSON.parse(imageData);
+      return parsed.data;
+    }
+  } catch (error) {
+    console.error('Error retrieving stored image:', error);
+  }
+  return null;
+};
+
 export default function ProductManagement({
   products,
   categories,
@@ -67,6 +112,11 @@ export default function ProductManagement({
   const [newFeature, setNewFeature] = useState('');
   const [newTag, setNewTag] = useState('');
   const [newImageUrl, setNewImageUrl] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  // Get subcategories for selected category
+  const selectedCategory = categories.find(cat => cat.name === formData.category);
+  const subcategories = selectedCategory?.subcategories || [];
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -117,6 +167,74 @@ export default function ProductManagement({
       images: [...prev.images, newImageUrl.trim()],
     }));
     setNewImageUrl('');
+  };
+
+  // Handle file upload for images
+  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadingImage(true);
+    const toastId = toast.loading('Загрузка изображений...');
+
+    try {
+      const newImages: string[] = [];
+      
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+          toast.error(`Файл ${file.name} не является изображением`);
+          continue;
+        }
+        
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          toast.error(`Файл ${file.name} слишком большой (максимум 5MB)`);
+          continue;
+        }
+        
+        try {
+          const base64 = await fileToBase64(file);
+          const imageId = storeImageLocally(base64, file.name);
+          newImages.push(imageId);
+        } catch (error) {
+          console.error('Error processing file:', file.name, error);
+          toast.error(`Ошибка обработки файла ${file.name}`);
+        }
+      }
+      
+      if (newImages.length > 0) {
+        setFormData(prev => ({
+          ...prev,
+          images: [...prev.images, ...newImages],
+        }));
+        toast.success(`Загружено ${newImages.length} изображений`, { id: toastId });
+      } else {
+        toast.error('Не удалось загрузить изображения', { id: toastId });
+      }
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      toast.error('Ошибка загрузки изображений', { id: toastId });
+    } finally {
+      setUploadingImage(false);
+      // Reset file input
+      e.target.value = '';
+    }
+  };
+
+  // Function to get image source (either stored locally or external URL)
+  const getImageSrc = (imageId: string): string => {
+    // Check if it's a stored image ID
+    if (imageId.startsWith('img_')) {
+      const storedImage = getStoredImage(imageId);
+      if (storedImage) {
+        return storedImage;
+      }
+    }
+    // Return as-is if it's a URL or fallback
+    return imageId || '/images/placeholder-product.jpg';
   };
 
   const openForm = (product?: IProduct) => {
@@ -211,11 +329,11 @@ export default function ProductManagement({
     }
   };
 
-  const handleDelete = async (productId: string, productName: string) => {
-    if (!confirm(`Вы уверены, что хотите удалить товар "${productName}"?`))
-      return;
+  const handleDeleteProduct = async (productId: string) => {
+    if (!confirm('Вы уверены, что хотите удалить этот товар?')) return;
 
     const toastId = toast.loading('Удаление товара...');
+
     try {
       const response = await fetch(`/api/products/${productId}`, {
         method: 'DELETE',
@@ -237,145 +355,151 @@ export default function ProductManagement({
     }
   };
 
-  const selectedCategory = categories.find(
-    cat => cat.name === formData.category
-  );
-  const subcategories = selectedCategory?.subcategories || [];
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="text-center">
+          <div className="spinner mx-auto mb-4"></div>
+          <p className="text-gray-600">Загрузка товаров...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Управление товарами</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Управление товарами</h2>
         <button
           onClick={() => openForm()}
-          className="flex items-center space-x-2 rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
+          className="flex items-center space-x-2 rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
         >
           <Plus className="h-4 w-4" />
           <span>Добавить товар</span>
         </button>
       </div>
 
-      {loading ? (
-        <p className="py-10 text-center text-gray-500">Загрузка товаров...</p>
-      ) : (
-        <div className="overflow-hidden rounded-lg border bg-white">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                    Товар
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                    Цена
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                    Категория
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                    Статус
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                    Действия
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 bg-white">
-                {products.map(product => (
-                  <tr key={product._id} className="hover:bg-gray-50">
-                    <td className="whitespace-nowrap px-6 py-4">
-                      <div className="flex items-center">
-                        <div className="h-10 w-10 flex-shrink-0">
-                          {product.images?.[0] ? (
-                            <Image
-                              src={product.images[0]}
-                              alt={product.name}
-                              width={40}
-                              height={40}
-                              className="h-10 w-10 rounded object-cover"
-                            />
-                          ) : (
-                            <div className="flex h-10 w-10 items-center justify-center rounded bg-gray-200">
-                              <span className="text-xs text-gray-400">
-                                Нет фото
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">
-                            {product.name}
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            SKU: {product.sku}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      <div className="text-sm text-gray-900">
-                        {product.salePrice ? (
-                          <>
-                            <span className="text-gray-400 line-through">
-                              {product.price} ₸
-                            </span>
-                            <span className="ml-2 text-red-600">
-                              {product.salePrice} ₸
-                            </span>
-                          </>
+      <div className="overflow-hidden rounded-lg bg-white shadow">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  Товар
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  Категория
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  Цена
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  Наличие
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  Действия
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200 bg-white">
+              {products.map(product => (
+                <tr key={product._id} className="hover:bg-gray-50">
+                  <td className="whitespace-nowrap px-6 py-4">
+                    <div className="flex items-center">
+                      <div className="h-10 w-10 flex-shrink-0">
+                        {product.images?.[0] ? (
+                          <Image
+                            src={getImageSrc(product.images[0])}
+                            alt={product.name}
+                            width={40}
+                            height={40}
+                            className="h-10 w-10 rounded object-cover"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/images/placeholder-product.jpg';
+                            }}
+                          />
                         ) : (
-                          <span>{product.price} ₸</span>
+                          <div className="flex h-10 w-10 items-center justify-center rounded bg-gray-200">
+                            <ImageIcon className="h-5 w-5 text-gray-400" />
+                          </div>
                         )}
                       </div>
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                      {product.category}
-                      {product.subcategory && (
-                        <div className="text-xs text-gray-400">
-                          {product.subcategory}
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-gray-900">
+                          {product.name}
                         </div>
-                      )}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      <span
-                        className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
-                          product.inStock
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
-                        }`}
-                      >
-                        {product.inStock ? 'В наличии' : 'Нет в наличии'}
-                      </span>
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => openForm(product)}
-                          className="p-1 text-blue-600 hover:text-blue-900"
-                          title="Редактировать"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={() =>
-                            handleDelete(product._id || '', product.name)
-                          }
-                          className="p-1 text-red-600 hover:text-red-900"
-                          title="Удалить"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
+                        <div className="text-sm text-gray-500">
+                          SKU: {product.sku}
+                        </div>
                       </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </div>
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4">
+                    <div className="text-sm text-gray-900">{product.category}</div>
+                    {product.subcategory && (
+                      <div className="text-sm text-gray-500">
+                        {product.subcategory}
+                      </div>
+                    )}
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4">
+                    <div className="text-sm text-gray-900">
+                      {product.salePrice ? (
+                        <>
+                          <span className="text-red-600 font-medium">
+                            {product.salePrice.toLocaleString()} ₸
+                          </span>
+                          <br />
+                          <span className="text-gray-500 line-through text-xs">
+                            {product.price.toLocaleString()} ₸
+                          </span>
+                        </>
+                      ) : (
+                        <span className="font-medium">
+                          {product.price.toLocaleString()} ₸
+                        </span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4">
+                    <span
+                      className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
+                        product.inStock
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                      }`}
+                    >
+                      {product.inStock ? 'В наличии' : 'Нет в наличии'}
+                    </span>
+                    {product.stockQuantity !== undefined && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        Кол-во: {product.stockQuantity}
+                      </div>
+                    )}
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => openForm(product)}
+                        className="text-blue-600 hover:text-blue-900"
+                      >
+                        <Edit className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteProduct(product._id!)}
+                        className="text-red-600 hover:text-red-900"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      )}
+      </div>
 
-      {/* Product Form Modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
           <div className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-lg bg-white">
@@ -596,13 +720,31 @@ export default function ProductManagement({
                   <label className="mb-2 block text-sm font-medium text-gray-700">
                     Изображения
                   </label>
-                  <div className="space-y-2">
+                  <div className="space-y-4">
+                    {/* File Upload */}
+                    <div className="flex items-center space-x-4">
+                      <div className="flex-1">
+                        <input
+                          type="file"
+                          multiple
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          disabled={uploadingImage}
+                          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-1 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        />
+                      </div>
+                      {uploadingImage && (
+                        <div className="text-sm text-gray-500">Загрузка...</div>
+                      )}
+                    </div>
+                    
+                    {/* URL Input */}
                     <div className="flex space-x-2">
                       <input
                         type="url"
                         value={newImageUrl}
                         onChange={e => setNewImageUrl(e.target.value)}
-                        placeholder="URL изображения"
+                        placeholder="Или введите URL изображения"
                         className="flex-1 rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                       <button
@@ -613,20 +755,25 @@ export default function ProductManagement({
                         <Upload className="h-4 w-4" />
                       </button>
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    
+                    {/* Image Preview */}
+                    <div className="grid grid-cols-4 gap-4">
                       {formData.images.map((img, index) => (
-                        <div key={index} className="relative">
+                        <div key={index} className="relative group">
                           <Image
-                            src={img}
+                            src={getImageSrc(img)}
                             alt={`Изображение ${index + 1}`}
-                            width={60}
-                            height={60}
-                            className="h-15 w-15 rounded border object-cover"
+                            width={120}
+                            height={120}
+                            className="h-30 w-full rounded border object-cover"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/images/placeholder-product.jpg';
+                            }}
                           />
                           <button
                             type="button"
                             onClick={() => handleArrayRemove('images', index)}
-                            className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white hover:bg-red-600"
+                            className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs text-white opacity-0 transition-opacity hover:bg-red-600 group-hover:opacity-100"
                           >
                             ×
                           </button>
@@ -659,11 +806,12 @@ export default function ProductManagement({
                       <button
                         type="button"
                         onClick={() => handleArrayAdd('features', newFeature)}
-                        className="rounded-md bg-green-500 px-4 py-2 text-white transition-colors hover:bg-green-600"
+                        className="rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
                       >
                         <Plus className="h-4 w-4" />
                       </button>
                     </div>
+
                     <div className="flex flex-wrap gap-2">
                       {formData.features.map((feature, index) => (
                         <span
@@ -712,6 +860,7 @@ export default function ProductManagement({
                         <Plus className="h-4 w-4" />
                       </button>
                     </div>
+
                     <div className="flex flex-wrap gap-2">
                       {formData.tags.map((tag, index) => (
                         <span

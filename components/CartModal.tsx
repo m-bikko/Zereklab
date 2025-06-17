@@ -16,6 +16,33 @@ import {
   X,
 } from 'lucide-react';
 
+// Helper function to get image from localStorage
+const getStoredImage = (imageId: string): string | null => {
+  try {
+    const imageData = localStorage.getItem(`zereklab_image_${imageId}`);
+    if (imageData) {
+      const parsed = JSON.parse(imageData);
+      return parsed.data;
+    }
+  } catch (error) {
+    console.error('Error retrieving stored image:', error);
+  }
+  return null;
+};
+
+// Function to get image source (either stored locally or external URL)
+const getImageSrc = (imageId: string): string => {
+  // Check if it's a stored image ID
+  if (imageId && imageId.startsWith('img_')) {
+    const storedImage = getStoredImage(imageId);
+    if (storedImage) {
+      return storedImage;
+    }
+  }
+  // Return as-is if it's a URL or fallback
+  return imageId || '/images/placeholder-product.svg';
+};
+
 export default function CartModal() {
   const {
     isOpen,
@@ -148,14 +175,17 @@ export default function CartModal() {
                     >
                       <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 sm:h-24 sm:w-24">
                         <Image
-                          src={
+                          src={getImageSrc(
                             (item.images && item.images[0]) ||
                             '/images/placeholder-product.svg'
-                          }
+                          )}
                           alt={item.name || 'Изображение товара'}
                           fill
                           sizes="(max-width: 640px) 80px, 96px"
                           className="object-cover"
+                          onError={e => {
+                            (e.target as HTMLImageElement).src = '/images/placeholder-product.svg';
+                          }}
                         />
                       </div>
 

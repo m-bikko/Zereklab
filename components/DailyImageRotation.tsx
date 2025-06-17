@@ -86,4 +86,4 @@ export default function DailyImageRotation() {
       </div>
     </div>
   );
-} 
+}

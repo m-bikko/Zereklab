@@ -2,14 +2,12 @@
 
 import DailyImageRotation from '@/components/DailyImageRotation';
 
+import { useRef } from 'react';
+
 import Link from 'next/link';
 
 import { motion } from 'framer-motion';
-
 import { useInView } from 'framer-motion';
-
-import { useRef } from 'react';
-
 import {
   BookOpen,
   Brain,
@@ -25,28 +23,32 @@ import {
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.4, ease: 'easeOut' }
+  transition: { duration: 0.4, ease: 'easeOut' },
 };
 
 const staggerContainer = {
   initial: {},
   animate: {
     transition: {
-      staggerChildren: 0.08
-    }
-  }
+      staggerChildren: 0.08,
+    },
+  },
 };
 
 const scaleIn = {
   initial: { opacity: 0, scale: 0.9 },
   animate: { opacity: 1, scale: 1 },
-  transition: { duration: 0.3, ease: 'easeOut' }
+  transition: { duration: 0.3, ease: 'easeOut' },
 };
 
 // Optimized animated section component
-const AnimatedSection = ({ children, className = '', delay = 0 }: { 
-  children: React.ReactNode; 
-  className?: string; 
+const AnimatedSection = ({
+  children,
+  className = '',
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
   delay?: number;
 }) => {
   const ref = useRef(null);
@@ -155,20 +157,20 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-            <motion.div 
+            <motion.div
               className="text-center lg:text-left"
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
             >
-              <motion.h1 
+              <motion.h1
                 className="mb-6 text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
               >
                 Вдохновляем Новое
-                <motion.span 
+                <motion.span
                   className="block text-primary-400"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -178,7 +180,7 @@ export default function HomePage() {
                 </motion.span>
                 Инноваторов
               </motion.h1>
-              <motion.p 
+              <motion.p
                 className="mb-8 text-xl leading-relaxed text-gray-200 sm:text-2xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -188,7 +190,7 @@ export default function HomePage() {
                 интерактивным и значимым. Идеально для детей, которые любят
                 строить, создавать и исследовать.
               </motion.p>
-              <motion.div 
+              <motion.div
                 className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -221,7 +223,7 @@ export default function HomePage() {
             </motion.div>
 
             {/* Daily Image Rotation */}
-            <motion.div 
+            <motion.div
               className="relative"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -237,7 +239,7 @@ export default function HomePage() {
       <AnimatedSection>
         <section className="bg-gray-50 py-12 sm:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <motion.div 
+            <motion.div
               className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-4"
               variants={staggerContainer}
               initial="initial"
@@ -251,7 +253,7 @@ export default function HomePage() {
                   whileHover={{ scale: 1.02 }}
                   className="transform rounded-xl bg-white p-6 text-center shadow-lg transition-all duration-200"
                 >
-                  <motion.div 
+                  <motion.div
                     className="mb-1 text-3xl font-bold text-primary-500 sm:mb-2 sm:text-4xl"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -274,7 +276,7 @@ export default function HomePage() {
       <AnimatedSection>
         <section className="bg-white py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <motion.div 
+            <motion.div
               className="mb-12 text-center sm:mb-16"
               variants={fadeInUp}
               initial="initial"
@@ -290,7 +292,7 @@ export default function HomePage() {
               </p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
               variants={staggerContainer}
               initial="initial"
@@ -306,7 +308,7 @@ export default function HomePage() {
                     whileHover={{ y: -5, scale: 1.02 }}
                     className="transform rounded-xl bg-gray-50 p-6 text-center shadow-lg transition-all duration-200"
                   >
-                    <motion.div 
+                    <motion.div
                       className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-md sm:mb-6 sm:h-20 sm:w-20"
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.2 }}
@@ -331,7 +333,7 @@ export default function HomePage() {
       <AnimatedSection>
         <section className="bg-gradient-to-br from-gray-100 to-gray-200 py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <motion.div 
+            <motion.div
               className="mb-12 text-center sm:mb-16"
               variants={fadeInUp}
               initial="initial"
@@ -347,7 +349,7 @@ export default function HomePage() {
               </p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="grid grid-cols-1 gap-8 md:grid-cols-3"
               variants={staggerContainer}
               initial="initial"
@@ -365,7 +367,7 @@ export default function HomePage() {
                   >
                     <Link href={category.href}>
                       <div className="flex h-full transform flex-col overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-200 group-hover:shadow-xl">
-                        <motion.div 
+                        <motion.div
                           className="relative flex h-48 w-full items-center justify-center overflow-hidden bg-gradient-to-br from-primary-400 to-secondary-500 sm:h-56"
                           whileHover={{ scale: 1.05 }}
                           transition={{ duration: 0.3 }}
@@ -378,15 +380,13 @@ export default function HomePage() {
                           </motion.div>
                         </motion.div>
                         <div className="flex flex-grow flex-col p-6">
-                          <motion.h3 
-                            className="mb-2 text-xl font-semibold text-gray-900 transition-colors group-hover:text-primary-600 sm:text-2xl"
-                          >
+                          <motion.h3 className="mb-2 text-xl font-semibold text-gray-900 transition-colors group-hover:text-primary-600 sm:text-2xl">
                             {category.title}
                           </motion.h3>
                           <p className="flex-grow text-sm text-gray-600 sm:text-base">
                             {category.description}
                           </p>
-                          <motion.div 
+                          <motion.div
                             className="mt-4"
                             whileHover={{ x: 3 }}
                             transition={{ duration: 0.2 }}
@@ -411,7 +411,7 @@ export default function HomePage() {
       <AnimatedSection>
         <section className="bg-white py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <motion.div 
+            <motion.div
               className="mb-12 text-center sm:mb-16"
               variants={fadeInUp}
               initial="initial"
@@ -427,7 +427,7 @@ export default function HomePage() {
               </p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
               variants={staggerContainer}
               initial="initial"
@@ -441,7 +441,7 @@ export default function HomePage() {
                   whileHover={{ y: -5, scale: 1.01 }}
                   className="transform rounded-2xl bg-gray-50 p-6 shadow-xl transition-all duration-200 sm:p-8"
                 >
-                  <motion.div 
+                  <motion.div
                     className="mb-4 flex items-center"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -449,7 +449,10 @@ export default function HomePage() {
                     viewport={{ once: true }}
                   >
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                      <Star
+                        key={i}
+                        className="h-5 w-5 fill-yellow-400 text-yellow-400"
+                      />
                     ))}
                     {[...Array(5 - testimonial.rating)].map((_, i) => (
                       <Star
@@ -458,7 +461,7 @@ export default function HomePage() {
                       />
                     ))}
                   </motion.div>
-                  <motion.p 
+                  <motion.p
                     className="mb-5 text-sm leading-relaxed text-gray-700 sm:mb-6 sm:text-base"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -467,14 +470,14 @@ export default function HomePage() {
                   >
                     «{testimonial.content}»
                   </motion.p>
-                  <motion.div 
+                  <motion.div
                     className="flex items-center"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
                     viewport={{ once: true }}
                   >
-                    <motion.div 
+                    <motion.div
                       className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 text-lg font-semibold text-white sm:mr-4 sm:h-12 sm:w-12"
                       whileHover={{ scale: 1.05 }}
                     >
@@ -500,7 +503,7 @@ export default function HomePage() {
       <AnimatedSection>
         <section className="bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-600 py-16 text-white sm:py-24">
           <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-            <motion.h2 
+            <motion.h2
               className="mb-6 text-3xl font-bold sm:text-4xl lg:text-5xl"
               variants={fadeInUp}
               initial="initial"
@@ -509,7 +512,7 @@ export default function HomePage() {
             >
               Готовы Начать Приключение в Мир STEM?
             </motion.h2>
-            <motion.p 
+            <motion.p
               className="mx-auto mb-10 max-w-2xl text-xl leading-relaxed text-gray-200 sm:text-2xl"
               variants={fadeInUp}
               initial="initial"
