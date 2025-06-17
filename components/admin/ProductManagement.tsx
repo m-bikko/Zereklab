@@ -497,7 +497,9 @@ export default function ProductManagement({
                         <Edit className="h-4 w-4" />
                       </button>
                       <button
-                        onClick={() => product._id && handleDeleteProduct(product._id)}
+                        onClick={() =>
+                          product._id && handleDeleteProduct(product._id)
+                        }
                         className="text-red-600 hover:text-red-900"
                       >
                         <Trash2 className="h-4 w-4" />
