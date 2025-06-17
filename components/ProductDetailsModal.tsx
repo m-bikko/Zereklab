@@ -1,14 +1,14 @@
 'use client';
 
-import { IProduct } from '@/types';
 import { useCartStore } from '@/store/cartStore';
+import { IProduct } from '@/types';
 
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import Image from 'next/image';
 
-import { Package, ShoppingCart, X } from 'lucide-react';
+import { ShoppingCart, X } from 'lucide-react';
 
 interface Props {
   product: IProduct;
@@ -59,9 +59,10 @@ export default function ProductDetailsModal({
     onClose();
   };
 
-  const productImages = product.images && product.images.length > 0 
-    ? product.images 
-    : ['/images/placeholder-product.jpg'];
+  const productImages =
+    product.images && product.images.length > 0
+      ? product.images
+      : ['/images/placeholder-product.jpg'];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
@@ -154,8 +155,12 @@ export default function ProductDetailsModal({
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="font-medium text-gray-700">Категория:</span>
-                    <span className="ml-2 text-gray-600">{product.category}</span>
+                    <span className="font-medium text-gray-700">
+                      Категория:
+                    </span>
+                    <span className="ml-2 text-gray-600">
+                      {product.category}
+                    </span>
                   </div>
                   {product.subcategory && (
                     <div>
@@ -169,7 +174,9 @@ export default function ProductDetailsModal({
                   )}
                   {product.ageRange && (
                     <div>
-                      <span className="font-medium text-gray-700">Возраст:</span>
+                      <span className="font-medium text-gray-700">
+                        Возраст:
+                      </span>
                       <span className="ml-2 text-gray-600">
                         {product.ageRange}
                       </span>

@@ -177,14 +177,15 @@ export default function CartModal() {
                         <Image
                           src={getImageSrc(
                             (item.images && item.images[0]) ||
-                            '/images/placeholder-product.svg'
+                              '/images/placeholder-product.svg'
                           )}
                           alt={item.name || 'Изображение товара'}
                           fill
                           sizes="(max-width: 640px) 80px, 96px"
                           className="object-cover"
                           onError={e => {
-                            (e.target as HTMLImageElement).src = '/images/placeholder-product.svg';
+                            (e.target as HTMLImageElement).src =
+                              '/images/placeholder-product.svg';
                           }}
                         />
                       </div>

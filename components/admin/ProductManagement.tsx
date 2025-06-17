@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 import Image from 'next/image';
 
-import { Edit, Plus, Save, Trash2, Upload, X, ImageIcon } from 'lucide-react';
+import { Edit, ImageIcon, Plus, Save, Trash2, Upload, X } from 'lucide-react';
 
 interface ProductManagementProps {
   products: IProduct[];
@@ -71,17 +71,19 @@ const storeImageLocally = (base64Image: string, filename: string): string => {
     id: imageId,
     data: base64Image,
     filename: filename,
-    timestamp: Date.now()
+    timestamp: Date.now(),
   };
-  
+
   // Store in localStorage
   localStorage.setItem(`zereklab_image_${imageId}`, JSON.stringify(imageData));
-  
+
   // Keep track of all stored images
-  const storedImages = JSON.parse(localStorage.getItem('zereklab_stored_images') || '[]');
+  const storedImages = JSON.parse(
+    localStorage.getItem('zereklab_stored_images') || '[]'
+  );
   storedImages.push(imageId);
   localStorage.setItem('zereklab_stored_images', JSON.stringify(storedImages));
-  
+
   return imageId;
 };
 
@@ -115,7 +117,9 @@ export default function ProductManagement({
   const [uploadingImage, setUploadingImage] = useState(false);
 
   // Get subcategories for selected category
-  const selectedCategory = categories.find(cat => cat.name === formData.category);
+  const selectedCategory = categories.find(
+    cat => cat.name === formData.category
+  );
   const subcategories = selectedCategory?.subcategories || [];
 
   const handleInputChange = (
@@ -179,22 +183,22 @@ export default function ProductManagement({
 
     try {
       const newImages: string[] = [];
-      
+
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        
+
         // Validate file type
         if (!file.type.startsWith('image/')) {
           toast.error(`Файл ${file.name} не является изображением`);
           continue;
         }
-        
+
         // Validate file size (max 5MB)
         if (file.size > 5 * 1024 * 1024) {
           toast.error(`Файл ${file.name} слишком большой (максимум 5MB)`);
           continue;
         }
-        
+
         try {
           const base64 = await fileToBase64(file);
           const imageId = storeImageLocally(base64, file.name);
@@ -204,13 +208,15 @@ export default function ProductManagement({
           toast.error(`Ошибка обработки файла ${file.name}`);
         }
       }
-      
+
       if (newImages.length > 0) {
         setFormData(prev => ({
           ...prev,
           images: [...prev.images, ...newImages],
         }));
-        toast.success(`Загружено ${newImages.length} изображений`, { id: toastId });
+        toast.success(`Загружено ${newImages.length} изображений`, {
+          id: toastId,
+        });
       } else {
         toast.error('Не удалось загрузить изображения', { id: toastId });
       }
@@ -369,7 +375,9 @@ export default function ProductManagement({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">Управление товарами</h2>
+        <h2 className="text-2xl font-bold text-gray-900">
+          Управление товарами
+        </h2>
         <button
           onClick={() => openForm()}
           className="flex items-center space-x-2 rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
@@ -414,8 +422,9 @@ export default function ProductManagement({
                             width={40}
                             height={40}
                             className="h-10 w-10 rounded object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src = '/images/placeholder-product.jpg';
+                            onError={e => {
+                              (e.target as HTMLImageElement).src =
+                                '/images/placeholder-product.jpg';
                             }}
                           />
                         ) : (
@@ -435,7 +444,9 @@ export default function ProductManagement({
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-6 py-4">
-                    <div className="text-sm text-gray-900">{product.category}</div>
+                    <div className="text-sm text-gray-900">
+                      {product.category}
+                    </div>
                     {product.subcategory && (
                       <div className="text-sm text-gray-500">
                         {product.subcategory}
@@ -446,11 +457,11 @@ export default function ProductManagement({
                     <div className="text-sm text-gray-900">
                       {product.salePrice ? (
                         <>
-                          <span className="text-red-600 font-medium">
+                          <span className="font-medium text-red-600">
                             {product.salePrice.toLocaleString()} ₸
                           </span>
                           <br />
-                          <span className="text-gray-500 line-through text-xs">
+                          <span className="text-xs text-gray-500 line-through">
                             {product.price.toLocaleString()} ₸
                           </span>
                         </>
@@ -472,7 +483,7 @@ export default function ProductManagement({
                       {product.inStock ? 'В наличии' : 'Нет в наличии'}
                     </span>
                     {product.stockQuantity !== undefined && (
-                      <div className="text-xs text-gray-500 mt-1">
+                      <div className="mt-1 text-xs text-gray-500">
                         Кол-во: {product.stockQuantity}
                       </div>
                     )}
@@ -486,7 +497,7 @@ export default function ProductManagement({
                         <Edit className="h-4 w-4" />
                       </button>
                       <button
-                        onClick={() => handleDeleteProduct(product._id!)}
+                        onClick={() => product._id && handleDeleteProduct(product._id)}
                         className="text-red-600 hover:text-red-900"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -730,14 +741,14 @@ export default function ProductManagement({
                           accept="image/*"
                           onChange={handleImageUpload}
                           disabled={uploadingImage}
-                          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-1 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                          className="w-full rounded-md border border-gray-300 px-3 py-2 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-4 file:py-1 file:text-sm file:font-medium file:text-blue-700 hover:file:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                       </div>
                       {uploadingImage && (
                         <div className="text-sm text-gray-500">Загрузка...</div>
                       )}
                     </div>
-                    
+
                     {/* URL Input */}
                     <div className="flex space-x-2">
                       <input
@@ -755,19 +766,20 @@ export default function ProductManagement({
                         <Upload className="h-4 w-4" />
                       </button>
                     </div>
-                    
+
                     {/* Image Preview */}
                     <div className="grid grid-cols-4 gap-4">
                       {formData.images.map((img, index) => (
-                        <div key={index} className="relative group">
+                        <div key={index} className="group relative">
                           <Image
                             src={getImageSrc(img)}
                             alt={`Изображение ${index + 1}`}
                             width={120}
                             height={120}
                             className="h-30 w-full rounded border object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src = '/images/placeholder-product.jpg';
+                            onError={e => {
+                              (e.target as HTMLImageElement).src =
+                                '/images/placeholder-product.jpg';
                             }}
                           />
                           <button

@@ -10,7 +10,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
-import { AnimatePresence, motion } from 'framer-motion';
 import {
   AlertTriangle,
   ArrowLeft,
@@ -211,9 +210,10 @@ export default function ProductPage() {
     );
   }
 
-  const productImages = product?.images && product.images.length > 0 
-    ? product.images 
-    : [placeholderImage];
+  const productImages =
+    product?.images && product.images.length > 0
+      ? product.images
+      : [placeholderImage];
 
   return (
     <div className="min-h-screen bg-gray-100">
