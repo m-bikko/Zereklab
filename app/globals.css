@@ -36,7 +36,16 @@ a {
     color-scheme: dark;
   }
 }
-
+@media (max-width: 1024px) {
+  .starter-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .starter-button > div {
+    width: 100%;
+  }
+}
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

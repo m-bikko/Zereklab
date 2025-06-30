@@ -4,42 +4,60 @@ import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
+interface DailyImage {
+  id: string;
+  name: string;
+  data: string;
+  uploadDate: string;
+}
+
 export default function DailyImageRotation() {
   const [currentImage, setCurrentImage] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const loadDailyImage = async () => {
       try {
-        // Получаем день года для ротации
+        // Получаем изображения из localStorage
+        const storedImages = localStorage.getItem('zereklab_daily_images');
+
+        if (!storedImages) {
+          // Если нет изображений в localStorage, показываем placeholder
+          setCurrentImage('/images/placeholder-daily.svg');
+          setError(true);
+          return;
+        }
+
+        const images: DailyImage[] = JSON.parse(storedImages);
+
+        if (images.length === 0) {
+          setCurrentImage('/images/placeholder-daily.svg');
+          setError(true);
+          return;
+        }
+
+        // Вычисляем день года для ротации
         const today = new Date();
         const start = new Date(today.getFullYear(), 0, 0);
         const diff = today.getTime() - start.getTime();
         const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-        // Список возможных изображений
-        const maxImages = 10; // Максимальное количество изображений в папке
-        const imageIndex = (dayOfYear % maxImages) + 1;
+        // Выбираем изображение на основе дня года
+        const imageIndex = dayOfYear % images.length;
+        const selectedImage = images[imageIndex];
 
-        // Пробуем разные расширения для текущего индекса
-        const imageExtensions = ['svg', 'jpg', 'jpeg', 'png', 'webp'];
-        let foundImage = '';
-
-        for (const ext of imageExtensions) {
-          const imagePath = `/images/daily-rotation/image-${imageIndex}.${ext}`;
-          foundImage = imagePath;
-          break; // Используем первое найденное изображение
+        if (selectedImage && selectedImage.data) {
+          setCurrentImage(selectedImage.data);
+          setError(false);
+        } else {
+          setCurrentImage('/images/placeholder-daily.svg');
+          setError(true);
         }
-
-        // Если изображение не найдено, используем запасное
-        if (!foundImage) {
-          foundImage = '/images/daily-rotation/default.svg';
-        }
-
-        setCurrentImage(foundImage);
       } catch (error) {
         console.error('Error loading daily image:', error);
-        setCurrentImage('/images/daily-rotation/default.svg');
+        setCurrentImage('/images/placeholder-daily.svg');
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -47,6 +65,14 @@ export default function DailyImageRotation() {
 
     loadDailyImage();
   }, []);
+
+  // Обработка ошибки загрузки изображения
+  const handleImageError = () => {
+    if (!error) {
+      setError(true);
+      setCurrentImage('/images/placeholder-daily.svg');
+    }
+  };
 
   if (loading) {
     return (
@@ -72,15 +98,14 @@ export default function DailyImageRotation() {
           className="object-cover"
           priority
           sizes="(max-width: 768px) 100vw, 512px"
-          onError={() => {
-            // Fallback если изображение не загрузилось
-            setCurrentImage('/images/daily-rotation/default.svg');
-          }}
+          onError={handleImageError}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
         <div className="absolute bottom-4 left-4 right-4">
           <p className="text-sm text-white/90 backdrop-blur-sm">
-            Изображение дня • ZerekLab
+            {error
+              ? 'Добавьте изображения в админке'
+              : 'Изображение дня • ZerekLab'}
           </p>
         </div>
       </div>

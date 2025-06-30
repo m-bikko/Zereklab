@@ -191,7 +191,7 @@ export default function HomePage() {
                 строить, создавать и исследовать.
               </motion.p>
               <motion.div
-                className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0"
+                className="starter-button flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
