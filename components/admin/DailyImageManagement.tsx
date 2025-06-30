@@ -138,20 +138,21 @@ export default function DailyImageManagement() {
     toast.success('Изображение удалено');
   };
 
-  // Получение текущего изображения дня
-  const getCurrentDayImage = (): DailyImage | null => {
+  // Получение текущего изображения недели
+  const getCurrentWeekImage = (): DailyImage | null => {
     if (dailyImages.length === 0) return null;
 
     const today = new Date();
-    const start = new Date(today.getFullYear(), 0, 0);
+    const start = new Date(today.getFullYear(), 0, 1);
     const diff = today.getTime() - start.getTime();
-    const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+    const weekOfYear = Math.floor((dayOfYear - 1) / 7);
 
-    const imageIndex = dayOfYear % dailyImages.length;
+    const imageIndex = weekOfYear % dailyImages.length;
     return dailyImages[imageIndex] || null;
   };
 
-  const currentDayImage = getCurrentDayImage();
+  const currentWeekImage = getCurrentWeekImage();
 
   return (
     <div className="space-y-6">
@@ -159,11 +160,11 @@ export default function DailyImageManagement() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">
-            Управление Изображениями Дня
+            Управление Изображениями Недели
           </h2>
           <p className="text-gray-600">
             Загружайте изображения, которые будут показываться на главной
-            странице
+            странице каждую неделю
           </p>
         </div>
         <div className="flex items-center space-x-2">
@@ -181,29 +182,29 @@ export default function DailyImageManagement() {
         </div>
       </div>
 
-      {/* Текущее изображение дня */}
-      {currentDayImage && (
+      {/* Текущее изображение недели */}
+      {currentWeekImage && (
         <div className="rounded-xl bg-gradient-to-r from-primary-50 to-secondary-50 p-6">
           <h3 className="mb-4 flex items-center text-lg font-semibold text-gray-900">
             <Calendar className="mr-2 h-5 w-5 text-primary-600" />
-            Изображение сегодня
+            Изображение этой недели
           </h3>
           <div className="flex items-center space-x-4">
             <div className="relative h-24 w-24 overflow-hidden rounded-lg">
               <Image
-                src={currentDayImage.data}
-                alt="Изображение дня"
+                src={currentWeekImage.data}
+                alt="Изображение недели"
                 fill
                 className="object-cover"
               />
             </div>
             <div>
               <p className="font-medium text-gray-900">
-                {currentDayImage.name}
+                {currentWeekImage.name}
               </p>
               <p className="text-sm text-gray-600">
                 Загружено:{' '}
-                {new Date(currentDayImage.uploadDate).toLocaleDateString(
+                {new Date(currentWeekImage.uploadDate).toLocaleDateString(
                   'ru-RU'
                 )}
               </p>
@@ -306,7 +307,7 @@ export default function DailyImageManagement() {
                     {image.name}
                   </p>
                   <p className="text-xs text-gray-500">
-                    День {(index % dailyImages.length) + 1} в цикле
+                    Неделя {(index % dailyImages.length) + 1} в цикле
                   </p>
                 </div>
               </motion.div>
@@ -320,7 +321,7 @@ export default function DailyImageManagement() {
             Нет загруженных изображений
           </h3>
           <p className="mt-2 text-yellow-700">
-            Загрузите изображения для ежедневной ротации на главной странице
+            Загрузите изображения для еженедельной ротации на главной странице
           </p>
         </div>
       )}

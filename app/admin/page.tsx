@@ -144,7 +144,7 @@ export default function AdminPage() {
                   className={tabClass('daily-images')}
                 >
                   <Calendar className="h-5 w-5" />
-                  <span>Изображения дня</span>
+                  <span>Изображения недели</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('analytics')}

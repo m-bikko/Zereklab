@@ -37,14 +37,15 @@ export default function DailyImageRotation() {
           return;
         }
 
-        // Вычисляем день года для ротации
+        // Вычисляем неделю года для ротации
         const today = new Date();
-        const start = new Date(today.getFullYear(), 0, 0);
+        const start = new Date(today.getFullYear(), 0, 1);
         const diff = today.getTime() - start.getTime();
-        const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+        const weekOfYear = Math.floor((dayOfYear - 1) / 7);
 
-        // Выбираем изображение на основе дня года
-        const imageIndex = dayOfYear % images.length;
+        // Выбираем изображение на основе недели года
+        const imageIndex = weekOfYear % images.length;
         const selectedImage = images[imageIndex];
 
         if (selectedImage && selectedImage.data) {
@@ -93,7 +94,7 @@ export default function DailyImageRotation() {
       <div className="relative aspect-square overflow-hidden rounded-2xl border border-white/20 bg-white/10 shadow-2xl backdrop-blur-md">
         <Image
           src={currentImage}
-          alt="Ежедневное изображение ZerekLab"
+          alt="Еженедельное изображение ZerekLab"
           fill
           className="object-cover"
           priority
@@ -105,7 +106,7 @@ export default function DailyImageRotation() {
           <p className="text-sm text-white/90 backdrop-blur-sm">
             {error
               ? 'Добавьте изображения в админке'
-              : 'Изображение дня • ZerekLab'}
+              : 'Изображение недели • ZerekLab'}
           </p>
         </div>
       </div>

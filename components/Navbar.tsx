@@ -51,19 +51,17 @@ export default function Navbar() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="relative h-10 w-10">
+            <Link href="/" className="flex items-center">
+              <div className="relative flex h-12 w-auto items-center">
                 <Image
                   src="/logo/zereklab.jpg"
                   alt="Логотип ZerekLab"
-                  fill
+                  width={120}
+                  height={48}
                   className="rounded-lg object-contain"
                   priority
                 />
               </div>
-              <span className="text-xl font-bold text-secondary-700">
-                ZerekLab
-              </span>
             </Link>
 
             {/* Desktop Navigation */}

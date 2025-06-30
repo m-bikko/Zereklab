@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import {
-  Facebook,
   Instagram,
   Mail,
   MapPin,
@@ -21,12 +20,6 @@ export default function Footer() {
       href: 'https://instagram.com/zereklab',
       icon: Instagram,
       color: 'hover:text-pink-500',
-    },
-    {
-      name: 'Facebook',
-      href: 'https://facebook.com/zereklab',
-      icon: Facebook,
-      color: 'hover:text-blue-600',
     },
     {
       name: 'WhatsApp',
@@ -57,16 +50,16 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Company Info */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center space-x-3">
-              <div className="relative h-12 w-12">
+            <Link href="/" className="flex items-center">
+              <div className="relative flex h-16 w-auto items-center">
                 <Image
                   src="/logo/zereklab.png"
                   alt="Логотип ZerekLab"
-                  fill
+                  width={140}
+                  height={64}
                   className="rounded-lg object-contain"
                 />
               </div>
-              <span className="text-2xl font-bold">ZerekLab</span>
             </Link>
             <p className="text-sm leading-relaxed text-gray-300">
               Вдохновляем детей с помощью практических образовательных наборов.
