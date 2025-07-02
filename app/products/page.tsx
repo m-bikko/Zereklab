@@ -177,9 +177,18 @@ export default function ProductsPage() {
                 <h3 className="mb-2 text-xl font-semibold text-gray-700">
                   Товары не найдены
                 </h3>
-                <p className="text-gray-500">
-                  Попробуйте изменить критерии фильтрации или сбросить фильтры.
+                <p className="mb-6 text-gray-500">
+                  Товары с такими параметрами фильтрации не найдены.
                 </p>
+                <button
+                  onClick={() => {
+                    const params = new URLSearchParams();
+                    router.push(`/products?${params.toString()}`);
+                  }}
+                  className="inline-flex items-center space-x-2 rounded-lg bg-primary-500 px-6 py-3 font-medium text-white transition-colors hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                >
+                  <span>Показать все товары</span>
+                </button>
               </div>
             )}
             {products.length > 0 && (

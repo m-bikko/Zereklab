@@ -5,6 +5,7 @@ import { IProduct } from '@/types';
 
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { formatAgeRangeForDisplay } from '@/lib/ageUtils';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -397,7 +398,7 @@ export default function ProductPage() {
                   <InfoPill
                     icon={UsersIcon}
                     label="Возраст"
-                    value={product.ageRange + ' лет'}
+                    value={formatAgeRangeForDisplay(product.ageRange)}
                   />
                 )}
                 {product.tags && product.tags.length > 0 && (

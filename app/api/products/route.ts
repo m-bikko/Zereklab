@@ -42,7 +42,29 @@ export async function GET(request: NextRequest) {
     }
 
     if (ageRange) {
-      filter.ageRange = ageRange;
+      // Handle age range filtering with numeric logic
+      if (ageRange === '6-8') {
+        // Products for ages 6-8: exact match or overlapping ranges
+        filter.ageRange = {
+          $regex: '^6-8$|^[1-8]$',
+          $options: 'i'
+        };
+      } else if (ageRange === '9-12') {
+        // Products for ages 9-12: exact match or overlapping ranges  
+        filter.ageRange = {
+          $regex: '^9-12$|^(9|10|11|12)$|^1[0-2]$',
+          $options: 'i'
+        };
+      } else if (ageRange === '13+') {
+        // Products for ages 13+: exact match, numbers ≥13, or ranges starting from 13+
+        filter.ageRange = {
+          $regex: '^13\\+$|^1[3-9]\\+$|^[2-9][0-9]\\+?$|^(1[3-9]|[2-9][0-9])$',
+          $options: 'i'
+        };
+      } else {
+        // Fallback to exact match for other formats
+        filter.ageRange = ageRange;
+      }
     }
 
     // SKU exact search has priority over general search
@@ -82,14 +104,25 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     // Execute query with pagination using Mongoose
-    const products = await Product.find(filter)
-      .sort(sort)
-      .skip(skip)
-      .limit(limit)
-      .lean(); // Return plain objects instead of Mongoose documents for better performance
+    let products: IProduct[] = [];
+    let total: number = 0;
+    
+    try {
+      products = await Product.find(filter)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .lean(); // Return plain objects instead of Mongoose documents for better performance
 
-    // Get total count for pagination
-    const total = await Product.countDocuments(filter);
+      // Get total count for pagination
+      total = await Product.countDocuments(filter);
+    } catch (mongoError) {
+      console.error('MongoDB query error:', mongoError);
+      // Return empty results if query fails due to invalid regex or other issues
+      products = [];
+      total = 0;
+    }
+
     const totalPages = Math.ceil(total / limit);
     const hasNextPage = page < totalPages;
     const hasPrevPage = page > 1;

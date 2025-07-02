@@ -658,14 +658,17 @@ export default function ProductManagement({
                         <label className="mb-1 block text-sm font-medium text-gray-700">
                           Возрастная группа
                         </label>
-                        <input
-                          type="text"
+                        <select
                           name="ageRange"
                           value={formData.ageRange}
                           onChange={handleInputChange}
-                          placeholder="8-12 лет"
                           className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
+                        >
+                          <option value="">Выберите возраст</option>
+                          <option value="6-8">6-8 лет</option>
+                          <option value="9-12">9-12 лет</option>
+                          <option value="13+">13+ лет</option>
+                        </select>
                       </div>
                     </div>
 

@@ -10,7 +10,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write --list-different .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "normalize-ages": "node scripts/normalize-age-ranges.js",
+    "seed": "node scripts/seed-data.js"
   },
   "dependencies": {
     "@tailwindcss/line-clamp": "^0.4.4",

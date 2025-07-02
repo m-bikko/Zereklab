@@ -3,13 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import {
-  Instagram,
-  Mail,
-  MapPin,
-  MessageCircle,
-  Phone,
-} from 'lucide-react';
+import { Instagram, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();

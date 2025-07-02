@@ -7,6 +7,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import Image from 'next/image';
+import { formatAgeRangeForDisplay } from '@/lib/ageUtils';
 
 import { ShoppingCart, X } from 'lucide-react';
 
@@ -40,7 +41,7 @@ const getImageSrc = (imageId: string): string => {
     }
   }
   // Return as-is if it's a URL or fallback
-      return imageId || '/images/placeholder-product.svg';
+  return imageId || '/images/placeholder-product.svg';
 };
 
 export default function ProductDetailsModal({
@@ -113,10 +114,10 @@ export default function ProductDetailsModal({
                           alt={`${product.name} ${index + 1}`}
                           fill
                           className="rounded-lg object-cover"
-                                                onError={e => {
-                        (e.target as HTMLImageElement).src =
-                          '/images/placeholder-product.svg';
-                      }}
+                          onError={e => {
+                            (e.target as HTMLImageElement).src =
+                              '/images/placeholder-product.svg';
+                          }}
                         />
                       </button>
                     ))}
@@ -178,7 +179,7 @@ export default function ProductDetailsModal({
                         Возраст:
                       </span>
                       <span className="ml-2 text-gray-600">
-                        {product.ageRange}
+                        {formatAgeRangeForDisplay(product.ageRange)}
                       </span>
                     </div>
                   )}

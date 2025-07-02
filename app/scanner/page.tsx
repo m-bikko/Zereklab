@@ -33,7 +33,7 @@ export default function ScannerPage() {
       const exactResponse = await fetch(
         `/api/products?sku=${encodeURIComponent(sku.trim())}`
       );
-      
+
       if (exactResponse.ok) {
         const exactData = await exactResponse.json();
 
@@ -53,13 +53,15 @@ export default function ScannerPage() {
       const partialResponse = await fetch(
         `/api/products?search=${encodeURIComponent(sku.trim())}`
       );
-      
+
       if (partialResponse.ok) {
         const partialData = await partialResponse.json();
 
         if (partialData.products && partialData.products.length > 0) {
           setSearchResults(partialData.products);
-          toast.success(`Найдено товаров по частичному совпадению: ${partialData.products.length}`);
+          toast.success(
+            `Найдено товаров по частичному совпадению: ${partialData.products.length}`
+          );
         } else {
           setSearchResults([]);
           toast.error(`Товар с SKU &quot;${sku}&quot; не найден`);
