@@ -240,7 +240,7 @@ export default function ProductManagement({
       }
     }
     // Return as-is if it's a URL or fallback
-    return imageId || '/images/placeholder-product.jpg';
+    return imageId || '/images/placeholder-product.svg';
   };
 
   const openForm = (product?: IProduct) => {
@@ -424,7 +424,7 @@ export default function ProductManagement({
                             className="h-10 w-10 rounded object-cover"
                             onError={e => {
                               (e.target as HTMLImageElement).src =
-                                '/images/placeholder-product.jpg';
+                                '/images/placeholder-product.svg';
                             }}
                           />
                         ) : (
@@ -781,7 +781,7 @@ export default function ProductManagement({
                             className="h-30 w-full rounded border object-cover"
                             onError={e => {
                               (e.target as HTMLImageElement).src =
-                                '/images/placeholder-product.jpg';
+                                '/images/placeholder-product.svg';
                             }}
                           />
                           <button

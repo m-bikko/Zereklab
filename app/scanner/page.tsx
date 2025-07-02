@@ -29,20 +29,37 @@ export default function ScannerPage() {
     setSearchingSKU(sku);
 
     try {
-      const response = await fetch(
-        `/api/products?sku=${encodeURIComponent(sku)}`
+      // First try exact SKU search
+      const exactResponse = await fetch(
+        `/api/products?sku=${encodeURIComponent(sku.trim())}`
       );
-      if (response.ok) {
-        const data = await response.json();
+      
+      if (exactResponse.ok) {
+        const exactData = await exactResponse.json();
 
-        if (data.products && data.products.length > 0) {
-          setSearchResults(data.products);
-          if (data.products.length === 1) {
+        if (exactData.products && exactData.products.length > 0) {
+          setSearchResults(exactData.products);
+          if (exactData.products.length === 1) {
             // Если найден один товар, сразу показываем детали
-            setSelectedProduct(data.products[0]);
+            setSelectedProduct(exactData.products[0]);
             setShowProductDetails(true);
           }
-          toast.success(`Найдено товаров: ${data.products.length}`);
+          toast.success(`Найдено товаров: ${exactData.products.length}`);
+          return;
+        }
+      }
+
+      // If no exact match, try partial search
+      const partialResponse = await fetch(
+        `/api/products?search=${encodeURIComponent(sku.trim())}`
+      );
+      
+      if (partialResponse.ok) {
+        const partialData = await partialResponse.json();
+
+        if (partialData.products && partialData.products.length > 0) {
+          setSearchResults(partialData.products);
+          toast.success(`Найдено товаров по частичному совпадению: ${partialData.products.length}`);
         } else {
           setSearchResults([]);
           toast.error(`Товар с SKU &quot;${sku}&quot; не найден`);
@@ -159,7 +176,7 @@ export default function ScannerPage() {
                         className="rounded-lg object-cover"
                         onError={e => {
                           (e.target as HTMLImageElement).src =
-                            '/images/placeholder-product.jpg';
+                            '/images/placeholder-product.svg';
                         }}
                       />
                     </div>

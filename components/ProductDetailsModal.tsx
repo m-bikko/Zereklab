@@ -40,7 +40,7 @@ const getImageSrc = (imageId: string): string => {
     }
   }
   // Return as-is if it's a URL or fallback
-  return imageId || '/images/placeholder-product.jpg';
+      return imageId || '/images/placeholder-product.svg';
 };
 
 export default function ProductDetailsModal({
@@ -62,7 +62,7 @@ export default function ProductDetailsModal({
   const productImages =
     product.images && product.images.length > 0
       ? product.images
-      : ['/images/placeholder-product.jpg'];
+      : ['/images/placeholder-product.svg'];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
@@ -90,7 +90,7 @@ export default function ProductDetailsModal({
                     className="rounded-lg border border-gray-200 object-cover"
                     onError={e => {
                       (e.target as HTMLImageElement).src =
-                        '/images/placeholder-product.jpg';
+                        '/images/placeholder-product.svg';
                     }}
                   />
                 </div>
@@ -113,10 +113,10 @@ export default function ProductDetailsModal({
                           alt={`${product.name} ${index + 1}`}
                           fill
                           className="rounded-lg object-cover"
-                          onError={e => {
-                            (e.target as HTMLImageElement).src =
-                              '/images/placeholder-product.jpg';
-                          }}
+                                                onError={e => {
+                        (e.target as HTMLImageElement).src =
+                          '/images/placeholder-product.svg';
+                      }}
                         />
                       </button>
                     ))}

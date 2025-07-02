@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
     const inStock = searchParams.get('inStock');
     const difficulty = searchParams.get('difficulty');
     const ageRange = searchParams.get('ageRange');
+    const sku = searchParams.get('sku'); // SKU search parameter
     const sortBy = searchParams.get('sortBy') || 'createdAt';
     const sortOrder = searchParams.get('sortOrder') || 'desc';
     const simple = searchParams.get('simple'); // For admin panel
@@ -44,12 +45,17 @@ export async function GET(request: NextRequest) {
       filter.ageRange = ageRange;
     }
 
-    if (search) {
+    // SKU exact search has priority over general search
+    if (sku) {
+      // Exact SKU match for barcode scanner functionality
+      filter.sku = { $regex: `^${sku}$`, $options: 'i' };
+    } else if (search) {
       filter.$or = [
         { name: { $regex: search, $options: 'i' } },
         { description: { $regex: search, $options: 'i' } },
         { category: { $regex: search, $options: 'i' } },
         { tags: { $regex: search, $options: 'i' } },
+        { sku: { $regex: search, $options: 'i' } }, // Include SKU in general search
       ];
     }
 
