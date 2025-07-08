@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
 
     // Execute query with pagination using Mongoose
     let products: IProduct[] = [];
-    let total: number = 0;
+    let total = 0;
     
     try {
       products = await Product.find(filter)

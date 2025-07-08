@@ -14,7 +14,6 @@ import {
   Image as ImageIcon,
   Plus,
   Trash2,
-  Upload,
   X,
 } from 'lucide-react';
 

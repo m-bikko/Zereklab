@@ -70,7 +70,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="font-medium text-gray-700 transition-colors duration-200 hover:text-primary-500"
+                  className="font-medium text-gray-700 font-fredoka transition-colors duration-200 hover:text-primary-500"
                 >
                   {link.label}
                 </Link>
@@ -163,7 +163,7 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-base font-medium text-gray-700 transition-colors duration-200 hover:bg-gray-100 hover:text-primary-500"
+                    className="rounded-lg px-3 py-2.5 text-base font-medium text-gray-700 font-fredoka transition-colors duration-200 hover:bg-gray-100 hover:text-primary-500"
                   >
                     {link.label}
                   </Link>

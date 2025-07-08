@@ -88,6 +88,7 @@ alwaysApply: true
 - ❌ Never leave TODOs unresolved in production.
 - ❌ Never write code you don’t understand or document.
 - ❌ Never keep unused code, files, or packages in the repo.
+- ❌ Never create the new file if you want to update some moments. Edit the older one and tell what was changed
 
 ---
 

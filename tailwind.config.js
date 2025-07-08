@@ -34,7 +34,9 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        fredoka: ['var(--font-fredoka)', 'sans-serif'],
+        comfortaa: ['var(--font-comfortaa)', 'sans-serif'],
+        sans: ['var(--font-comfortaa)', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

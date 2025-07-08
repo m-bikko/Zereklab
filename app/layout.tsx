@@ -4,11 +4,23 @@ import Navbar from '@/components/Navbar';
 import { Toaster } from 'react-hot-toast';
 
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Fredoka, Comfortaa } from 'next/font/google';
 
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin', 'cyrillic'] });
+const fredoka = Fredoka({ 
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-fredoka',
+  display: 'swap',
+});
+
+const comfortaa = Comfortaa({ 
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-comfortaa',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('http://localhost:3000'),
@@ -48,7 +60,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-      <body className={inter.className}>
+      <body className={`${fredoka.variable} ${comfortaa.variable} font-comfortaa`}>
         <div className="flex min-h-screen flex-col">
           <Navbar />
           <main className="flex-1">{children}</main>
