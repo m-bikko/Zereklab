@@ -6,6 +6,7 @@ export interface IProduct {
   price: number; // Price in KZT (Kazakhstani Tenge)
   salePrice?: number; // Sale price in KZT
   images: string[];
+  videoUrl?: string; // YouTube video URL for product demonstration
   category: string;
   subcategory?: string;
   inStock: boolean;
@@ -91,6 +92,10 @@ const ProductSchema: Schema<IProductDocument> = new Schema(
         },
         message: 'At least one product image is required',
       },
+    },
+    videoUrl: {
+      type: String,
+      trim: true,
     },
     category: {
       type: String,

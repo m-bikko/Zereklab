@@ -7,7 +7,8 @@ import toast from 'react-hot-toast';
 
 import Image from 'next/image';
 
-import { Edit, ImageIcon, Plus, Save, Trash2, Upload, X } from 'lucide-react';
+import { Edit2, ImageIcon, Plus, Save, Trash2, Upload, X } from 'lucide-react';
+import { isValidYouTubeUrl } from '@/lib/youtube';
 
 interface ProductManagementProps {
   products: IProduct[];
@@ -22,6 +23,7 @@ interface ProductFormData {
   price: number;
   salePrice?: number;
   images: string[];
+  videoUrl?: string;
   category: string;
   subcategory: string;
   sku: string;
@@ -41,6 +43,7 @@ const initialFormData: ProductFormData = {
   price: 0,
   salePrice: undefined,
   images: [],
+  videoUrl: '',
   category: '',
   subcategory: '',
   sku: '',
@@ -252,6 +255,7 @@ export default function ProductManagement({
         price: product.price,
         salePrice: product.salePrice,
         images: product.images || [],
+        videoUrl: product.videoUrl || '',
         category: product.category,
         subcategory: product.subcategory || '',
         sku: product.sku,
@@ -494,7 +498,7 @@ export default function ProductManagement({
                         onClick={() => openForm(product)}
                         className="text-blue-600 hover:text-blue-900"
                       >
-                        <Edit className="h-4 w-4" />
+                                                    <Edit2 className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() =>
@@ -798,6 +802,39 @@ export default function ProductManagement({
                       ))}
                     </div>
                   </div>
+                </div>
+
+                {/* YouTube Video URL */}
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">
+                    YouTube видео инструкция
+                  </label>
+                  <input
+                    type="url"
+                    name="videoUrl"
+                    value={formData.videoUrl}
+                    onChange={handleInputChange}
+                    placeholder="https://www.youtube.com/watch?v=... или https://youtu.be/..."
+                    className={`w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${
+                      formData.videoUrl && !isValidYouTubeUrl(formData.videoUrl)
+                        ? 'border-red-300 focus:ring-red-500'
+                        : 'border-gray-300 focus:ring-blue-500'
+                    }`}
+                  />
+                  {formData.videoUrl && (
+                    <p className={`mt-1 text-xs ${
+                      isValidYouTubeUrl(formData.videoUrl)
+                        ? 'text-green-600'
+                        : 'text-red-600'
+                    }`}>
+                      {isValidYouTubeUrl(formData.videoUrl)
+                        ? '✓ Валидный YouTube URL'
+                        : '✗ Некорректный YouTube URL'}
+                    </p>
+                  )}
+                  <p className="mt-1 text-xs text-gray-500">
+                    Добавьте ссылку на YouTube видео с инструкцией по использованию товара
+                  </p>
                 </div>
 
                 {/* Features */}

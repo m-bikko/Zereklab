@@ -6,6 +6,7 @@ import { IProduct } from '@/types';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { formatAgeRangeForDisplay } from '@/lib/ageUtils';
+import { extractYouTubeVideoId, getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from '@/lib/youtube';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -25,7 +26,11 @@ import {
   Tag,
   UsersIcon,
   Zap,
+  Play,
+  ZoomIn,
 } from 'lucide-react';
+
+import ImageModal from '@/components/ImageModal';
 
 // Helper function to get image from localStorage
 const getStoredImage = (imageId: string): string | null => {
@@ -59,6 +64,8 @@ export default function ProductPage() {
   const [product, setProduct] = useState<IProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
   const { addItem } = useCartStore();
   const placeholderImage = '/images/placeholder-product.svg';
 
@@ -124,67 +131,12 @@ export default function ProductPage() {
     window.open(whatsappUrl, '_blank');
   };
 
-  const nextImage = () => {
-    if (product?.images && product.images.length > 1) {
-      setSelectedImageIndex(prev => {
-        const imagesLength = product.images?.length || 0;
-        return prev === imagesLength - 1 ? 0 : prev + 1;
-      });
-    }
-  };
-
-  const prevImage = () => {
-    if (product?.images && product.images.length > 1) {
-      setSelectedImageIndex(prev => {
-        const imagesLength = product.images?.length || 0;
-        return prev === 0 ? imagesLength - 1 : prev - 1;
-      });
-    }
-  };
-
   if (loading) {
     return (
       <div className="flex min-h-[calc(100vh-200px)] items-center justify-center bg-gray-50">
-        <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <div className="animate-pulse">
-            <div className="mb-8 h-6 w-48 rounded-md bg-gray-200"></div>
-            <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
-              <div className="space-y-5">
-                <div className="aspect-square rounded-xl bg-gray-200 shadow-md"></div>
-                <div className="flex space-x-3">
-                  {[...Array(4)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-20 w-20 rounded-lg bg-gray-200 shadow-sm sm:h-24 sm:w-24"
-                    ></div>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-6 pt-2">
-                <div className="h-10 w-3/4 rounded-md bg-gray-300"></div>
-                <div className="h-8 w-1/2 rounded-md bg-gray-300"></div>
-                <div className="space-y-3 pt-4">
-                  <div className="h-5 w-1/3 rounded-md bg-gray-200"></div>
-                  {[...Array(3)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-4 w-full rounded-md bg-gray-200"
-                    ></div>
-                  ))}
-                </div>
-                <div className="space-y-3 pt-4">
-                  <div className="h-5 w-1/3 rounded-md bg-gray-200"></div>
-                  {[...Array(2)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-4 w-4/5 rounded-md bg-gray-200"
-                    ></div>
-                  ))}
-                </div>
-                <div className="mt-6 h-12 rounded-lg bg-gray-300"></div>
-              </div>
-            </div>
-          </div>
+        <div className="flex flex-col items-center space-y-4">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary-500 border-t-transparent"></div>
+          <p className="text-lg text-gray-600">Загрузка товара...</p>
         </div>
       </div>
     );
@@ -213,229 +165,359 @@ export default function ProductPage() {
 
   const productImages =
     product?.images && product.images.length > 0
-      ? product.images
+      ? product.images.map(getImageSrc)
       : [placeholderImage];
 
+  // YouTube video handling
+  const videoId = product.videoUrl ? extractYouTubeVideoId(product.videoUrl) : null;
+  const videoThumbnail = videoId ? getYouTubeThumbnailUrl(videoId, 'medium') : null;
+  const videoEmbedUrl = videoId ? getYouTubeEmbedUrl(videoId) : null;
+
+  // Combine images and video for gallery
+  const galleryItems = [...productImages];
+  if (videoThumbnail && !showVideo) {
+    galleryItems.push(videoThumbnail);
+  }
+
+  const isVideoSelected = selectedImageIndex === productImages.length && videoThumbnail;
+
+  const nextImage = () => {
+    const totalItems = videoThumbnail ? productImages.length + 1 : productImages.length;
+    setSelectedImageIndex(prev => (prev === totalItems - 1 ? 0 : prev + 1));
+    setShowVideo(false);
+  };
+
+  const prevImage = () => {
+    const totalItems = videoThumbnail ? productImages.length + 1 : productImages.length;
+    setSelectedImageIndex(prev => (prev === 0 ? totalItems - 1 : prev - 1));
+    setShowVideo(false);
+  };
+
+  const handleImageClick = () => {
+    if (isVideoSelected) {
+      setShowVideo(true);
+    } else {
+      setIsImageModalOpen(true);
+    }
+  };
+
+  const handleThumbnailClick = (index: number) => {
+    setSelectedImageIndex(index);
+    setShowVideo(false);
+  };
+
+  const handlePreviousImage = () => {
+    setSelectedImageIndex(prev => {
+      const totalItems = videoThumbnail ? productImages.length + 1 : productImages.length;
+      return prev === 0 ? totalItems - 1 : prev - 1;
+    });
+  };
+
+  const handleNextImage = () => {
+    setSelectedImageIndex(prev => {
+      const totalItems = videoThumbnail ? productImages.length + 1 : productImages.length;
+      return prev === totalItems - 1 ? 0 : prev + 1;
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-        <nav className="mb-6 flex items-center space-x-2 text-sm text-gray-500 sm:mb-8">
-          <Link href="/" className="hover:text-primary-600 hover:underline">
-            Главная
-          </Link>
-          <ChevronLeft className="h-4 w-4 rotate-180 text-gray-400" />
-          <Link
-            href="/products"
-            className="hover:text-primary-600 hover:underline"
-          >
-            Товары
-          </Link>
-          <ChevronLeft className="h-4 w-4 rotate-180 text-gray-400" />
-          <span className="max-w-xs truncate font-medium text-gray-700 sm:max-w-sm">
-            {product.name}
-          </span>
-        </nav>
+    <>
+      <div className="min-h-screen bg-gray-100">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+          <nav className="mb-6 flex items-center space-x-2 text-sm text-gray-500 sm:mb-8">
+            <Link href="/" className="hover:text-primary-600 hover:underline">
+              Главная
+            </Link>
+            <ChevronLeft className="h-4 w-4 rotate-180 text-gray-400" />
+            <Link
+              href="/products"
+              className="hover:text-primary-600 hover:underline"
+            >
+              Товары
+            </Link>
+            <ChevronLeft className="h-4 w-4 rotate-180 text-gray-400" />
+            <span className="max-w-xs truncate font-medium text-gray-700 sm:max-w-sm">
+              {product.name}
+            </span>
+          </nav>
 
-        <div className="rounded-xl bg-white p-6 shadow-2xl sm:p-8">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
-            <div className="space-y-4">
-              <div className="relative aspect-square overflow-hidden rounded-2xl bg-white shadow-lg">
-                <Image
-                  src={getImageSrc(productImages[selectedImageIndex])}
-                  alt={product?.name || 'Product image'}
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-105"
-                  priority
-                  onError={e => {
-                    (e.target as HTMLImageElement).src = placeholderImage;
-                  }}
-                />
-
-                {productImages.length > 1 && (
-                  <>
-                    <button
-                      onClick={prevImage}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-                      aria-label="Предыдущее изображение"
-                    >
-                      <ArrowLeft className="h-5 w-5 text-gray-700" />
-                    </button>
-                    <button
-                      onClick={nextImage}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-                      aria-label="Следующее изображение"
-                    >
-                      <ArrowRight className="h-5 w-5 text-gray-700" />
-                    </button>
-                  </>
-                )}
-                {!product.inStock && (
-                  <div className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 transform">
-                    <span className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-semibold text-white shadow-md sm:text-sm">
-                      Нет в наличии
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {productImages.length > 1 && (
-                <div className="flex space-x-2 overflow-x-auto pb-2 pt-1 sm:space-x-3">
-                  {productImages.map((image, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedImageIndex(index)}
-                      aria-label={`Показать изображение ${index + 1}`}
-                      className={`relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border-2 bg-gray-100 shadow-sm transition-all duration-200 hover:opacity-80 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 sm:h-20 sm:w-20 sm:rounded-lg ${
-                        selectedImageIndex === index
-                          ? 'border-primary-500 ring-2 ring-primary-500 ring-offset-1'
-                          : 'border-gray-200'
-                      }`}
-                    >
+          <div className="rounded-xl bg-white p-6 shadow-2xl sm:p-8">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
+              {/* Media Gallery */}
+              <div className="space-y-4">
+                <div className="relative aspect-square overflow-hidden rounded-2xl bg-white shadow-lg group">
+                  {showVideo && videoEmbedUrl ? (
+                    <div className="h-full w-full">
+                      <iframe
+                        src={videoEmbedUrl}
+                        title={`${product.name} - Видео инструкция`}
+                        className="h-full w-full rounded-2xl"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  ) : (
+                    <>
                       <Image
-                        src={getImageSrc(image)}
-                        alt={`${product?.name} эскиз ${index + 1}`}
+                        src={isVideoSelected && videoThumbnail ? videoThumbnail : productImages[selectedImageIndex]}
+                        alt={product?.name || 'Product image'}
                         fill
-                        className="object-cover"
-                        sizes="80px"
+                        className="object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
+                        priority
+                        onClick={handleImageClick}
                         onError={e => {
                           (e.target as HTMLImageElement).src = placeholderImage;
                         }}
                       />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
 
-            <div className="space-y-6 lg:pt-2">
-              <div>
-                <h1 className="mb-2 text-2xl font-bold leading-tight text-gray-800 sm:text-3xl lg:text-4xl">
-                  {product.name}
-                </h1>
-                <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-                  <span className="text-3xl font-bold text-primary-600 lg:text-4xl">
-                    ₸{product.price.toLocaleString()}
-                  </span>
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold shadow-sm sm:text-sm ${
-                      product.inStock
-                        ? 'border border-green-200 bg-green-100 text-green-700'
-                        : 'border border-red-200 bg-red-100 text-red-700'
-                    }`}
-                  >
-                    {product.inStock ? 'В наличии' : 'Нет в наличии'}
-                  </span>
-                  {product.sku && (
-                    <span className="text-xs text-gray-500">
-                      Арт: {product.sku}
-                    </span>
+                      {/* Overlay for video */}
+                      {isVideoSelected && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-2xl cursor-pointer group-hover:bg-opacity-30 transition-all"
+                             onClick={handleImageClick}>
+                          <div className="bg-white bg-opacity-90 rounded-full p-6 group-hover:bg-opacity-100 transition-all">
+                            <Play className="h-12 w-12 text-red-600 ml-1" />
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Zoom overlay for images */}
+                      {!isVideoSelected && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-2xl cursor-pointer transition-all"
+                             onClick={handleImageClick}>
+                          <div className="bg-white bg-opacity-0 group-hover:bg-opacity-90 rounded-full p-4 transition-all">
+                            <ZoomIn className="h-8 w-8 text-gray-700 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Navigation arrows */}
+                      {galleryItems.length > 1 && (
+                        <>
+                          <button
+                            onClick={prevImage}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                            aria-label="Предыдущее изображение"
+                          >
+                            <ArrowLeft className="h-5 w-5 text-gray-700" />
+                          </button>
+                          <button
+                            onClick={nextImage}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                            aria-label="Следующее изображение"
+                          >
+                            <ArrowRight className="h-5 w-5 text-gray-700" />
+                          </button>
+                        </>
+                      )}
+
+                      {!product.inStock && (
+                        <div className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 transform">
+                          <span className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-semibold text-white shadow-md sm:text-sm">
+                            Нет в наличии
+                          </span>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
-              </div>
 
-              <ProductDetailSection icon={Info} title="Описание">
-                <p className="whitespace-pre-wrap leading-relaxed text-gray-700">
-                  {product.description || 'Описание отсутствует.'}
-                </p>
-              </ProductDetailSection>
-
-              {product.features && product.features.length > 0 && (
-                <ProductDetailSection icon={Star} title="Ключевые особенности">
-                  <ul className="list-inside space-y-2">
-                    {product.features.map((feature, index) => (
-                      <li key={index} className="flex items-start space-x-2.5">
-                        <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" />
-                        <span className="text-gray-700">{feature}</span>
-                      </li>
+                {/* Thumbnail Gallery */}
+                {galleryItems.length > 1 && (
+                  <div className="flex space-x-2 overflow-x-auto pb-2 pt-1 sm:space-x-3">
+                    {productImages.map((image, index) => (
+                      <button
+                        key={`image-${index}`}
+                        onClick={() => handleThumbnailClick(index)}
+                        aria-label={`Показать изображение ${index + 1}`}
+                        className={`relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border-2 bg-gray-100 shadow-sm transition-all duration-200 hover:opacity-80 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 sm:h-20 sm:w-20 sm:rounded-lg ${
+                          selectedImageIndex === index && !showVideo
+                            ? 'border-primary-500 ring-2 ring-primary-500 ring-offset-1'
+                            : 'border-gray-200'
+                        }`}
+                      >
+                        <Image
+                          src={image}
+                          alt={`${product?.name} эскиз ${index + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="80px"
+                          onError={e => {
+                            (e.target as HTMLImageElement).src = placeholderImage;
+                          }}
+                        />
+                      </button>
                     ))}
-                  </ul>
-                </ProductDetailSection>
-              )}
-
-              {product.specifications &&
-                Object.keys(product.specifications).length > 0 && (
-                  <ProductDetailSection icon={Zap} title="Характеристики">
-                    <div className="grid grid-cols-1 gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
-                      {Object.entries(product.specifications).map(
-                        ([key, value]) => (
-                          <div key={key} className="flex">
-                            <span className="w-2/5 font-medium capitalize text-gray-600">
-                              {key.replace(/_/g, ' ')}:
-                            </span>
-                            <span className="w-3/5 text-gray-800">
-                              {String(value)}
-                            </span>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </ProductDetailSection>
-                )}
-
-              <div className="grid grid-cols-2 gap-x-6 gap-y-3 pt-2 text-sm">
-                {product.category && (
-                  <InfoPill
-                    icon={Layers}
-                    label="Категория"
-                    value={product.category}
-                  />
-                )}
-                {product.subcategory && (
-                  <InfoPill
-                    icon={Layers}
-                    label="Подкатегория"
-                    value={product.subcategory}
-                  />
-                )}
-                {product.difficulty && (
-                  <InfoPill
-                    icon={Star}
-                    label="Сложность"
-                    value={product.difficulty}
-                  />
-                )}
-                {product.ageRange && (
-                  <InfoPill
-                    icon={UsersIcon}
-                    label="Возраст"
-                    value={formatAgeRangeForDisplay(product.ageRange)}
-                  />
-                )}
-                {product.tags && product.tags.length > 0 && (
-                  <div className="col-span-full">
-                    <InfoPill
-                      icon={Tag}
-                      label="Теги"
-                      value={product.tags.join(', ')}
-                    />
+                    
+                    {/* Video Thumbnail */}
+                    {videoThumbnail && (
+                      <button
+                        onClick={() => handleThumbnailClick(productImages.length)}
+                        aria-label="Показать видео инструкцию"
+                        className={`relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border-2 bg-gray-100 shadow-sm transition-all duration-200 hover:opacity-80 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 sm:h-20 sm:w-20 sm:rounded-lg ${
+                          selectedImageIndex === productImages.length
+                            ? 'border-primary-500 ring-2 ring-primary-500 ring-offset-1'
+                            : 'border-gray-200'
+                        }`}
+                      >
+                        <Image
+                          src={videoThumbnail}
+                          alt="Видео инструкция"
+                          fill
+                          className="object-cover"
+                          sizes="80px"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-md sm:rounded-lg">
+                          <Play className="h-6 w-6 text-white sm:h-8 sm:w-8" />
+                        </div>
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
 
-              <div className="space-y-3 border-t border-gray-200 pt-6">
-                <button
-                  onClick={handleAddToCart}
-                  disabled={!product.inStock}
-                  className="flex w-full items-center justify-center space-x-2.5 rounded-lg bg-primary-500 px-6 py-3.5 text-lg font-semibold text-white shadow-md transition-all duration-200 hover:bg-primary-600 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
-                >
-                  <ShoppingCart className="h-5 w-5" />
-                  <span>
-                    {product.inStock ? 'Добавить в корзину' : 'Нет в наличии'}
-                  </span>
-                </button>
-                <button
-                  onClick={handleWhatsAppOrder}
-                  className="flex w-full items-center justify-center space-x-2.5 rounded-lg bg-green-500 px-6 py-3 text-lg font-semibold text-white shadow-md transition-all duration-200 hover:bg-green-600 hover:shadow-lg"
-                >
-                  <MessageCircle className="h-5 w-5" />
-                  <span>Заказать по WhatsApp</span>
-                </button>
+              {/* Product Information */}
+              <div className="space-y-6 lg:pt-2">
+                <div>
+                  <h1 className="mb-2 text-2xl font-bold leading-tight text-gray-800 sm:text-3xl lg:text-4xl">
+                    {product.name}
+                  </h1>
+                  <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+                    <span className="text-3xl font-bold text-primary-600 lg:text-4xl">
+                      ₸{product.price.toLocaleString()}
+                    </span>
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-semibold shadow-sm sm:text-sm ${
+                        product.inStock
+                          ? 'border border-green-200 bg-green-100 text-green-700'
+                          : 'border border-red-200 bg-red-100 text-red-700'
+                      }`}
+                    >
+                      {product.inStock ? 'В наличии' : 'Нет в наличии'}
+                    </span>
+                    {product.sku && (
+                      <span className="text-xs text-gray-500">
+                        Арт: {product.sku}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <ProductDetailSection icon={Info} title="Описание">
+                  <p className="whitespace-pre-wrap leading-relaxed text-gray-700">
+                    {product.description || 'Описание отсутствует.'}
+                  </p>
+                </ProductDetailSection>
+
+                {product.features && product.features.length > 0 && (
+                  <ProductDetailSection icon={Star} title="Ключевые особенности">
+                    <ul className="list-inside space-y-2">
+                      {product.features.map((feature, index) => (
+                        <li key={index} className="flex items-start space-x-2.5">
+                          <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" />
+                          <span className="text-gray-700">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </ProductDetailSection>
+                )}
+
+                {product.specifications &&
+                  Object.keys(product.specifications).length > 0 && (
+                    <ProductDetailSection icon={Zap} title="Характеристики">
+                      <div className="grid grid-cols-1 gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
+                        {Object.entries(product.specifications).map(
+                          ([key, value]) => (
+                            <div key={key} className="flex">
+                              <span className="w-2/5 font-medium capitalize text-gray-600">
+                                {key.replace(/_/g, ' ')}:
+                              </span>
+                              <span className="w-3/5 text-gray-800">
+                                {String(value)}
+                              </span>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </ProductDetailSection>
+                  )}
+
+                <div className="grid grid-cols-2 gap-x-6 gap-y-3 pt-2 text-sm">
+                  {product.category && (
+                    <InfoPill
+                      icon={Layers}
+                      label="Категория"
+                      value={product.category}
+                    />
+                  )}
+                  {product.subcategory && (
+                    <InfoPill
+                      icon={Layers}
+                      label="Подкатегория"
+                      value={product.subcategory}
+                    />
+                  )}
+                  {product.difficulty && (
+                    <InfoPill
+                      icon={Star}
+                      label="Сложность"
+                      value={product.difficulty}
+                    />
+                  )}
+                  {product.ageRange && (
+                    <InfoPill
+                      icon={UsersIcon}
+                      label="Возраст"
+                      value={formatAgeRangeForDisplay(product.ageRange)}
+                    />
+                  )}
+                  {product.tags && product.tags.length > 0 && (
+                    <div className="col-span-full">
+                      <InfoPill
+                        icon={Tag}
+                        label="Теги"
+                        value={product.tags.join(', ')}
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-3 border-t border-gray-200 pt-6">
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={!product.inStock}
+                    className="flex w-full items-center justify-center space-x-2.5 rounded-lg bg-primary-500 px-6 py-3.5 text-lg font-semibold text-white shadow-md transition-all duration-200 hover:bg-primary-600 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
+                  >
+                    <ShoppingCart className="h-5 w-5" />
+                    <span>
+                      {product.inStock ? 'Добавить в корзину' : 'Нет в наличии'}
+                    </span>
+                  </button>
+                  <button
+                    onClick={handleWhatsAppOrder}
+                    className="flex w-full items-center justify-center space-x-2.5 rounded-lg bg-green-500 px-6 py-3 text-lg font-semibold text-white shadow-md transition-all duration-200 hover:bg-green-600 hover:shadow-lg"
+                  >
+                    <MessageCircle className="h-5 w-5" />
+                    <span>Заказать по WhatsApp</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Image Modal for zoom */}
+      <ImageModal
+        images={productImages}
+        selectedIndex={selectedImageIndex}
+        isOpen={isImageModalOpen && !isVideoSelected}
+        onClose={() => setIsImageModalOpen(false)}
+        onPrevious={handlePreviousImage}
+        onNext={handleNextImage}
+        alt={product.name}
+      />
+    </>
   );
 }
 

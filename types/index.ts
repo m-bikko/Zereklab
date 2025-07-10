@@ -7,6 +7,7 @@ export interface IProduct {
   price: number;
   salePrice?: number;
   images?: string[];
+  videoUrl?: string; // YouTube video URL for product demonstration
   category: string;
   subcategory?: string;
   inStock: boolean;
