@@ -103,9 +103,9 @@ export async function GET(request: NextRequest) {
     if (simple === 'true') {
       let products = await Product.find(filter).sort(sort).lean();
 
-            // Apply client-side age filtering if child age is specified
+      // Apply client-side age filtering if child age is specified
       if (childAge !== null) {
-        products = products.filter(product => 
+        products = products.filter(product =>
           isProductSuitableForAge(product.ageRange || '', childAge!)
         );
       }
@@ -126,8 +126,8 @@ export async function GET(request: NextRequest) {
         // Get all products that match other filters
         const allProducts = await Product.find(filter).sort(sort).lean();
 
-                // Apply age filtering client-side
-        const filteredProducts = allProducts.filter(product => 
+        // Apply age filtering client-side
+        const filteredProducts = allProducts.filter(product =>
           isProductSuitableForAge(product.ageRange || '', childAge!)
         );
 
