@@ -61,4 +61,4 @@ export function getYouTubeThumbnailUrl(
  */
 export function isValidYouTubeUrl(url: string): boolean {
   return extractYouTubeVideoId(url) !== null;
-} 
+}

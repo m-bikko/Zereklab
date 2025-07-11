@@ -1,3 +1,4 @@
+import { isProductSuitableForAge } from '@/lib/ageUtils';
 import { getDatabase } from '@/lib/mongodb';
 import Product, { IProduct, validateProduct } from '@/models/Product';
 
@@ -41,29 +42,33 @@ export async function GET(request: NextRequest) {
       filter.difficulty = difficulty;
     }
 
+    // Store child age for later filtering
+    let childAge: number | null = null;
     if (ageRange) {
-      // Handle age range filtering with numeric logic
-      if (ageRange === '6-8') {
-        // Products for ages 6-8: exact match or overlapping ranges
-        filter.ageRange = {
-          $regex: '^6-8$|^[1-8]$',
-          $options: 'i'
-        };
-      } else if (ageRange === '9-12') {
-        // Products for ages 9-12: exact match or overlapping ranges  
-        filter.ageRange = {
-          $regex: '^9-12$|^(9|10|11|12)$|^1[0-2]$',
-          $options: 'i'
-        };
-      } else if (ageRange === '13+') {
-        // Products for ages 13+: exact match, numbers ≥13, or ranges starting from 13+
-        filter.ageRange = {
-          $regex: '^13\\+$|^1[3-9]\\+$|^[2-9][0-9]\\+?$|^(1[3-9]|[2-9][0-9])$',
-          $options: 'i'
-        };
-      } else {
-        // Fallback to exact match for other formats
-        filter.ageRange = ageRange;
+      childAge = parseInt(ageRange);
+      // If it's not a valid child age number, treat it as legacy format
+      if (isNaN(childAge) || childAge < 1 || childAge > 20) {
+        // Legacy format support - keep old filtering logic for backward compatibility
+        if (ageRange === '6-8') {
+          filter.ageRange = {
+            $regex: '^6-8$|^[1-8]$|^[1-8]\\+$',
+            $options: 'i',
+          };
+        } else if (ageRange === '9-12') {
+          filter.ageRange = {
+            $regex: '^9-12$|^(9|10|11|12)$|^1[0-2]$|^(9|10|11|12)\\+$',
+            $options: 'i',
+          };
+        } else if (ageRange === '13+') {
+          filter.ageRange = {
+            $regex:
+              '^13\\+$|^1[3-9]\\+$|^[2-9][0-9]\\+?$|^(1[3-9]|[2-9][0-9])$',
+            $options: 'i',
+          };
+        } else {
+          filter.ageRange = ageRange;
+        }
+        childAge = null; // Reset for legacy filtering
       }
     }
 
@@ -96,7 +101,15 @@ export async function GET(request: NextRequest) {
 
     // For admin panel, return all products without pagination
     if (simple === 'true') {
-      const products = await Product.find(filter).sort(sort).lean();
+      let products = await Product.find(filter).sort(sort).lean();
+
+            // Apply client-side age filtering if child age is specified
+      if (childAge !== null) {
+        products = products.filter(product => 
+          isProductSuitableForAge(product.ageRange || '', childAge!)
+        );
+      }
+
       return NextResponse.json(products);
     }
 
@@ -106,16 +119,33 @@ export async function GET(request: NextRequest) {
     // Execute query with pagination using Mongoose
     let products: IProduct[] = [];
     let total = 0;
-    
-    try {
-      products = await Product.find(filter)
-        .sort(sort)
-        .skip(skip)
-        .limit(limit)
-        .lean(); // Return plain objects instead of Mongoose documents for better performance
 
-      // Get total count for pagination
-      total = await Product.countDocuments(filter);
+    try {
+      // If we have a child age filter, we need to get all products first then filter client-side
+      if (childAge !== null) {
+        // Get all products that match other filters
+        const allProducts = await Product.find(filter).sort(sort).lean();
+
+                // Apply age filtering client-side
+        const filteredProducts = allProducts.filter(product => 
+          isProductSuitableForAge(product.ageRange || '', childAge!)
+        );
+
+        total = filteredProducts.length;
+
+        // Apply pagination to filtered results
+        products = filteredProducts.slice(skip, skip + limit);
+      } else {
+        // Normal database filtering and pagination
+        products = await Product.find(filter)
+          .sort(sort)
+          .skip(skip)
+          .limit(limit)
+          .lean(); // Return plain objects instead of Mongoose documents for better performance
+
+        // Get total count for pagination
+        total = await Product.countDocuments(filter);
+      }
     } catch (mongoError) {
       console.error('MongoDB query error:', mongoError);
       // Return empty results if query fails due to invalid regex or other issues

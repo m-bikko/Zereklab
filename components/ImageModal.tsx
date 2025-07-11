@@ -83,7 +83,7 @@ export default function ImageModal({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ delay: 0.1 }}
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation();
                   onPrevious();
                 }}
@@ -98,7 +98,7 @@ export default function ImageModal({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ delay: 0.1 }}
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation();
                   onNext();
                 }}
@@ -117,7 +117,7 @@ export default function ImageModal({
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3 }}
             className="relative mx-4 flex max-h-[90vh] max-w-[90vw] items-center justify-center"
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             <div className="relative max-h-[85vh] w-auto overflow-hidden rounded-lg shadow-2xl">
               <Image
@@ -128,8 +128,9 @@ export default function ImageModal({
                 className="h-auto max-h-[85vh] w-auto object-contain"
                 priority
                 quality={95}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/images/placeholder-product.svg';
+                onError={e => {
+                  (e.target as HTMLImageElement).src =
+                    '/images/placeholder-product.svg';
                 }}
               />
             </div>
@@ -160,7 +161,7 @@ export default function ImageModal({
               {images.map((image, index) => (
                 <button
                   key={index}
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     // Trigger navigation to specific image
                     const diff = index - selectedIndex;
@@ -182,8 +183,9 @@ export default function ImageModal({
                     fill
                     className="object-cover"
                     sizes="48px"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/images/placeholder-product.svg';
+                    onError={e => {
+                      (e.target as HTMLImageElement).src =
+                        '/images/placeholder-product.svg';
                     }}
                   />
                 </button>
@@ -194,4 +196,4 @@ export default function ImageModal({
       )}
     </AnimatePresence>
   );
-} 
+}

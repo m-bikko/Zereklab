@@ -1,10 +1,10 @@
 'use client';
 
+import { formatAgeForDisplay } from '@/lib/ageUtils';
 import { useCartStore } from '@/store/cartStore';
 import { IProduct } from '@/types';
 
 import toast from 'react-hot-toast';
-import { formatAgeRangeForDisplay } from '@/lib/ageUtils';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -189,7 +189,9 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
                       <div className="flex items-center text-xs text-gray-600">
                         <Package className="mr-2 h-4 w-4 text-blue-500" />
                         <span className="font-medium">Возраст:</span>
-                        <span className="ml-1">{formatAgeRangeForDisplay(product.ageRange)}</span>
+                        <span className="ml-1">
+                          {formatAgeForDisplay(product.ageRange)}
+                        </span>
                       </div>
                     )}
 

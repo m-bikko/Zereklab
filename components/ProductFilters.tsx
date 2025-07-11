@@ -332,34 +332,27 @@ export default function ProductFilters() {
           </div>
         </div>
 
-        {/* Age Range Filter */}
+        {/* Child Age Filter */}
         <div>
           <h4 className="mb-2.5 text-sm font-medium text-gray-700">
-            Возрастной диапазон
+            Сколько лет вашему ребенку?
           </h4>
-          <div className="space-y-1.5">
-            {[
-              { value: '', label: 'Любой возраст' },
-              { value: '6-8', label: '6-8 лет' },
-              { value: '9-12', label: '9-12 лет' },
-              { value: '13+', label: '13+ лет' },
-            ].map(age => (
-              <label
-                key={age.value || 'all-ages'}
-                className="flex cursor-pointer items-center space-x-2 rounded-md p-1 hover:bg-gray-50"
-              >
-                <input
-                  type="radio"
-                  name="ageRange"
-                  value={age.value}
-                  checked={filters.ageRange === age.value}
-                  onChange={e => handleFilterChange('ageRange', e.target.value)}
-                  className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-1"
-                />
-                <span className="text-sm text-gray-600">{age.label}</span>
-              </label>
+          <select
+            name="childAge"
+            value={filters.ageRange}
+            onChange={e => handleFilterChange('ageRange', e.target.value)}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+          >
+            <option value="">Любой возраст</option>
+            {Array.from({ length: 20 }, (_, i) => i + 1).map(age => (
+              <option key={age} value={age.toString()}>
+                {age} {age === 1 ? 'год' : age < 5 ? 'года' : 'лет'}
+              </option>
             ))}
-          </div>
+          </select>
+          <p className="mt-1 text-xs text-gray-500">
+            Показываем товары, подходящие для вашего возраста
+          </p>
         </div>
 
         {/* In Stock Filter */}

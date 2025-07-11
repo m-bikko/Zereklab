@@ -1,5 +1,11 @@
 'use client';
 
+import { formatAgeForDisplay } from '@/lib/ageUtils';
+import {
+  extractYouTubeVideoId,
+  getYouTubeEmbedUrl,
+  getYouTubeThumbnailUrl,
+} from '@/lib/youtube';
 import { useCartStore } from '@/store/cartStore';
 import { IProduct } from '@/types';
 
@@ -7,10 +13,8 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import Image from 'next/image';
-import { formatAgeRangeForDisplay } from '@/lib/ageUtils';
-import { extractYouTubeVideoId, getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from '@/lib/youtube';
 
-import { ShoppingCart, X, Play, ZoomIn } from 'lucide-react';
+import { Play, ShoppingCart, X, ZoomIn } from 'lucide-react';
 
 import ImageModal from './ImageModal';
 
@@ -71,8 +75,12 @@ export default function ProductDetailsModal({
       : ['/images/placeholder-product.svg'];
 
   // YouTube video handling
-  const videoId = product.videoUrl ? extractYouTubeVideoId(product.videoUrl) : null;
-  const videoThumbnail = videoId ? getYouTubeThumbnailUrl(videoId, 'medium') : null;
+  const videoId = product.videoUrl
+    ? extractYouTubeVideoId(product.videoUrl)
+    : null;
+  const videoThumbnail = videoId
+    ? getYouTubeThumbnailUrl(videoId, 'medium')
+    : null;
   const videoEmbedUrl = videoId ? getYouTubeEmbedUrl(videoId) : null;
 
   // Combine images and video for gallery
@@ -81,18 +89,23 @@ export default function ProductDetailsModal({
     galleryItems.push(videoThumbnail);
   }
 
-  const isVideoSelected = selectedImageIndex === productImages.length && videoThumbnail;
+  const isVideoSelected =
+    selectedImageIndex === productImages.length && videoThumbnail;
 
   const handlePreviousImage = () => {
     setSelectedImageIndex(prev => {
-      const totalItems = videoThumbnail ? productImages.length + 1 : productImages.length;
+      const totalItems = videoThumbnail
+        ? productImages.length + 1
+        : productImages.length;
       return prev === 0 ? totalItems - 1 : prev - 1;
     });
   };
 
   const handleNextImage = () => {
     setSelectedImageIndex(prev => {
-      const totalItems = videoThumbnail ? productImages.length + 1 : productImages.length;
+      const totalItems = videoThumbnail
+        ? productImages.length + 1
+        : productImages.length;
       return prev === totalItems - 1 ? 0 : prev + 1;
     });
   };
@@ -129,7 +142,7 @@ export default function ProductDetailsModal({
               {/* Media Gallery */}
               <div>
                 <div className="space-y-4">
-                  <div className="relative h-80 w-full group">
+                  <div className="group relative h-80 w-full">
                     {showVideo && videoEmbedUrl ? (
                       <div className="h-full w-full">
                         <iframe
@@ -144,33 +157,41 @@ export default function ProductDetailsModal({
                     ) : (
                       <>
                         <Image
-                          src={isVideoSelected && videoThumbnail ? videoThumbnail : productImages[selectedImageIndex]}
+                          src={
+                            isVideoSelected && videoThumbnail
+                              ? videoThumbnail
+                              : productImages[selectedImageIndex]
+                          }
                           alt={product.name}
                           fill
-                          className="rounded-lg border border-gray-200 object-cover cursor-pointer transition-transform hover:scale-105"
+                          className="cursor-pointer rounded-lg border border-gray-200 object-cover transition-transform hover:scale-105"
                           onClick={handleImageClick}
                           onError={e => {
                             (e.target as HTMLImageElement).src =
                               '/images/placeholder-product.svg';
                           }}
                         />
-                        
+
                         {/* Overlay for video */}
                         {isVideoSelected && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-lg cursor-pointer group-hover:bg-opacity-30 transition-all"
-                               onClick={handleImageClick}>
-                            <div className="bg-white bg-opacity-90 rounded-full p-4 group-hover:bg-opacity-100 transition-all">
-                              <Play className="h-8 w-8 text-red-600 ml-1" />
+                          <div
+                            className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-lg bg-black bg-opacity-40 transition-all group-hover:bg-opacity-30"
+                            onClick={handleImageClick}
+                          >
+                            <div className="rounded-full bg-white bg-opacity-90 p-4 transition-all group-hover:bg-opacity-100">
+                              <Play className="ml-1 h-8 w-8 text-red-600" />
                             </div>
                           </div>
                         )}
-                        
+
                         {/* Zoom overlay for images */}
                         {!isVideoSelected && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-lg cursor-pointer transition-all"
-                               onClick={handleImageClick}>
-                            <div className="bg-white bg-opacity-0 group-hover:bg-opacity-90 rounded-full p-3 transition-all">
-                              <ZoomIn className="h-6 w-6 text-gray-700 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <div
+                            className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-lg bg-black bg-opacity-0 transition-all group-hover:bg-opacity-20"
+                            onClick={handleImageClick}
+                          >
+                            <div className="rounded-full bg-white bg-opacity-0 p-3 transition-all group-hover:bg-opacity-90">
+                              <ZoomIn className="h-6 w-6 text-gray-700 opacity-0 transition-opacity group-hover:opacity-100" />
                             </div>
                           </div>
                         )}
@@ -203,11 +224,13 @@ export default function ProductDetailsModal({
                           />
                         </button>
                       ))}
-                      
+
                       {/* Video Thumbnail */}
                       {videoThumbnail && (
                         <button
-                          onClick={() => handleThumbnailClick(productImages.length)}
+                          onClick={() =>
+                            handleThumbnailClick(productImages.length)
+                          }
                           className={`relative h-20 w-full rounded-lg border-2 transition-all ${
                             selectedImageIndex === productImages.length
                               ? 'border-primary-500 ring-2 ring-primary-500'
@@ -220,7 +243,7 @@ export default function ProductDetailsModal({
                             fill
                             className="rounded-lg object-cover"
                           />
-                          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-lg">
+                          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black bg-opacity-40">
                             <Play className="h-6 w-6 text-white" />
                           </div>
                         </button>
@@ -283,7 +306,7 @@ export default function ProductDetailsModal({
                           Возраст:
                         </span>
                         <span className="ml-2 text-gray-600">
-                          {formatAgeRangeForDisplay(product.ageRange)}
+                          {formatAgeForDisplay(product.ageRange)}
                         </span>
                       </div>
                     )}
@@ -321,22 +344,29 @@ export default function ProductDetailsModal({
                   )}
 
                   {/* Specifications */}
-                  {product.specifications && 
+                  {product.specifications &&
                     Object.keys(product.specifications).length > 0 && (
-                    <div>
-                      <h3 className="mb-2 font-medium text-gray-900">
-                        Характеристики:
-                      </h3>
-                      <div className="text-sm">
-                        {Object.entries(product.specifications).map(([key, value]) => (
-                          <div key={key} className="flex justify-between py-1">
-                            <span className="text-gray-600">{key}:</span>
-                            <span className="font-medium text-gray-900">{value}</span>
-                          </div>
-                        ))}
+                      <div>
+                        <h3 className="mb-2 font-medium text-gray-900">
+                          Характеристики:
+                        </h3>
+                        <div className="text-sm">
+                          {Object.entries(product.specifications).map(
+                            ([key, value]) => (
+                              <div
+                                key={key}
+                                className="flex justify-between py-1"
+                              >
+                                <span className="text-gray-600">{key}:</span>
+                                <span className="font-medium text-gray-900">
+                                  {value}
+                                </span>
+                              </div>
+                            )
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
 
                 {/* Action Buttons */}

@@ -4,18 +4,18 @@ import Navbar from '@/components/Navbar';
 import { Toaster } from 'react-hot-toast';
 
 import type { Metadata, Viewport } from 'next';
-import { Fredoka, Comfortaa } from 'next/font/google';
+import { Comfortaa, Fredoka } from 'next/font/google';
 
 import './globals.css';
 
-const fredoka = Fredoka({ 
+const fredoka = Fredoka({
   weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-fredoka',
   display: 'swap',
 });
 
-const comfortaa = Comfortaa({ 
+const comfortaa = Comfortaa({
   weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-comfortaa',
@@ -60,7 +60,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-      <body className={`${fredoka.variable} ${comfortaa.variable} font-comfortaa`}>
+      <body
+        className={`${fredoka.variable} ${comfortaa.variable} font-comfortaa`}
+      >
         <div className="flex min-h-screen flex-col">
           <Navbar />
           <main className="flex-1">{children}</main>

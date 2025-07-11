@@ -1,12 +1,17 @@
 'use client';
 
+import ImageModal from '@/components/ImageModal';
+import { formatAgeForDisplay } from '@/lib/ageUtils';
+import {
+  extractYouTubeVideoId,
+  getYouTubeEmbedUrl,
+  getYouTubeThumbnailUrl,
+} from '@/lib/youtube';
 import { useCartStore } from '@/store/cartStore';
 import { IProduct } from '@/types';
 
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { formatAgeRangeForDisplay } from '@/lib/ageUtils';
-import { extractYouTubeVideoId, getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from '@/lib/youtube';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -21,16 +26,14 @@ import {
   Info,
   Layers,
   MessageCircle,
+  Play,
   ShoppingCart,
   Star,
   Tag,
   UsersIcon,
   Zap,
-  Play,
   ZoomIn,
 } from 'lucide-react';
-
-import ImageModal from '@/components/ImageModal';
 
 // Helper function to get image from localStorage
 const getStoredImage = (imageId: string): string | null => {
@@ -169,8 +172,12 @@ export default function ProductPage() {
       : [placeholderImage];
 
   // YouTube video handling
-  const videoId = product.videoUrl ? extractYouTubeVideoId(product.videoUrl) : null;
-  const videoThumbnail = videoId ? getYouTubeThumbnailUrl(videoId, 'medium') : null;
+  const videoId = product.videoUrl
+    ? extractYouTubeVideoId(product.videoUrl)
+    : null;
+  const videoThumbnail = videoId
+    ? getYouTubeThumbnailUrl(videoId, 'medium')
+    : null;
   const videoEmbedUrl = videoId ? getYouTubeEmbedUrl(videoId) : null;
 
   // Combine images and video for gallery
@@ -179,16 +186,21 @@ export default function ProductPage() {
     galleryItems.push(videoThumbnail);
   }
 
-  const isVideoSelected = selectedImageIndex === productImages.length && videoThumbnail;
+  const isVideoSelected =
+    selectedImageIndex === productImages.length && videoThumbnail;
 
   const nextImage = () => {
-    const totalItems = videoThumbnail ? productImages.length + 1 : productImages.length;
+    const totalItems = videoThumbnail
+      ? productImages.length + 1
+      : productImages.length;
     setSelectedImageIndex(prev => (prev === totalItems - 1 ? 0 : prev + 1));
     setShowVideo(false);
   };
 
   const prevImage = () => {
-    const totalItems = videoThumbnail ? productImages.length + 1 : productImages.length;
+    const totalItems = videoThumbnail
+      ? productImages.length + 1
+      : productImages.length;
     setSelectedImageIndex(prev => (prev === 0 ? totalItems - 1 : prev - 1));
     setShowVideo(false);
   };
@@ -208,14 +220,18 @@ export default function ProductPage() {
 
   const handlePreviousImage = () => {
     setSelectedImageIndex(prev => {
-      const totalItems = videoThumbnail ? productImages.length + 1 : productImages.length;
+      const totalItems = videoThumbnail
+        ? productImages.length + 1
+        : productImages.length;
       return prev === 0 ? totalItems - 1 : prev - 1;
     });
   };
 
   const handleNextImage = () => {
     setSelectedImageIndex(prev => {
-      const totalItems = videoThumbnail ? productImages.length + 1 : productImages.length;
+      const totalItems = videoThumbnail
+        ? productImages.length + 1
+        : productImages.length;
       return prev === totalItems - 1 ? 0 : prev + 1;
     });
   };
@@ -245,7 +261,7 @@ export default function ProductPage() {
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
               {/* Media Gallery */}
               <div className="space-y-4">
-                <div className="relative aspect-square overflow-hidden rounded-2xl bg-white shadow-lg group">
+                <div className="group relative aspect-square overflow-hidden rounded-2xl bg-white shadow-lg">
                   {showVideo && videoEmbedUrl ? (
                     <div className="h-full w-full">
                       <iframe
@@ -260,10 +276,14 @@ export default function ProductPage() {
                   ) : (
                     <>
                       <Image
-                        src={isVideoSelected && videoThumbnail ? videoThumbnail : productImages[selectedImageIndex]}
+                        src={
+                          isVideoSelected && videoThumbnail
+                            ? videoThumbnail
+                            : productImages[selectedImageIndex]
+                        }
                         alt={product?.name || 'Product image'}
                         fill
-                        className="object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
+                        className="cursor-pointer object-cover transition-transform duration-300 hover:scale-105"
                         priority
                         onClick={handleImageClick}
                         onError={e => {
@@ -273,20 +293,24 @@ export default function ProductPage() {
 
                       {/* Overlay for video */}
                       {isVideoSelected && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-2xl cursor-pointer group-hover:bg-opacity-30 transition-all"
-                             onClick={handleImageClick}>
-                          <div className="bg-white bg-opacity-90 rounded-full p-6 group-hover:bg-opacity-100 transition-all">
-                            <Play className="h-12 w-12 text-red-600 ml-1" />
+                        <div
+                          className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-2xl bg-black bg-opacity-40 transition-all group-hover:bg-opacity-30"
+                          onClick={handleImageClick}
+                        >
+                          <div className="rounded-full bg-white bg-opacity-90 p-6 transition-all group-hover:bg-opacity-100">
+                            <Play className="ml-1 h-12 w-12 text-red-600" />
                           </div>
                         </div>
                       )}
-                      
+
                       {/* Zoom overlay for images */}
                       {!isVideoSelected && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-2xl cursor-pointer transition-all"
-                             onClick={handleImageClick}>
-                          <div className="bg-white bg-opacity-0 group-hover:bg-opacity-90 rounded-full p-4 transition-all">
-                            <ZoomIn className="h-8 w-8 text-gray-700 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div
+                          className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-2xl bg-black bg-opacity-0 transition-all group-hover:bg-opacity-20"
+                          onClick={handleImageClick}
+                        >
+                          <div className="rounded-full bg-white bg-opacity-0 p-4 transition-all group-hover:bg-opacity-90">
+                            <ZoomIn className="h-8 w-8 text-gray-700 opacity-0 transition-opacity group-hover:opacity-100" />
                           </div>
                         </div>
                       )}
@@ -343,16 +367,19 @@ export default function ProductPage() {
                           className="object-cover"
                           sizes="80px"
                           onError={e => {
-                            (e.target as HTMLImageElement).src = placeholderImage;
+                            (e.target as HTMLImageElement).src =
+                              placeholderImage;
                           }}
                         />
                       </button>
                     ))}
-                    
+
                     {/* Video Thumbnail */}
                     {videoThumbnail && (
                       <button
-                        onClick={() => handleThumbnailClick(productImages.length)}
+                        onClick={() =>
+                          handleThumbnailClick(productImages.length)
+                        }
                         aria-label="Показать видео инструкцию"
                         className={`relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border-2 bg-gray-100 shadow-sm transition-all duration-200 hover:opacity-80 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 sm:h-20 sm:w-20 sm:rounded-lg ${
                           selectedImageIndex === productImages.length
@@ -367,7 +394,7 @@ export default function ProductPage() {
                           className="object-cover"
                           sizes="80px"
                         />
-                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-md sm:rounded-lg">
+                        <div className="absolute inset-0 flex items-center justify-center rounded-md bg-black bg-opacity-40 sm:rounded-lg">
                           <Play className="h-6 w-6 text-white sm:h-8 sm:w-8" />
                         </div>
                       </button>
@@ -410,10 +437,16 @@ export default function ProductPage() {
                 </ProductDetailSection>
 
                 {product.features && product.features.length > 0 && (
-                  <ProductDetailSection icon={Star} title="Ключевые особенности">
+                  <ProductDetailSection
+                    icon={Star}
+                    title="Ключевые особенности"
+                  >
                     <ul className="list-inside space-y-2">
                       {product.features.map((feature, index) => (
-                        <li key={index} className="flex items-start space-x-2.5">
+                        <li
+                          key={index}
+                          className="flex items-start space-x-2.5"
+                        >
                           <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" />
                           <span className="text-gray-700">{feature}</span>
                         </li>
@@ -468,7 +501,7 @@ export default function ProductPage() {
                     <InfoPill
                       icon={UsersIcon}
                       label="Возраст"
-                      value={formatAgeRangeForDisplay(product.ageRange)}
+                      value={formatAgeForDisplay(product.ageRange)}
                     />
                   )}
                   {product.tags && product.tags.length > 0 && (

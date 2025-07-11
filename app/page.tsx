@@ -164,14 +164,14 @@ export default function HomePage() {
               transition={{ duration: 0.6, ease: 'easeOut' }}
             >
               <motion.h1
-                className="mb-6 text-4xl font-bold leading-tight font-fredoka sm:text-5xl lg:text-6xl"
+                className="mb-6 font-fredoka text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
               >
                 Вдохновляем Новое
                 <motion.span
-                  className="block text-primary-400 font-fredoka"
+                  className="block font-fredoka text-primary-400"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
@@ -254,7 +254,7 @@ export default function HomePage() {
                   className="transform rounded-xl bg-white p-6 text-center shadow-lg transition-all duration-200"
                 >
                   <motion.div
-                    className="mb-1 text-3xl font-bold text-primary-500 font-fredoka sm:mb-2 sm:text-4xl"
+                    className="mb-1 font-fredoka text-3xl font-bold text-primary-500 sm:mb-2 sm:text-4xl"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
@@ -283,7 +283,7 @@ export default function HomePage() {
               whileInView="animate"
               viewport={{ once: true }}
             >
-              <h2 className="mb-3 text-3xl font-bold text-gray-900 font-fredoka sm:mb-4 lg:text-4xl">
+              <h2 className="mb-3 font-fredoka text-3xl font-bold text-gray-900 sm:mb-4 lg:text-4xl">
                 Почему ZerekLab?
               </h2>
               <p className="mx-auto max-w-3xl text-lg text-gray-600 sm:text-xl">
@@ -315,7 +315,7 @@ export default function HomePage() {
                     >
                       <IconComponent className="h-8 w-8 text-white sm:h-10 sm:w-10" />
                     </motion.div>
-                    <h3 className="mb-2 text-xl font-semibold text-gray-900 font-fredoka sm:mb-3">
+                    <h3 className="mb-2 font-fredoka text-xl font-semibold text-gray-900 sm:mb-3">
                       {benefit.title}
                     </h3>
                     <p className="text-sm leading-relaxed text-gray-600 sm:text-base">
@@ -340,7 +340,7 @@ export default function HomePage() {
               whileInView="animate"
               viewport={{ once: true }}
             >
-              <h2 className="mb-3 text-3xl font-bold text-gray-900 font-fredoka sm:mb-4 lg:text-4xl">
+              <h2 className="mb-3 font-fredoka text-3xl font-bold text-gray-900 sm:mb-4 lg:text-4xl">
                 Наши Категории
               </h2>
               <p className="mx-auto max-w-2xl text-lg text-gray-600 sm:text-xl">
@@ -380,7 +380,7 @@ export default function HomePage() {
                           </motion.div>
                         </motion.div>
                         <div className="flex flex-grow flex-col p-6">
-                          <motion.h3 className="mb-2 text-xl font-semibold text-gray-900 font-fredoka transition-colors group-hover:text-primary-600 sm:text-2xl">
+                          <motion.h3 className="mb-2 font-fredoka text-xl font-semibold text-gray-900 transition-colors group-hover:text-primary-600 sm:text-2xl">
                             {category.title}
                           </motion.h3>
                           <p className="flex-grow text-sm text-gray-600 sm:text-base">
@@ -418,7 +418,7 @@ export default function HomePage() {
               whileInView="animate"
               viewport={{ once: true }}
             >
-              <h2 className="mb-3 text-3xl font-bold text-gray-900 font-fredoka sm:mb-4 lg:text-4xl">
+              <h2 className="mb-3 font-fredoka text-3xl font-bold text-gray-900 sm:mb-4 lg:text-4xl">
                 Отзывы Родителей и Педагогов
               </h2>
               <p className="mx-auto max-w-3xl text-lg text-gray-600 sm:text-xl">
@@ -504,7 +504,7 @@ export default function HomePage() {
         <section className="bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-600 py-16 text-white sm:py-24">
           <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
             <motion.h2
-              className="mb-6 text-3xl font-bold font-fredoka sm:text-4xl lg:text-5xl"
+              className="mb-6 font-fredoka text-3xl font-bold sm:text-4xl lg:text-5xl"
               variants={fadeInUp}
               initial="initial"
               whileInView="animate"

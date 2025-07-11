@@ -12,6 +12,7 @@
     "format:fix": "prettier --write --list-different .",
     "prepare": "husky",
     "normalize-ages": "node scripts/normalize-age-ranges.js",
+    "migrate-age-format": "node scripts/migrate-age-format.js",
     "seed": "node scripts/seed-data.js"
   },
   "dependencies": {

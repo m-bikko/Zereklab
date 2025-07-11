@@ -1,5 +1,7 @@
 'use client';
 
+import { getAgeOptions, isValidMinimumAge } from '@/lib/ageUtils';
+import { isValidYouTubeUrl } from '@/lib/youtube';
 import { ICategory, IProduct, validateProduct } from '@/types';
 
 import { ChangeEvent, FormEvent, useState } from 'react';
@@ -8,7 +10,6 @@ import toast from 'react-hot-toast';
 import Image from 'next/image';
 
 import { Edit2, ImageIcon, Plus, Save, Trash2, Upload, X } from 'lucide-react';
-import { isValidYouTubeUrl } from '@/lib/youtube';
 
 interface ProductManagementProps {
   products: IProduct[];
@@ -498,7 +499,7 @@ export default function ProductManagement({
                         onClick={() => openForm(product)}
                         className="text-blue-600 hover:text-blue-900"
                       >
-                                                    <Edit2 className="h-4 w-4" />
+                        <Edit2 className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() =>
@@ -660,19 +661,34 @@ export default function ProductManagement({
                       </div>
                       <div>
                         <label className="mb-1 block text-sm font-medium text-gray-700">
-                          Возрастная группа
+                          Минимальный возраст
                         </label>
                         <select
                           name="ageRange"
                           value={formData.ageRange}
                           onChange={handleInputChange}
-                          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className={`w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${
+                            formData.ageRange &&
+                            !isValidMinimumAge(formData.ageRange)
+                              ? 'border-red-300 focus:ring-red-500'
+                              : 'border-gray-300 focus:ring-blue-500'
+                          }`}
                         >
-                          <option value="">Выберите возраст</option>
-                          <option value="6-8">6-8 лет</option>
-                          <option value="9-12">9-12 лет</option>
-                          <option value="13+">13+ лет</option>
+                          {getAgeOptions().map(option => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
                         </select>
+                        {formData.ageRange &&
+                          !isValidMinimumAge(formData.ageRange) && (
+                            <p className="mt-1 text-xs text-red-600">
+                              Некорректный формат возраста
+                            </p>
+                          )}
+                        <p className="mt-1 text-xs text-gray-500">
+                          Укажите минимальный возраст для использования товара
+                        </p>
                       </div>
                     </div>
 
@@ -822,18 +838,21 @@ export default function ProductManagement({
                     }`}
                   />
                   {formData.videoUrl && (
-                    <p className={`mt-1 text-xs ${
-                      isValidYouTubeUrl(formData.videoUrl)
-                        ? 'text-green-600'
-                        : 'text-red-600'
-                    }`}>
+                    <p
+                      className={`mt-1 text-xs ${
+                        isValidYouTubeUrl(formData.videoUrl)
+                          ? 'text-green-600'
+                          : 'text-red-600'
+                      }`}
+                    >
                       {isValidYouTubeUrl(formData.videoUrl)
                         ? '✓ Валидный YouTube URL'
                         : '✗ Некорректный YouTube URL'}
                     </p>
                   )}
                   <p className="mt-1 text-xs text-gray-500">
-                    Добавьте ссылку на YouTube видео с инструкцией по использованию товара
+                    Добавьте ссылку на YouTube видео с инструкцией по
+                    использованию товара
                   </p>
                 </div>
 
