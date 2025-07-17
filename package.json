@@ -1,0 +1,51 @@
+{
+  "name": "zereklab-shop",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write --list-different .",
+    "prepare": "husky",
+    "normalize-ages": "node scripts/normalize-age-ranges.js",
+    "migrate-age-format": "node scripts/migrate-age-format.js",
+    "seed": "node scripts/seed-data.js"
+  },
+  "dependencies": {
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "cloudinary": "^2.7.0",
+    "framer-motion": "^12.17.0",
+    "lucide-react": "^0.511.0",
+    "mongodb": "^6.17.0",
+    "mongoose": "^8.15.1",
+    "next": "^14.2.30",
+    "next-intl": "^4.3.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hot-toast": "^2.5.2",
+    "swiper": "^11.2.8",
+    "zod": "^3.25.46",
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/node": "^22",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "5.62.0",
+    "@typescript-eslint/parser": "5.62.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "husky": "^9.1.7",
+    "postcss": "^8",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.12",
+    "tailwindcss": "3.4.17",
+    "typescript": "5.1.6"
+  }
+}

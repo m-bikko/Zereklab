@@ -1,0 +1,375 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "noResults": "No results found",
+    "close": "Close",
+    "next": "Next",
+    "previous": "Previous",
+    "showMore": "Show more",
+    "showLess": "Show less"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About",
+    "contact": "Contact",
+    "admin": "Admin",
+    "login": "Login",
+    "cart": "Open cart",
+    "scanner": "Scanner"
+  },
+  "products": {
+    "title": "Kits",
+    "loading": "Loading products...",
+    "updating": "Updating products...",
+    "filters": "Filters",
+    "hideFilters": "Hide filters",
+    "showFilters": "Show filters",
+    "viewGrid": "Grid view",
+    "viewList": "List view",
+    "found": "Products found",
+    "pages": "Page navigation",
+    "previous": "Previous",
+    "next": "Next",
+    "noProducts": "No products found",
+    "noProductsDesc": "No products found with these filter parameters.",
+    "showAllProducts": "Show all products",
+    "cannotDisplay": "Products cannot be displayed",
+    "checkConnection": "Please check your connection or try again later.",
+    "price": "Price",
+    "category": "Category",
+    "allCategories": "All categories",
+    "subcategory": "Subcategory",
+    "allSubcategories": "All subcategories",
+    "difficulty": "Difficulty",
+    "anyDifficulty": "Any difficulty",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "childAge": "How old is your child?",
+    "anyAge": "Any age",
+    "ageHelper": "We show products suitable for your age",
+    "inStock": "In stock",
+    "clearFilters": "Clear all",
+    "priceFrom": "From",
+    "priceTo": "To",
+    "priceRange1": "Up to 5000",
+    "priceRange2": "5k - 15k",
+    "priceRange3": "15k - 30k",
+    "priceRange4": "30k+",
+    "ageYear": "year",
+    "ageYears2": "years",
+    "ageYears5": "years",
+    "addToCart": "Add to cart",
+    "unavailable": "Cannot add product: product ID missing.",
+    "unavailableStock": "This product is out of stock.",
+    "addedToCart": "added to cart!",
+    "failedToAddToCart": "Failed to add product to cart.",
+    "loading": "Loading product...",
+    "notFound": "Product not found",
+    "features": "Features",
+    "keyFeatures": "Key Features",
+    "specifications": "Specifications",
+    "description": "Description",
+    "age": "Age",
+    "delivery": "Delivery",
+    "sku": "SKU",
+    "quantity": "Quantity",
+    "outOfStock": "Out of stock",
+    "sale": "Sale",
+    "details": "Details",
+    "buyNow": "Order via WhatsApp",
+    "quickView": "Quick view",
+    "toProductCatalog": "To product catalog",
+    "productNotFoundDesc": "Unfortunately, we couldn't find the product you're looking for. It may have been deleted or the link is outdated.",
+    "loadError": "Failed to load product.",
+    "loadErrorNetwork": "Error loading product.",
+    "videoInstruction": "Video instruction",
+    "showVideoInstruction": "Show video instruction",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
+    "showImage": "Show image",
+    "thumbnail": "thumbnail",
+    "noDescription": "No description available.",
+    "tags": "Tags"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Cart is empty",
+    "emptyDescription": "Add products to cart to start shopping",
+    "item": "item",
+    "items_2": "items",
+    "items_5": "items",
+    "total": "Total",
+    "quantity": "Quantity",
+    "price": "Price",
+    "subtotal": "Subtotal",
+    "orderWhatsApp": "Order via WhatsApp",
+    "clear": "Clear cart",
+    "close": "Close cart",
+    "productAdded": "Product added to cart!",
+    "added": "added to cart!",
+    "whatsappMessage": "Hello! I would like to order the following products from ZerekLab",
+    "checkout": "Checkout",
+    "remove": "Remove",
+    "continueShopping": "Continue shopping"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "products": "Product Management",
+    "categories": "Category Management",
+    "images": "Image Management",
+    "addProduct": "Add Product",
+    "editProduct": "Edit Product",
+    "productName": "Product Name",
+    "productDescription": "Product Description",
+    "productPrice": "Price",
+    "salePrice": "Sale Price",
+    "minimumAge": "Minimum Age",
+    "selectAge": "Select age",
+    "ageHelper": "Specify the minimum age for using the product",
+    "stockQuantity": "Stock Quantity",
+    "deliveryTime": "Delivery Time",
+    "inStock": "In stock",
+    "images": "Images",
+    "videoUrl": "YouTube instructional video",
+    "videoHelper": "Add a link to YouTube video with product usage instructions",
+    "validYouTube": "✓ Valid YouTube URL",
+    "invalidYouTube": "✗ Invalid YouTube URL",
+    "features": "Features",
+    "addFeature": "Add feature",
+    "tags": "Tags",
+    "addTag": "Add tag",
+    "specifications": "Specifications",
+    "addSpec": "Add specification",
+    "specKey": "Name",
+    "specValue": "Value"
+  },
+  "forms": {
+    "required": "Required field",
+    "minLength": "Minimum {min} characters",
+    "maxLength": "Maximum {max} characters",
+    "invalidEmail": "Invalid email",
+    "invalidUrl": "Invalid URL",
+    "invalidFormat": "Invalid format"
+  },
+  "errors": {
+    "general": "An error occurred",
+    "network": "Network error",
+    "notFound": "Not found",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Access forbidden",
+    "validation": "Validation error",
+    "server": "Server error"
+  },
+  "time": {
+    "year": "year",
+    "years_2": "years",
+    "years_5": "years",
+    "workingDay": "working day",
+    "workingDays_2": "working days",
+    "workingDays_5": "working days"
+  },
+  "home": {
+    "hero": {
+      "title1": "Inspiring the Next",
+      "title2": "Generation",
+      "title3": "of Innovators",
+      "description": "Educational kits that make learning fun, interactive, and meaningful. Perfect for children who love to build, create, and explore.",
+      "allKits": "All Kits",
+      "learnMore": "Learn More"
+    },
+    "benefits": {
+      "title": "Why ZerekLab?",
+      "description": "We strive to provide the best educational experience for young minds through innovative kits.",
+      "creativity": {
+        "title": "Ignite Creativity",
+        "description": "Spark your child's imagination through hands-on learning that brings ideas to life."
+      },
+      "future": {
+        "title": "Future-Ready",
+        "description": "Prepare children for tomorrow's world with cutting-edge technology and STEM education."
+      },
+      "learning": {
+        "title": "Learn by Doing",
+        "description": "Interactive kits that make complex concepts simple and engaging to understand."
+      },
+      "support": {
+        "title": "Expert Support",
+        "description": "Comprehensive guides and support to ensure successful learning outcomes."
+      }
+    },
+    "stats": {
+      "children": "Happy Children",
+      "schools": "Schools Using",
+      "kits": "Educational Kits",
+      "satisfaction": "Satisfaction Rate"
+    },
+    "categories": {
+      "title": "Our Categories",
+      "description": "From electronics to robotics — find the perfect kit for every young innovator.",
+      "viewKits": "View Kits",
+      "electronics": {
+        "title": "Electronics",
+        "description": "Explore circuits, sensors, and electronic components"
+      },
+      "robotics": {
+        "title": "Robotics",
+        "description": "Build and program your own robots"
+      },
+      "programming": {
+        "title": "Programming",
+        "description": "Code your way to amazing projects"
+      }
+    },
+    "testimonials": {
+      "title": "Parent & Educator Reviews",
+      "description": "Join thousands of families who trust ZerekLab for quality educational experiences.",
+      "testimonial1": {
+        "name": "Aigerim S.",
+        "role": "Parent",
+        "content": "My daughter is thrilled with the robotics kit! She learned so much about programming and engineering."
+      },
+      "testimonial2": {
+        "name": "Michael I.",
+        "role": "Educator",
+        "content": "These kits have revolutionized my approach to teaching STEM. Students are more engaged than ever!"
+      },
+      "testimonial3": {
+        "name": "Elena P.",
+        "role": "Parent",
+        "content": "Perfect balance of fun and learning. My son has created amazing projects with these kits."
+      }
+    },
+    "cta": {
+      "title": "Ready to Start Your STEM Adventure?",
+      "description": "Choose the perfect kit for your child and open the door to a world of engaging learning and endless possibilities.",
+      "button": "Choose a Kit"
+    },
+    "dailyImage": {
+      "weeklyImage": "Weekly Image • ZerekLab",
+      "addImages": "Add images in admin panel"
+    }
+  },
+  "about": {
+    "title": "About ZerekLab",
+    "subtitle": "Inspiring the next generation of innovators and creators through hands-on learning.",
+    "mission": {
+      "title": "Our Mission",
+      "description": "At ZerekLab, our mission is to make STEM education accessible, engaging, and fun for children around the world. We believe that hands-on experience is key to unlocking a child's potential and fostering a lifelong love of learning and discovery."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "description": "We envision a world where every child has the opportunity to explore their curiosity, develop critical thinking skills, and become confident problem solvers. Our educational kits are designed to be the spark that ignites this journey."
+    },
+    "whyUs": {
+      "title": "Why ZerekLab?",
+      "passion": {
+        "title": "Passion for Education",
+        "description": "We are driven by a deep passion for education and a commitment to providing high-quality learning tools."
+      },
+      "childFocused": {
+        "title": "Child-Centered Design",
+        "description": "Our kits are carefully designed to be engaging, age-appropriate, and safe for young learners."
+      },
+      "innovative": {
+        "title": "Innovative Learning",
+        "description": "We constantly innovate to bring the latest STEM concepts to life through interactive and exciting projects."
+      },
+      "quality": {
+        "title": "Quality and Safety",
+        "description": "All our products undergo rigorous quality control and are made from safe, durable materials."
+      },
+      "skills": {
+        "title": "Skill Development",
+        "description": "Our kits promote the development of critical thinking, problem-solving, and creative abilities."
+      },
+      "inspiration": {
+        "title": "Inspiration for the Future",
+        "description": "We strive to inspire children to explore science and technology, opening new horizons for them."
+      }
+    },
+    "story": {
+      "title": "Our Story",
+      "paragraph1": "ZerekLab was founded by a group of enthusiasts – educators and engineers who recognized the need for better tools to teach children STEM fundamentals. Frustrated by the lack of engaging and accessible options, we decided to create our own. What started as a small project grew into a company dedicated to empowering young minds.",
+      "paragraph2": "Our journey is fueled by the joy we see in children when they build, experiment, and learn with our kits. We are proud to be part of their educational adventure and strive to make learning not only beneficial but truly exciting."
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We'd love to hear from you! Whether you have questions, feedback, or just want to say hello.",
+    "info": {
+      "title": "Contact Information",
+      "address": {
+        "title": "Our Address",
+        "line1": "Kabanbay Batyr Street, 60A/2",
+        "line2": "Almaty, Kazakhstan, 050010",
+        "action": "Get Directions"
+      },
+      "email": {
+        "title": "Email",
+        "general": "General inquiries",
+        "support": "Support"
+      },
+      "phone": {
+        "title": "Phone",
+        "main": "Main",
+        "whatsapp": "WhatsApp"
+      },
+      "hours": {
+        "title": "Working Hours",
+        "weekdays": "Monday - Friday: 9:00 - 18:00 (GMT+6)",
+        "weekend": "Saturday - Sunday: Closed"
+      }
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "name": "Your Name",
+      "email": "Your Email",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "validation": "Please fill in all required fields.",
+      "loading": "Sending message...",
+      "success": "Message sent successfully! We'll get back to you soon.",
+      "placeholders": {
+        "name": "John Doe",
+        "email": "john@example.com",
+        "subject": "Question about product X",
+        "message": "Hello, I would like to know more about..."
+      }
+    },
+    "map": {
+      "title": "Find Us on the Map"
+    }
+  },
+  "footer": {
+    "logoAlt": "ZerekLab Logo",
+    "description": "Inspiring children through hands-on educational kits. Creating the future generation of innovators and inventors.",
+    "quickLinks": "Quick Links",
+    "categoriesTitle": "Categories",
+    "contactUs": "Contact Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "copyright": "© {year} ZerekLab. All rights reserved.",
+    "categories": {
+      "electronics": "Electronics",
+      "robotics": "Robotics",
+      "programming": "Programming",
+      "science": "Science"
+    },
+    "address": {
+      "street": "123 Innovation Street",
+      "city": "Technograd, KZ 050000"
+    }
+  }
+}
