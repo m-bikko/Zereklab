@@ -10,7 +10,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write --list-different .",
-    "prepare": "is-ci || husky",
+    "prepare": "if [ \"$CI\" != \"true\" ] && [ \"$VERCEL\" != \"1\" ]; then husky; fi",
     "normalize-ages": "node scripts/normalize-age-ranges.js",
     "migrate-age-format": "node scripts/migrate-age-format.js",
     "seed": "node scripts/seed-data.js",
