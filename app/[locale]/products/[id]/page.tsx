@@ -125,9 +125,7 @@ export default function ProductPage() {
 
       addItem(cartItem);
       const productName = getLocalizedText(product.name, locale);
-      toast.success(
-        `${productName} ${t('products.addedToCart', locale)}`
-      );
+      toast.success(`${productName} ${t('products.addedToCart', locale)}`);
     } else {
       toast.error(t('products.failedToAddToCart', locale));
     }
@@ -259,7 +257,10 @@ export default function ProductPage() {
       <div className="min-h-screen bg-gray-100">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
           <nav className="mb-6 flex items-center space-x-2 text-sm text-gray-500 sm:mb-8">
-            <Link href={`/${locale}`} className="hover:text-primary-600 hover:underline">
+            <Link
+              href={`/${locale}`}
+              className="hover:text-primary-600 hover:underline"
+            >
               {t('nav.home', locale)}
             </Link>
             <ChevronLeft className="h-4 w-4 rotate-180 text-gray-400" />
@@ -441,7 +442,9 @@ export default function ProductPage() {
                           : 'border border-red-200 bg-red-100 text-red-700'
                       }`}
                     >
-                      {product.inStock ? t('products.inStock', locale) : t('products.outOfStock', locale)}
+                      {product.inStock
+                        ? t('products.inStock', locale)
+                        : t('products.outOfStock', locale)}
                     </span>
                     {product.sku && (
                       <span className="text-xs text-gray-500">
@@ -451,7 +454,10 @@ export default function ProductPage() {
                   </div>
                 </div>
 
-                <ProductDetailSection icon={Info} title={t('products.description', locale)}>
+                <ProductDetailSection
+                  icon={Info}
+                  title={t('products.description', locale)}
+                >
                   <p className="whitespace-pre-wrap leading-relaxed text-gray-700">
                     {getLocalizedText(product.description, locale) ||
                       t('products.noDescription', locale)}
@@ -483,7 +489,10 @@ export default function ProductPage() {
 
                 {product.specifications &&
                   Object.keys(product.specifications).length > 0 && (
-                    <ProductDetailSection icon={Zap} title={t('products.specifications', locale)}>
+                    <ProductDetailSection
+                      icon={Zap}
+                      title={t('products.specifications', locale)}
+                    >
                       <div className="grid grid-cols-1 gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
                         {Object.entries(product.specifications).map(
                           ([key, value]) => (
@@ -549,7 +558,9 @@ export default function ProductPage() {
                   >
                     <ShoppingCart className="h-5 w-5" />
                     <span>
-                      {product.inStock ? t('products.addToCart', locale) : t('products.outOfStock', locale)}
+                      {product.inStock
+                        ? t('products.addToCart', locale)
+                        : t('products.outOfStock', locale)}
                     </span>
                   </button>
                   <button
