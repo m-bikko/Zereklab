@@ -1,18 +1,3 @@
 {
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "framework": "nextjs",
-  "regions": ["fra1"],
-  "functions": {
-    "app/api/**/*.ts": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/((?!api|_next|_static|favicon.ico).*)",
-      "destination": "/index"
-    }
-  ]
-} 
+  "regions": ["fra1"]
+}
