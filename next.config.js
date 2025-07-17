@@ -1,8 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['zereklab-images.s3.amazonaws.com', 'localhost'],
-    unoptimized: true
+    domains: ['zereklab-images.s3.amazonaws.com', 'localhost', 'res.cloudinary.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+    unoptimized: false
   },
   transpilePackages: ['framer-motion', 'react-hot-toast'],
   experimental: {

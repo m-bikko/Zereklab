@@ -13,7 +13,8 @@
     "prepare": "husky",
     "normalize-ages": "node scripts/normalize-age-ranges.js",
     "migrate-age-format": "node scripts/migrate-age-format.js",
-    "seed": "node scripts/seed-data.js"
+    "seed": "node scripts/seed-data.js",
+    "vercel-build": "next build"
   },
   "dependencies": {
     "@tailwindcss/line-clamp": "^0.4.4",
