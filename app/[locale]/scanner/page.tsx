@@ -3,6 +3,7 @@
 import BarcodeScannerModal from '@/components/BarcodeScannerModal';
 import ProductDetailsModal from '@/components/ProductDetailsModal';
 import { IProduct } from '@/types';
+import { getLocalizedMessage, t, type Locale } from '@/lib/i18n';
 
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -11,7 +12,13 @@ import Image from 'next/image';
 
 import { AlertCircle, Eye, Package, ScanLine } from 'lucide-react';
 
-export default function ScannerPage() {
+interface ScannerPageProps {
+  params: {
+    locale: Locale;
+  };
+}
+
+export default function ScannerPage({ params: { locale } }: ScannerPageProps) {
   const [searchingSKU, setSearchingSKU] = useState('');
   const [searchResults, setSearchResults] = useState<IProduct[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
@@ -21,7 +28,7 @@ export default function ScannerPage() {
   // Поиск товара по SKU
   const searchProductBySKU = async (sku: string) => {
     if (!sku.trim()) {
-      toast.error('Введите SKU для поиска');
+      toast.error(t('scanner.errors.enterSku', locale));
       return;
     }
 
@@ -44,7 +51,7 @@ export default function ScannerPage() {
             setSelectedProduct(exactData.products[0]);
             setShowProductDetails(true);
           }
-          toast.success(`Найдено товаров: ${exactData.products.length}`);
+          toast.success(t('scanner.success.found', locale, { count: exactData.products.length }));
           return;
         }
       }
@@ -60,18 +67,18 @@ export default function ScannerPage() {
         if (partialData.products && partialData.products.length > 0) {
           setSearchResults(partialData.products);
           toast.success(
-            `Найдено товаров по частичному совпадению: ${partialData.products.length}`
+            t('scanner.success.foundPartial', locale, { count: partialData.products.length })
           );
         } else {
           setSearchResults([]);
-          toast.error(`Товар с SKU &quot;${sku}&quot; не найден`);
+          toast.error(t('scanner.notFoundMessage', locale, { sku }));
         }
       } else {
-        throw new Error('Ошибка поиска товара');
+        throw new Error(t('scanner.errors.networkError', locale));
       }
     } catch (error) {
       console.error('Ошибка поиска:', error);
-      toast.error('Ошибка при поиске товара');
+      toast.error(t('scanner.errors.searchError', locale));
       setSearchResults([]);
     } finally {
       setLoading(false);
@@ -95,6 +102,14 @@ export default function ScannerPage() {
     setShowProductDetails(true);
   };
 
+  // Функция для получения локализованного названия товара
+  const getProductName = (product: IProduct) => {
+    if (typeof product.name === 'string') {
+      return product.name;
+    }
+    return getLocalizedMessage(product.name, locale);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
@@ -102,11 +117,10 @@ export default function ScannerPage() {
         <div className="mb-8 text-center">
           <div className="mb-4 flex items-center justify-center">
             <Package className="mr-3 h-12 w-12 text-primary-500" />
-            <h1 className="text-3xl font-bold text-gray-900">Поиск товаров</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{t('scanner.title', locale)}</h1>
           </div>
           <p className="mx-auto max-w-2xl text-gray-600">
-            Сканируйте штрих-код или введите SKU товара для быстрого поиска в
-            каталоге
+            {t('scanner.description', locale)}
           </p>
         </div>
 
@@ -116,9 +130,9 @@ export default function ScannerPage() {
             {/* Сканер штрих-кода */}
             <div className="flex-shrink-0">
               <label className="mb-2 block text-sm font-medium text-gray-700">
-                Сканирование
+                {t('scanner.scanning', locale)}
               </label>
-              <BarcodeScannerModal onScan={handleBarcodeScan} />
+              <BarcodeScannerModal onScan={handleBarcodeScan} locale={locale} />
             </div>
 
             {/* Ручной ввод SKU */}
@@ -127,7 +141,7 @@ export default function ScannerPage() {
                 htmlFor="sku-input"
                 className="mb-2 block text-sm font-medium text-gray-700"
               >
-                Или введите SKU вручную
+                {t('scanner.manualInput', locale)}
               </label>
               <form onSubmit={handleManualSearch} className="flex gap-2">
                 <input
@@ -135,7 +149,7 @@ export default function ScannerPage() {
                   type="text"
                   value={searchingSKU}
                   onChange={e => setSearchingSKU(e.target.value)}
-                  placeholder="Введите SKU товара..."
+                  placeholder={t('scanner.skuPlaceholder', locale)}
                   className="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
                 />
                 <button
@@ -148,7 +162,7 @@ export default function ScannerPage() {
                   ) : (
                     <ScanLine className="h-4 w-4" />
                   )}
-                  Найти
+                  {t('scanner.findButton', locale)}
                 </button>
               </form>
             </div>
@@ -159,7 +173,7 @@ export default function ScannerPage() {
         {searchResults.length > 0 && (
           <div className="rounded-xl bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-xl font-semibold text-gray-900">
-              Результаты поиска ({searchResults.length})
+              {t('scanner.resultsCount', locale, { count: searchResults.length })}
             </h2>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -173,11 +187,7 @@ export default function ScannerPage() {
                     <div className="relative mb-3 h-32 w-full">
                       <Image
                         src={product.images[0]}
-                        alt={
-                          typeof product.name === 'string'
-                            ? product.name
-                            : product.name.ru
-                        }
+                        alt={getProductName(product)}
                         fill
                         className="rounded-lg object-cover"
                         onError={e => {
@@ -194,29 +204,27 @@ export default function ScannerPage() {
 
                   {/* Информация о товаре */}
                   <h3 className="mb-2 line-clamp-2 font-semibold text-gray-900">
-                    {typeof product.name === 'string'
-                      ? product.name
-                      : product.name.ru}
+                    {getProductName(product)}
                   </h3>
 
                   <div className="mb-3 space-y-1 text-sm text-gray-600">
                     <p>
-                      <span className="font-medium">SKU:</span>{' '}
-                      {product.sku || 'Не указан'}
+                      <span className="font-medium">{t('scanner.sku', locale)}:</span>{' '}
+                      {product.sku || t('scanner.notSpecified', locale)}
                     </p>
                     <p>
-                      <span className="font-medium">Цена:</span> {product.price}{' '}
+                      <span className="font-medium">{t('scanner.price', locale)}:</span> {product.price}{' '}
                       ₸
                     </p>
                     <p>
-                      <span className="font-medium">Категория:</span>{' '}
+                      <span className="font-medium">{t('scanner.category', locale)}:</span>{' '}
                       {product.category}
                     </p>
                     <p
                       className={`${product.inStock ? 'text-green-600' : 'text-red-600'}`}
                     >
-                      <span className="font-medium">Статус:</span>{' '}
-                      {product.inStock ? 'В наличии' : 'Нет в наличии'}
+                      <span className="font-medium">{t('scanner.status', locale)}:</span>{' '}
+                      {product.inStock ? t('scanner.inStock', locale) : t('scanner.outOfStock', locale)}
                     </p>
                   </div>
 
@@ -226,7 +234,7 @@ export default function ScannerPage() {
                     className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-500 px-4 py-2 text-white transition-colors hover:bg-primary-600"
                   >
                     <Eye className="h-4 w-4" />
-                    Подробнее
+                    {t('scanner.productDetails', locale)}
                   </button>
                 </div>
               ))}
@@ -239,12 +247,12 @@ export default function ScannerPage() {
           <div className="rounded-xl bg-white p-8 text-center shadow-lg">
             <AlertCircle className="mx-auto mb-4 h-16 w-16 text-gray-400" />
             <h3 className="mb-2 text-lg font-semibold text-gray-900">
-              Товар не найден
+              {t('scanner.notFound', locale)}
             </h3>
             <p className="text-gray-600">
-              По запросу SKU &quot;{searchingSKU}&quot; товары не найдены.
+              {t('scanner.notFoundMessage', locale, { sku: searchingSKU })}
               <br />
-              Проверьте правильность введенного кода.
+              {t('scanner.checkCode', locale)}
             </p>
           </div>
         )}
@@ -253,7 +261,7 @@ export default function ScannerPage() {
         {searchResults.length === 0 && !searchingSKU && (
           <div className="rounded-xl bg-white p-8 shadow-lg">
             <h2 className="mb-4 text-xl font-semibold text-gray-900">
-              Как использовать поиск:
+              {t('scanner.howToUse', locale)}
             </h2>
 
             <div className="grid gap-6 md:grid-cols-2">
@@ -263,11 +271,10 @@ export default function ScannerPage() {
                 </div>
                 <div>
                   <h3 className="mb-1 font-semibold text-gray-900">
-                    Сканирование
+                    {t('scanner.scanningTitle', locale)}
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Нажмите кнопку &quot;Сканировать&quot; и поднесите штрих-код
-                    к сканеру. Товар будет найден автоматически.
+                    {t('scanner.scanningInstructions', locale)}
                   </p>
                 </div>
               </div>
@@ -278,11 +285,10 @@ export default function ScannerPage() {
                 </div>
                 <div>
                   <h3 className="mb-1 font-semibold text-gray-900">
-                    Ручной поиск
+                    {t('scanner.manualTitle', locale)}
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Введите SKU товара в поле поиска и нажмите &quot;Найти&quot;
-                    для получения результатов.
+                    {t('scanner.manualInstructions', locale)}
                   </p>
                 </div>
               </div>

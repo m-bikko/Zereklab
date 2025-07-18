@@ -371,5 +371,55 @@
       "street": "123 Innovation Street",
       "city": "Technograd, KZ 050000"
     }
+  },
+  "scanner": {
+    "title": "Product Search",
+    "description": "Scan barcode or enter product SKU for quick catalog search",
+    "scanning": "Scanning",
+    "manualInput": "Or enter SKU manually",
+    "skuPlaceholder": "Enter product SKU...",
+    "findButton": "Search",
+    "results": "Search Results",
+    "resultsCount": "Search Results ({count})",
+    "productDetails": "Details",
+    "sku": "SKU",
+    "price": "Price",
+    "category": "Category",
+    "status": "Status",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "notSpecified": "Not specified",
+    "notFound": "Product not found",
+    "notFoundMessage": "No products found for SKU \"{sku}\".",
+    "checkCode": "Please check the entered code.",
+    "howToUse": "How to use search:",
+    "scanningInstructions": "Click \"Scan\" button and hold the barcode up to the scanner. The product will be found automatically.",
+    "manualInstructions": "Enter the product SKU in the search field and click \"Search\" to get results.",
+    "scanningTitle": "Scanning",
+    "manualTitle": "Manual Search",
+    "errors": {
+      "enterSku": "Enter SKU to search",
+      "searchError": "Error searching for product",
+      "networkError": "Product search error"
+    },
+    "success": {
+      "found": "Products found: {count}",
+      "foundPartial": "Products found by partial match: {count}"
+    },
+    "modal": {
+      "scanButton": "Scan",
+      "title": "Barcode Scanning",
+      "ready": "Scanner ready",
+      "readyDescription": "Barcode can be scanned now. Scanner is active and waiting for input. Hold the barcode up to the scanner or enter the code manually.",
+      "manualLabel": "Or enter code manually:",
+      "manualPlaceholder": "Enter barcode or SKU...",
+      "enterHint": "Press Enter after entering the code",
+      "cancel": "Cancel",
+      "readyToScan": "Ready to scan",
+      "scannerActive": "Scanner active",
+      "hiddenLabel": "Hidden field for barcode input",
+      "hiddenPlaceholder": "Scan barcode...",
+      "submit": "Submit"
+    }
   }
 }

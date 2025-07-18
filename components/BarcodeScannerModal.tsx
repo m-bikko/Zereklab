@@ -1,14 +1,16 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { t, type Locale } from '@/lib/i18n';
 
 import { AlertCircle, ScanLine, X } from 'lucide-react';
 
 interface Props {
   onScan: (barcode: string) => void;
+  locale?: Locale;
 }
 
-export default function BarcodeScannerModal({ onScan }: Props) {
+export default function BarcodeScannerModal({ onScan, locale = 'ru' }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -51,7 +53,7 @@ export default function BarcodeScannerModal({ onScan }: Props) {
         className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-500 px-4 py-2 text-white transition-colors hover:bg-primary-600 sm:w-auto"
       >
         <ScanLine className="h-4 w-4" />
-        Сканировать
+        {t('scanner.modal.scanButton', locale)}
       </button>
 
       {/* Модальное окно */}
@@ -61,7 +63,7 @@ export default function BarcodeScannerModal({ onScan }: Props) {
             {/* Заголовок с кнопкой закрытия */}
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900">
-                Сканирование штрих-кода
+                {t('scanner.modal.title', locale)}
               </h2>
               <button
                 onClick={closeModal}
@@ -77,12 +79,10 @@ export default function BarcodeScannerModal({ onScan }: Props) {
                 <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600" />
                 <div>
                   <h3 className="mb-1 font-medium text-blue-900">
-                    Сканер готов к работе
+                    {t('scanner.modal.ready', locale)}
                   </h3>
                   <p className="text-sm text-blue-700">
-                    Штрих-код можно сканировать сейчас. Сканер активен и ожидает
-                    ввода. Поднесите штрих-код к сканеру или введите код
-                    вручную.
+                    {t('scanner.modal.readyDescription', locale)}
                   </p>
                 </div>
               </div>
@@ -102,22 +102,22 @@ export default function BarcodeScannerModal({ onScan }: Props) {
                   }, 100);
                 }}
                 className="sr-only"
-                aria-label="Скрытое поле для ввода штрих-кода"
-                placeholder="Сканируйте штрих-код..."
+                aria-label={t('scanner.modal.hiddenLabel', locale)}
+                placeholder={t('scanner.modal.hiddenPlaceholder', locale)}
               />
               <button type="submit" className="sr-only">
-                Отправить
+                {t('scanner.modal.submit', locale)}
               </button>
             </form>
 
             {/* Ручной ввод (дополнительно) */}
             <div className="space-y-3">
               <label className="block text-sm font-medium text-gray-700">
-                Или введите код вручную:
+                {t('scanner.modal.manualLabel', locale)}
               </label>
               <input
                 type="text"
-                placeholder="Введите штрих-код или SKU..."
+                placeholder={t('scanner.modal.manualPlaceholder', locale)}
                 onKeyDown={e => {
                   if (e.key === 'Enter') {
                     const target = e.target as HTMLInputElement;
@@ -131,7 +131,7 @@ export default function BarcodeScannerModal({ onScan }: Props) {
                 className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
               />
               <p className="text-xs text-gray-500">
-                Нажмите Enter после ввода кода
+                {t('scanner.modal.enterHint', locale)}
               </p>
             </div>
 
@@ -141,7 +141,7 @@ export default function BarcodeScannerModal({ onScan }: Props) {
                 onClick={closeModal}
                 className="flex-1 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-200"
               >
-                Отмена
+                {t('scanner.modal.cancel', locale)}
               </button>
               <button
                 onClick={() => {
@@ -153,14 +153,14 @@ export default function BarcodeScannerModal({ onScan }: Props) {
                 className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary-500 px-4 py-2 text-white transition-colors hover:bg-primary-600"
               >
                 <ScanLine className="h-4 w-4" />
-                Готов к сканированию
+                {t('scanner.modal.readyToScan', locale)}
               </button>
             </div>
 
             {/* Индикатор активности сканера */}
             <div className="mt-4 flex items-center justify-center gap-2">
               <div className="h-2 w-2 animate-pulse rounded-full bg-green-500"></div>
-              <span className="text-xs text-gray-500">Сканер активен</span>
+              <span className="text-xs text-gray-500">{t('scanner.modal.scannerActive', locale)}</span>
             </div>
           </div>
         </div>

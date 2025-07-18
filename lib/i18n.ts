@@ -62,3 +62,19 @@ export function useTranslations(locale: Locale = defaultLocale) {
   return (key: string, params?: Record<string, string | number>) =>
     t(key, locale, params);
 }
+
+// Function to get localized message from objects with locale properties
+export function getLocalizedMessage(
+  message: string | Record<string, string>,
+  locale: Locale = defaultLocale
+): string {
+  if (typeof message === 'string') {
+    return message;
+  }
+
+  if (message && typeof message === 'object') {
+    return message[locale] || message[defaultLocale] || message.ru || '';
+  }
+
+  return '';
+}
