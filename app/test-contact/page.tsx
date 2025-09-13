@@ -3,9 +3,16 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
+interface TestResult {
+  success?: boolean;
+  error?: string;
+  details?: string;
+  [key: string]: unknown;
+}
+
 export default function TestContactPage() {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<TestResult | null>(null);
 
   const testDatabaseConnection = async () => {
     setLoading(true);
@@ -22,7 +29,7 @@ export default function TestContactPage() {
     } catch (error) {
       console.error('Test error:', error);
       toast.error('Network error');
-      setResult({ error: 'Network error', details: error?.message });
+      setResult({ error: 'Network error', details: error instanceof Error ? error.message : 'Unknown error' });
     } finally {
       setLoading(false);
     }
@@ -43,7 +50,7 @@ export default function TestContactPage() {
     } catch (error) {
       console.error('Test error:', error);
       toast.error('Network error');
-      setResult({ error: 'Network error', details: error?.message });
+      setResult({ error: 'Network error', details: error instanceof Error ? error.message : 'Unknown error' });
     } finally {
       setLoading(false);
     }
@@ -78,7 +85,7 @@ export default function TestContactPage() {
     } catch (error) {
       console.error('Test error:', error);
       toast.error('Network error');
-      setResult({ error: 'Network error', details: error?.message });
+      setResult({ error: 'Network error', details: error instanceof Error ? error.message : 'Unknown error' });
     } finally {
       setLoading(false);
     }

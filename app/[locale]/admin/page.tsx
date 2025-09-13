@@ -5,7 +5,8 @@ import CategoryManagement from '@/components/admin/CategoryManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
 import ProductManagement from '@/components/admin/ProductManagement';
 import { useAuth } from '@/hooks/useAuth';
-import { ICategory, IContact, IProduct } from '@/types';
+import { ICategory, IProduct } from '@/types';
+import { IContactDocument } from '@/models/Contact';
 
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -53,7 +54,7 @@ export default function AdminPage() {
   >('products');
   const [products, setProducts] = useState<IProduct[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const [contacts, setContacts] = useState<IContact[]>([]);
+  const [contacts, setContacts] = useState<IContactDocument[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {

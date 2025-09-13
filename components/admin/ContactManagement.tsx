@@ -1,6 +1,6 @@
 'use client';
 
-import { IContact } from '@/models/Contact';
+import { IContactDocument } from '@/models/Contact';
 
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -17,30 +17,18 @@ import {
 } from 'lucide-react';
 
 interface ContactManagementProps {
-  contacts: IContact[];
+  contacts: IContactDocument[];
   loading: boolean;
   onRefresh: () => void;
 }
 
-interface ContactsResponse {
-  success: boolean;
-  data: IContact[];
-  pagination: {
-    currentPage: number;
-    totalPages: number;
-    totalItems: number;
-    itemsPerPage: number;
-    hasNextPage: boolean;
-    hasPrevPage: boolean;
-  };
-}
 
 export default function ContactManagement({
   contacts,
   loading,
   onRefresh,
 }: ContactManagementProps) {
-  const [selectedContact, setSelectedContact] = useState<IContact | null>(null);
+  const [selectedContact, setSelectedContact] = useState<IContactDocument | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
 
@@ -118,8 +106,8 @@ export default function ContactManagement({
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+  const formatDate = (dateInput: string | Date) => {
+    const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
     return date.toLocaleString('ru-RU', {
       year: 'numeric',
       month: 'short',
@@ -202,7 +190,7 @@ export default function ContactManagement({
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
               {filteredContacts.map((contact) => (
-                <tr key={contact._id} className="hover:bg-gray-50">
+                <tr key={contact._id as string} className="hover:bg-gray-50">
                   <td className="px-3 py-4 sm:px-6">
                     <div className="flex items-center">
                       <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 sm:h-10 sm:w-10">
@@ -232,7 +220,7 @@ export default function ContactManagement({
                     </span>
                   </td>
                   <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-900 md:table-cell sm:px-6">
-                    {formatDate(contact.createdAt!)}
+                    {contact.createdAt ? formatDate(contact.createdAt) : 'N/A'}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-medium sm:px-6">
                     <div className="flex items-center justify-end space-x-1 sm:space-x-2">
@@ -243,28 +231,28 @@ export default function ContactManagement({
                       >
                         <Eye className="h-4 w-4" />
                       </button>
-                      {contact.status === 'new' && (
+                      {contact.status === 'new' && (contact._id as string) && (
                         <button
-                          onClick={() => handleStatusUpdate(contact._id!, 'read')}
-                          disabled={updatingStatus === contact._id}
+                          onClick={() => contact._id && handleStatusUpdate(contact._id as string, 'read')}
+                          disabled={updatingStatus === (contact._id as string)}
                           className="text-yellow-600 hover:text-yellow-900 disabled:opacity-50"
                           title="Отметить как прочитанное"
                         >
-                          {updatingStatus === contact._id ? (
+                          {updatingStatus === (contact._id as string) ? (
                             <RefreshCw className="h-4 w-4 animate-spin" />
                           ) : (
                             <MessageSquare className="h-4 w-4" />
                           )}
                         </button>
                       )}
-                      {(contact.status === 'new' || contact.status === 'read') && (
+                      {(contact.status === 'new' || contact.status === 'read') && (contact._id as string) && (
                         <button
-                          onClick={() => handleStatusUpdate(contact._id!, 'replied')}
-                          disabled={updatingStatus === contact._id}
+                          onClick={() => contact._id && handleStatusUpdate(contact._id as string, 'replied')}
+                          disabled={updatingStatus === (contact._id as string)}
                           className="text-green-600 hover:text-green-900 disabled:opacity-50"
                           title="Отметить как отвеченное"
                         >
-                          {updatingStatus === contact._id ? (
+                          {updatingStatus === (contact._id as string) ? (
                             <RefreshCw className="h-4 w-4 animate-spin" />
                           ) : (
                             <Reply className="h-4 w-4" />
@@ -360,7 +348,7 @@ export default function ContactManagement({
                   </div>
 
                   <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>Дата отправки: {formatDate(selectedContact.createdAt!)}</span>
+                    <span>Дата отправки: {selectedContact.createdAt ? formatDate(selectedContact.createdAt) : 'N/A'}</span>
                     <span className={getStatusBadge(selectedContact.status)}>
                       {getStatusText(selectedContact.status)}
                     </span>
@@ -370,25 +358,25 @@ export default function ContactManagement({
 
               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                 <div className="flex space-x-2">
-                  {selectedContact.status === 'new' && (
+                  {selectedContact.status === 'new' && (selectedContact._id as string) && (
                     <button
                       onClick={() => {
-                        handleStatusUpdate(selectedContact._id!, 'read');
+                        selectedContact._id && handleStatusUpdate(selectedContact._id as string, 'read');
                         setSelectedContact(null);
                       }}
-                      disabled={updatingStatus === selectedContact._id}
+                      disabled={updatingStatus === (selectedContact._id as string)}
                       className="inline-flex justify-center rounded-md border border-transparent bg-yellow-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 disabled:opacity-50 sm:text-sm"
                     >
                       Отметить как прочитанное
                     </button>
                   )}
-                  {(selectedContact.status === 'new' || selectedContact.status === 'read') && (
+                  {(selectedContact.status === 'new' || selectedContact.status === 'read') && (selectedContact._id as string) && (
                     <button
                       onClick={() => {
-                        handleStatusUpdate(selectedContact._id!, 'replied');
+                        selectedContact._id && handleStatusUpdate(selectedContact._id as string, 'replied');
                         setSelectedContact(null);
                       }}
-                      disabled={updatingStatus === selectedContact._id}
+                      disabled={updatingStatus === (selectedContact._id as string)}
                       className="inline-flex justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 sm:text-sm"
                     >
                       Отметить как отвеченное

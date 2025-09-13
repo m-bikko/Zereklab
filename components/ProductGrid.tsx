@@ -26,8 +26,10 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
   const locale = useLocale();
 
   const handleAddToCart = (product: IProduct) => {
+    if (!product._id) return;
+    
     const cartItem = {
-      id: product._id!,
+      id: product._id,
       name: product.name,
       price: product.salePrice || product.price,
       image: product.images?.[0] || '/images/placeholder-product.svg',
@@ -46,9 +48,11 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
   };
 
   const handleWhatsAppOrder = (product: IProduct) => {
+    if (!product._id) return;
+    
     // Create a cart item for single product order
     const singleProductItem = {
-      id: product._id!,
+      id: product._id,
       name: product.name,
       price: product.salePrice || product.price,
       image: product.images?.[0] || '/images/placeholder-product.svg',

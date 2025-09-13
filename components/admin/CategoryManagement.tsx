@@ -2,14 +2,13 @@
 
 import { ICategory } from '@/types';
 
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import {
   ChevronDown,
   ChevronRight,
   Edit,
-  Globe,
   Plus,
   Save,
   Trash2,
@@ -229,7 +228,7 @@ export default function CategoryManagement({
     }
   };
 
-  const handleDelete = async (categoryId: string, categoryName: any) => {
+  const handleDelete = async (categoryId: string, categoryName: string | MultilingualText) => {
     const displayName =
       typeof categoryName === 'string'
         ? categoryName
@@ -297,11 +296,11 @@ export default function CategoryManagement({
                 const categoryName =
                   typeof category.name === 'string'
                     ? category.name
-                    : (category.name as any)?.ru || 'Без названия';
+                    : (category.name as MultilingualText)?.ru || 'Без названия';
                 const categoryDescription =
                   typeof category.description === 'string'
                     ? category.description
-                    : (category.description as any)?.ru || '';
+                    : (category.description as unknown as MultilingualText)?.ru || '';
 
                 return (
                   <div key={category._id} className="rounded-lg border">
@@ -358,7 +357,7 @@ export default function CategoryManagement({
                             const subName =
                               typeof subcategory === 'string'
                                 ? subcategory
-                                : (subcategory as any)?.ru || 'Без названия';
+                                : (subcategory as MultilingualText)?.ru || 'Без названия';
                             return (
                               <div
                                 key={index}

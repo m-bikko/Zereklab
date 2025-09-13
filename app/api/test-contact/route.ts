@@ -1,7 +1,7 @@
 import { getDatabase } from '@/lib/mongodb';
 import Contact from '@/models/Contact';
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
@@ -23,13 +23,13 @@ export async function GET() {
     console.error('❌ Test failed:', error);
     return NextResponse.json({
       success: false,
-      error: error?.message || 'Unknown error',
+      error: error instanceof Error ? error.message : 'Unknown error',
       timestamp: new Date().toISOString(),
     }, { status: 500 });
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     console.log('🧪 Testing contact creation...');
     await getDatabase();
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
     console.error('❌ Contact creation test failed:', error);
     return NextResponse.json({
       success: false,
-      error: error?.message || 'Unknown error',
+      error: error instanceof Error ? error.message : 'Unknown error',
       timestamp: new Date().toISOString(),
     }, { status: 500 });
   }

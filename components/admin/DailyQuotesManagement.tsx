@@ -150,7 +150,7 @@ export default function DailyQuotesManagement() {
             <li>Основаны на дне года (1-365/366)</li>
             <li>Цикл повторяется: день % количество_цитат</li>
             <li>Цитаты вводятся только на одном языке</li>
-            <li>На лендинге отображается как "Цитата дня"</li>
+            <li>На лендинге отображается как &ldquo;Цитата дня&rdquo;</li>
           </ul>
         </div>
       </div>
@@ -164,7 +164,7 @@ export default function DailyQuotesManagement() {
           </h3>
           <div className="rounded-lg bg-white p-4 shadow-sm">
             <blockquote className="mb-3 text-lg font-medium text-gray-900">
-              "{currentDayQuote.text}"
+              &ldquo;{currentDayQuote.text}&rdquo;
             </blockquote>
             <cite className="text-sm font-medium text-gray-600">
               - {currentDayQuote.author}
@@ -289,7 +289,7 @@ export default function DailyQuotesManagement() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <blockquote className="mb-2 text-base font-medium text-gray-900">
-                        "{quote.text}"
+                        &ldquo;{quote.text}&rdquo;
                       </blockquote>
                       <cite className="text-sm text-gray-600">
                         - {quote.author}

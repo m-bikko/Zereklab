@@ -1,6 +1,3 @@
-import Footer from '@/components/Footer';
-import Navbar from '@/components/Navbar';
-
 import { Toaster } from 'react-hot-toast';
 
 import type { Metadata, Viewport } from 'next';

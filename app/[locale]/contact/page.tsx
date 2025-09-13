@@ -69,7 +69,7 @@ export default function ContactPage() {
         console.log('❌ Contact form submission failed:', result);
         // Handle validation errors
         if (result.details && Array.isArray(result.details)) {
-          result.details.forEach((detail: any) => {
+          result.details.forEach((detail: { field: string; message: string }) => {
             toast.error(`${detail.field}: ${detail.message}`);
           });
         } else {

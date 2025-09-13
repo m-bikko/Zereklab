@@ -1,9 +1,14 @@
 import { getDatabase } from '@/lib/mongodb';
-import Contact, { IContact } from '@/models/Contact';
+import Contact from '@/models/Contact';
 
 import { NextRequest, NextResponse } from 'next/server';
 
 import { z } from 'zod';
+
+// Interface for query filters
+interface ContactQuery {
+  status?: 'new' | 'read' | 'replied';
+}
 
 // Validation schema for contact form
 const contactSchema = z.object({
@@ -111,15 +116,16 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error('❌ Contact form submission error:', error);
-    console.error('Error details:', {
-      name: error?.name,
-      message: error?.message,
-      stack: error?.stack,
-    });
+    const errorDetails = error instanceof Error ? {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+    } : { message: 'Unknown error' };
+    console.error('Error details:', errorDetails);
     return NextResponse.json(
       {
         error: 'Internal server error. Please try again later.',
-        details: process.env.NODE_ENV === 'development' ? error?.message : undefined,
+        details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : 'Unknown error') : undefined,
       },
       { status: 500 }
     );
@@ -137,9 +143,9 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status');
 
     // Build query
-    const query: any = {};
+    const query: ContactQuery = {};
     if (status && ['new', 'read', 'replied'].includes(status)) {
-      query.status = status;
+      query.status = status as 'new' | 'read' | 'replied';
     }
 
     // Calculate pagination

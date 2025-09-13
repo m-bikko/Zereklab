@@ -89,7 +89,7 @@ export default function DailyImageRotation() {
           {/* Main Quote Content */}
           <div className="flex h-full flex-col items-center justify-center p-8 text-center">
             <blockquote className="mb-4 text-lg font-bold leading-relaxed text-black sm:text-xl lg:text-2xl">
-              "{quoteText}"
+              &ldquo;{quoteText}&rdquo;
             </blockquote>
             
             <div className="mt-2">

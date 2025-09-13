@@ -3,26 +3,41 @@ import Category from '@/models/Category';
 
 import { NextRequest, NextResponse } from 'next/server';
 
+// Интерфейс для мультиязычного текста
+interface MultilingualText {
+  ru?: string;
+  kk?: string;
+  en?: string;
+}
+
+// Интерфейс для данных категории
+interface CategoryData {
+  name?: MultilingualText;
+  description?: MultilingualText;
+  [key: string]: unknown;
+}
+
 // Валидация мультиязычного текста
-const validateMultilingualText = (text: any, fieldName: string): string[] => {
+const validateMultilingualText = (text: unknown, fieldName: string): string[] => {
   const errors: string[] = [];
   if (!text || typeof text !== 'object') {
     errors.push(`${fieldName} должно быть объектом с переводами`);
     return errors;
   }
 
-  if (!text.ru?.trim())
+  const multiText = text as MultilingualText;
+  if (!multiText.ru?.trim())
     errors.push(`${fieldName} на русском языке обязательно`);
-  if (!text.kk?.trim())
+  if (!multiText.kk?.trim())
     errors.push(`${fieldName} на казахском языке обязательно`);
-  if (!text.en?.trim())
+  if (!multiText.en?.trim())
     errors.push(`${fieldName} на английском языке обязательно`);
 
   return errors;
 };
 
 // Валидация категории
-const validateCategory = (category: any): string[] => {
+const validateCategory = (category: CategoryData): string[] => {
   const errors: string[] = [];
 
   // Валидация названия (обязательно)

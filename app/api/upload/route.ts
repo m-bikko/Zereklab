@@ -2,6 +2,23 @@ import { deleteImage, getPublicIdFromUrl, uploadImage } from '@/lib/cloudinary';
 
 import { NextRequest, NextResponse } from 'next/server';
 
+// Интерфейсы для ответов API
+interface UploadResponse {
+  success: boolean;
+  uploaded: unknown[];
+  count: number;
+  errors?: string[];
+  message?: string;
+}
+
+interface DeleteResponse {
+  success: boolean;
+  deleted: { url: string; publicId: string; deleted: boolean; }[];
+  count: number;
+  errors?: string[];
+  message?: string;
+}
+
 // Максимальный размер файла (10MB)
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
@@ -101,7 +118,7 @@ export async function POST(request: NextRequest) {
 
     // Если есть успешные загрузки
     if (uploadResults.length > 0) {
-      const response: any = {
+      const response: UploadResponse = {
         success: true,
         uploaded: uploadResults,
         count: uploadResults.length,
@@ -176,7 +193,7 @@ export async function DELETE(request: NextRequest) {
       }
     }
 
-    const response: any = {
+    const response: DeleteResponse = {
       success: deleteResults.length > 0,
       deleted: deleteResults,
       count: deleteResults.length,

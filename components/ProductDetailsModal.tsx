@@ -50,8 +50,10 @@ export default function ProductDetailsModal({
   if (!isOpen || !product) return null;
 
   const handleAddToCart = () => {
+    if (!product || !product._id) return;
+    
     const cartItem = {
-      id: product._id!,
+      id: product._id,
       name: product.name,
       price: product.salePrice || product.price,
       image: product.images?.[0] || '/images/placeholder-product.svg',
@@ -65,9 +67,11 @@ export default function ProductDetailsModal({
   };
 
   const handleWhatsAppOrder = () => {
+    if (!product || !product._id) return;
+    
     // Create a cart item for single product order
     const singleProductItem = {
-      id: product._id!,
+      id: product._id,
       name: product.name,
       price: product.salePrice || product.price,
       image: product.images?.[0] || '/images/placeholder-product.svg',
@@ -98,7 +102,7 @@ export default function ProductDetailsModal({
   const nextImage = () => {
     if (product.images && product.images.length > 0) {
       setSelectedImageIndex(prev =>
-        prev === product.images!.length - 1 ? 0 : prev + 1
+        prev === (product.images?.length || 1) - 1 ? 0 : prev + 1
       );
     }
   };
@@ -106,7 +110,7 @@ export default function ProductDetailsModal({
   const prevImage = () => {
     if (product.images && product.images.length > 0) {
       setSelectedImageIndex(prev =>
-        prev === 0 ? product.images!.length - 1 : prev - 1
+        prev === 0 ? (product.images?.length || 1) - 1 : prev - 1
       );
     }
   };
@@ -249,7 +253,7 @@ export default function ProductDetailsModal({
                       {showVideo && getYouTubeEmbedUrl(product.videoUrl) && (
                         <div className="aspect-video overflow-hidden rounded-lg">
                           <iframe
-                            src={getYouTubeEmbedUrl(product.videoUrl)!}
+                            src={getYouTubeEmbedUrl(product.videoUrl) || ''}
                             title="Product Video"
                             className="h-full w-full"
                             allowFullScreen

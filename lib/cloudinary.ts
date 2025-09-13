@@ -1,5 +1,15 @@
 import { UploadApiOptions, v2 as cloudinary } from 'cloudinary';
 
+// Интерфейс для параметров трансформации Cloudinary
+interface CloudinaryTransforms {
+  width?: number;
+  height?: number;
+  crop?: string;
+  quality?: string;
+  format?: string;
+  [key: string]: string | number | undefined;
+}
+
 // Настройка Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'dompaomgm',
@@ -45,7 +55,7 @@ export const uploadImage = async (
 
     // Упрощенные трансформации - применяем их только при необходимости
     if (transformation) {
-      const transforms: Record<string, any> = {};
+      const transforms: CloudinaryTransforms = {};
 
       if (transformation.width) transforms.width = transformation.width;
       if (transformation.height) transforms.height = transformation.height;

@@ -11,7 +11,7 @@ import type { CartItem } from '@/store/cartStore';
  */
 export function createWhatsAppOrderMessage(
   items: CartItem[],
-  locale: string = 'ru'
+  locale = 'ru'
 ): string {
   if (!items || items.length === 0) {
     return '';
@@ -64,8 +64,8 @@ export function createWhatsAppOrderMessage(
 
   // Add each item
   items.forEach((item, index) => {
-    const itemName = getLocalizedText(item.name, locale);
-    const itemTotal = item.price * item.quantity;
+    const itemName = getLocalizedText(item.name, locale as 'ru' | 'kk' | 'en');
+    // const itemTotal = item.price * item.quantity;
     
     message += `${index + 1}. ${itemName}\n`;
     message += `   ${t.quantity}: ${item.quantity}\n`;
@@ -89,7 +89,7 @@ export function createWhatsAppOrderMessage(
  */
 export function createWhatsAppOrderUrl(
   items: CartItem[],
-  locale: string = 'ru',
+  locale = 'ru',
   whatsappNumber?: string
 ): string {
   const message = createWhatsAppOrderMessage(items, locale);
@@ -112,7 +112,7 @@ export function createWhatsAppOrderUrl(
  */
 export function openWhatsAppOrder(
   items: CartItem[],
-  locale: string = 'ru',
+  locale = 'ru',
   whatsappNumber?: string
 ): void {
   const url = createWhatsAppOrderUrl(items, locale, whatsappNumber);

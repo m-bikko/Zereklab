@@ -133,11 +133,11 @@ export default function ProductPage() {
   };
 
   const handleWhatsAppOrder = () => {
-    if (!product) return;
+    if (!product || !product._id) return;
 
     // Create a cart item for single product order
     const singleProductItem = {
-      id: product._id!,
+      id: product._id,
       name: product.name,
       price: product.salePrice || product.price,
       image: product.images?.[0] || '',

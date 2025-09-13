@@ -34,6 +34,12 @@ interface MultilingualText {
   en: string;
 }
 
+interface UploadedItem {
+  url: string;
+  publicId: string;
+  originalName: string;
+}
+
 interface ProductFormData {
   name: MultilingualText;
   description: MultilingualText;
@@ -120,7 +126,7 @@ const uploadToCloudinary = async (files: File[]): Promise<string[]> => {
     }
 
     // Возвращаем URL'ы загруженных изображений
-    return result.uploaded.map((item: any) => item.url);
+    return result.uploaded.map((item: UploadedItem) => item.url);
   } catch (error) {
     console.error('Cloudinary upload error:', error);
     throw error;
@@ -175,15 +181,15 @@ export default function ProductManagement({
   // Get subcategories for selected category
   const selectedCategoryObj = categories.find(
     cat =>
-      (typeof cat.name === 'string' ? cat.name : (cat.name as any).ru) ===
+      (typeof cat.name === 'string' ? cat.name : (cat.name as MultilingualText).ru) ===
       formData.category
   );
   const subcategories = selectedCategoryObj?.subcategories || [];
 
-  const getLocalizedValue = (value: any, locale = 'ru'): string => {
+  const getLocalizedValue = (value: string | MultilingualText | Record<string, string>, locale = 'ru'): string => {
     if (typeof value === 'string') return value;
     if (typeof value === 'object' && value !== null) {
-      return value[locale] || value.ru || '';
+      return (value as Record<string, string>)[locale] || (value as Record<string, string>).ru || '';
     }
     return '';
   };
@@ -410,7 +416,7 @@ export default function ProductManagement({
         files: files,
         value: '',
       },
-    } as any;
+    } as unknown as ChangeEvent<HTMLInputElement>;
 
     await handleImageUpload(mockEvent);
   };
@@ -745,13 +751,15 @@ export default function ProductManagement({
                       >
                         <Edit2 className="h-4 w-4" />
                       </button>
-                      <button
-                        onClick={() => handleDeleteProduct(product._id!)}
-                        className="text-red-600 hover:text-red-900"
-                        title="Удалить"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                      {product._id && (
+                        <button
+                          onClick={() => product._id && handleDeleteProduct(product._id)}
+                          className="text-red-600 hover:text-red-900"
+                          title="Удалить"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -907,12 +915,12 @@ export default function ProductManagement({
                             key={
                               typeof category.name === 'string'
                                 ? category.name
-                                : (category.name as any).ru
+                                : (category.name as MultilingualText).ru
                             }
                             value={
                               typeof category.name === 'string'
                                 ? category.name
-                                : (category.name as any).ru
+                                : (category.name as MultilingualText).ru
                             }
                           >
                             {getLocalizedValue(category.name)}
