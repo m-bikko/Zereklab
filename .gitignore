@@ -4,3 +4,4 @@
 .next
 tsconfig.tsbuildinfo
 .git_backup/
+/.env.backup
