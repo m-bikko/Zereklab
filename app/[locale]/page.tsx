@@ -2,6 +2,8 @@
 
 import ClientOnly from '@/components/ClientOnly';
 import DailyImageRotation from '@/components/DailyImageRotation';
+import { StaticGear } from '@/components/FloatingGears';
+import SectionGears from '@/components/SectionGears';
 import { type Locale, t } from '@/lib/i18n';
 
 import { useRef } from 'react';
@@ -197,7 +199,31 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
       >
         <section className="relative overflow-hidden bg-gradient-to-br from-secondary-600 via-secondary-700 to-secondary-800 text-white">
           <div className="absolute inset-0 bg-black/10"></div>
-          <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+          
+          {/* Hero section floating gears */}
+          <SectionGears 
+            gearCount={8}
+            colors={[
+              'rgba(249, 115, 22, 0.4)', // Orange with transparency
+              'rgba(255, 255, 255, 0.35)', // White with transparency
+              'rgba(59, 130, 246, 0.35)', // Blue with transparency
+              'rgba(251, 146, 60, 0.3)', // Light orange
+            ]}
+            minSize={30}
+            maxSize={65}
+            minOpacity={0.2}
+            maxOpacity={0.45}
+          />
+          
+          {/* Hero section decorative gears */}
+          <div className="absolute top-20 left-5 opacity-10 hidden md:block">
+            <StaticGear size={50} color="rgba(249, 115, 22, 0.4)" duration={28} />
+          </div>
+          <div className="absolute bottom-20 right-8 opacity-15 hidden lg:block">
+            <StaticGear size={35} color="rgba(255, 255, 255, 0.3)" duration={22} direction="counterclockwise" />
+          </div>
+          
+          <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32 z-10">
             <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
               <motion.div
                 className="text-center lg:text-left"
@@ -314,15 +340,38 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
 
         {/* Benefits Section */}
         <AnimatedSection>
-          <section className="bg-white py-16 sm:py-20">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <section className="bg-white py-16 sm:py-20 relative">
+            {/* Benefits section floating gears */}
+            <SectionGears 
+              gearCount={7}
+              colors={[
+                'rgba(249, 115, 22, 0.25)', // Light orange
+                'rgba(59, 130, 246, 0.25)', // Light blue
+                'rgba(156, 163, 175, 0.3)', // Light gray
+                'rgba(251, 146, 60, 0.2)', // Light orange variant
+              ]}
+              minSize={25}
+              maxSize={50}
+              minOpacity={0.15}
+              maxOpacity={0.35}
+            />
+            
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
               <motion.div
-                className="mb-12 text-center sm:mb-16"
+                className="mb-12 text-center sm:mb-16 relative"
                 variants={fadeInUp}
                 initial="initial"
                 whileInView="animate"
                 viewport={{ once: true }}
               >
+                {/* Decorative gears around title */}
+                <div className="absolute -top-8 -left-8 opacity-20 hidden md:block">
+                  <StaticGear size={32} color="#f97316" duration={25} direction="counterclockwise" />
+                </div>
+                <div className="absolute -top-4 -right-12 opacity-25 hidden lg:block">
+                  <StaticGear size={28} color="#3b82f6" duration={20} />
+                </div>
+                
                 <h2 className="mb-3 font-fredoka text-3xl font-bold text-gray-900 sm:mb-4 lg:text-4xl">
                   {t('home.benefits.title', currentLocale)}
                 </h2>
@@ -370,8 +419,23 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
 
         {/* Featured Categories Section */}
         <AnimatedSection>
-          <section className="bg-gradient-to-br from-gray-100 to-gray-200 py-16 sm:py-20">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <section className="bg-gradient-to-br from-gray-100 to-gray-200 py-16 sm:py-20 relative">
+            {/* Categories section floating gears */}
+            <SectionGears 
+              gearCount={6}
+              colors={[
+                'rgba(249, 115, 22, 0.3)', // Orange
+                'rgba(59, 130, 246, 0.3)', // Blue
+                'rgba(107, 114, 128, 0.25)', // Gray
+                'rgba(251, 146, 60, 0.25)', // Light orange
+              ]}
+              minSize={35}
+              maxSize={60}
+              minOpacity={0.2}
+              maxOpacity={0.4}
+            />
+            
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
               <motion.div
                 className="mb-12 text-center sm:mb-16"
                 variants={fadeInUp}
@@ -538,8 +602,33 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
 
         {/* Call to Action Section */}
         <AnimatedSection>
-          <section className="bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-600 py-16 text-white sm:py-24">
-            <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <section className="bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-600 py-16 text-white sm:py-24 relative overflow-hidden">
+            {/* CTA section floating gears */}
+            <SectionGears 
+              gearCount={5}
+              colors={[
+                'rgba(255, 255, 255, 0.3)', // White with transparency
+                'rgba(255, 255, 255, 0.2)', // Lighter white
+                'rgba(249, 115, 22, 0.3)', // Orange with transparency
+              ]}
+              minSize={30}
+              maxSize={70}
+              minOpacity={0.15}
+              maxOpacity={0.35}
+            />
+            
+            {/* Background decorative gears */}
+            <div className="absolute top-10 left-10 opacity-10">
+              <StaticGear size={80} color="rgba(255, 255, 255, 0.3)" duration={30} />
+            </div>
+            <div className="absolute bottom-10 right-10 opacity-15">
+              <StaticGear size={60} color="rgba(255, 255, 255, 0.4)" duration={25} direction="counterclockwise" />
+            </div>
+            <div className="absolute top-1/2 left-1/4 opacity-8 hidden lg:block">
+              <StaticGear size={40} color="rgba(255, 255, 255, 0.2)" duration={35} />
+            </div>
+            
+            <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8 relative z-10">
               <motion.h2
                 className="mb-6 font-fredoka text-3xl font-bold sm:text-4xl lg:text-5xl"
                 variants={fadeInUp}

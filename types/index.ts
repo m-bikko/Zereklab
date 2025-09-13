@@ -42,6 +42,18 @@ export interface ICategory {
   updatedAt?: Date;
 }
 
+// Contact form submission interface
+export interface IContact {
+  _id?: string;
+  name: string;
+  whatsapp: string;
+  subject: string;
+  message: string;
+  status: 'new' | 'read' | 'replied';
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 // Client-side validation function (no Mongoose dependencies)
 export const validateProduct = (product: Partial<IProduct>): string[] => {
   const errors: string[] = [];

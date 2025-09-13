@@ -4,6 +4,7 @@ import ImageModal from '@/components/ImageModal';
 import { useLocale } from '@/hooks/useLocale';
 import { formatAgeForDisplay } from '@/lib/ageUtils';
 import { t } from '@/lib/i18n';
+import { openWhatsAppOrder } from '@/lib/whatsapp';
 import {
   extractYouTubeVideoId,
   getYouTubeEmbedUrl,
@@ -134,19 +135,27 @@ export default function ProductPage() {
   const handleWhatsAppOrder = () => {
     if (!product) return;
 
-    let message = `Здравствуйте! Меня интересует заказ товара "${getLocalizedText(product.name, locale)}" из ZerekLab.\n\n`;
-    message += `Информация о товаре:\n`;
-    message += `- Название: ${getLocalizedText(product.name, locale)}\n`;
-    message += `- Цена: ₸${product.price.toLocaleString()}\n`;
-    if (product.category) message += `- Категория: ${product.category}\n`;
-    if (product.sku) message += `- Артикул: ${product.sku}\n`;
-    message += `\nПожалуйста, предоставьте информацию о наличии и способах оплаты. Спасибо!`;
+    // Create a cart item for single product order
+    const singleProductItem = {
+      id: product._id!,
+      name: product.name,
+      price: product.salePrice || product.price,
+      image: product.images?.[0] || '',
+      quantity: 1,
+      sku: product.sku,
+    };
 
-    const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-      message
-    )}`;
-    window.open(whatsappUrl, '_blank');
+    try {
+      openWhatsAppOrder([singleProductItem], locale);
+    } catch (error) {
+      console.error('Error opening WhatsApp:', error);
+      // Fallback to simple message
+      const productName = getLocalizedText(product.name, locale);
+      const price = product.salePrice || product.price;
+      const message = `Здравствуйте! Меня интересует товар: ${productName}\nЦена: ${price.toLocaleString()} ₸\nSKU: ${product.sku}`;
+      const whatsappUrl = `https://wa.me/77753084648?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+    }
   };
 
   if (loading) {

@@ -639,26 +639,26 @@ export default function ProductManagement({
           <RefreshCw className="h-8 w-8 animate-spin text-gray-500" />
         </div>
       ) : (
-        <div className="overflow-hidden bg-white shadow sm:rounded-md">
+        <div className="overflow-x-auto bg-white shadow sm:rounded-md">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-6">
                   Товар
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:table-cell sm:px-6">
                   Категория
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-6">
                   Цена
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-6">
                   Наличие
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 md:table-cell sm:px-6">
                   Возраст
                 </th>
-                <th className="relative px-6 py-3">
+                <th className="relative px-3 py-3 sm:px-6">
                   <span className="sr-only">Действия</span>
                 </th>
               </tr>
@@ -666,43 +666,48 @@ export default function ProductManagement({
             <tbody className="divide-y divide-gray-200 bg-white">
               {products.map(product => (
                 <tr key={product._id} className="hover:bg-gray-50">
-                  <td className="whitespace-nowrap px-6 py-4">
+                  <td className="px-3 py-4 sm:px-6">
                     <div className="flex items-center">
-                      <div className="h-10 w-10 flex-shrink-0">
+                      <div className="h-8 w-8 flex-shrink-0 sm:h-10 sm:w-10">
                         {product.images?.[0] ? (
                           <Image
                             src={product.images[0]}
                             alt={getLocalizedValue(product.name)}
                             width={40}
                             height={40}
-                            className="h-10 w-10 rounded object-cover"
+                            className="h-8 w-8 rounded object-cover sm:h-10 sm:w-10"
                             onError={e => {
                               (e.target as HTMLImageElement).src =
                                 '/images/placeholder-product.svg';
                             }}
                           />
                         ) : (
-                          <div className="flex h-10 w-10 items-center justify-center rounded bg-gray-200">
-                            <ImageIcon className="h-5 w-5 text-gray-400" />
+                          <div className="flex h-8 w-8 items-center justify-center rounded bg-gray-200 sm:h-10 sm:w-10">
+                            <ImageIcon className="h-4 w-4 text-gray-400 sm:h-5 sm:w-5" />
                           </div>
                         )}
                       </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">
+                      <div className="ml-2 sm:ml-4">
+                        <div className="text-xs font-medium text-gray-900 sm:text-sm">
                           {getLocalizedValue(product.name)}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-xs text-gray-500 sm:hidden">
+                          {typeof product.category === 'string'
+                            ? product.category
+                            : getLocalizedValue(product.category)}
+                        </div>
+                        <div className="text-xs text-gray-500 sm:text-sm">
                           SKU: {product.sku}
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                  <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-900 sm:table-cell sm:px-6">
                     {typeof product.category === 'string'
                       ? product.category
                       : getLocalizedValue(product.category)}
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                  <td className="whitespace-nowrap px-3 py-4 text-xs text-gray-900 sm:px-6 sm:text-sm">
                     {product.salePrice ? (
                       <div>
                         <span className="text-gray-500 line-through">
@@ -717,7 +722,7 @@ export default function ProductManagement({
                       <span>{product.price.toLocaleString()} ₸</span>
                     )}
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4">
+                  <td className="whitespace-nowrap px-3 py-4 sm:px-6">
                     <span
                       className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
                         product.inStock
@@ -728,11 +733,11 @@ export default function ProductManagement({
                       {product.inStock ? 'В наличии' : 'Нет в наличии'}
                     </span>
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                  <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-900 md:table-cell sm:px-6">
                     {product.ageRange || 'Не указан'}
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
-                    <div className="flex space-x-2">
+                  <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-medium sm:px-6">
+                    <div className="flex space-x-1 sm:space-x-2">
                       <button
                         onClick={() => openForm(product)}
                         className="text-blue-600 hover:text-blue-900"

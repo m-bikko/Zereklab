@@ -1,7 +1,8 @@
 'use client';
 
+import { type Locale, t } from '@/lib/i18n';
+
 import { useRef, useState } from 'react';
-import { t, type Locale } from '@/lib/i18n';
 
 import { AlertCircle, ScanLine, X } from 'lucide-react';
 
@@ -160,7 +161,9 @@ export default function BarcodeScannerModal({ onScan, locale = 'ru' }: Props) {
             {/* Индикатор активности сканера */}
             <div className="mt-4 flex items-center justify-center gap-2">
               <div className="h-2 w-2 animate-pulse rounded-full bg-green-500"></div>
-              <span className="text-xs text-gray-500">{t('scanner.modal.scannerActive', locale)}</span>
+              <span className="text-xs text-gray-500">
+                {t('scanner.modal.scannerActive', locale)}
+              </span>
             </div>
           </div>
         </div>

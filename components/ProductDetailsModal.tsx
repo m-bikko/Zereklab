@@ -3,6 +3,7 @@
 import { useLocale } from '@/hooks/useLocale';
 import { formatAgeForDisplay } from '@/lib/ageUtils';
 import { t } from '@/lib/i18n';
+import { openWhatsAppOrder } from '@/lib/whatsapp';
 import { useCartStore } from '@/store/cartStore';
 import { IProduct } from '@/types';
 import { getLocalizedText } from '@/types';
@@ -63,13 +64,28 @@ export default function ProductDetailsModal({
     onClose();
   };
 
-  const generateWhatsAppUrl = () => {
-    const productName = getLocalizedText(product.name, locale);
-    const price = product.salePrice || product.price;
-    const message = encodeURIComponent(
-      `Здравствуйте! Меня интересует товар: ${productName}\nЦена: ${price} ₸\nSKU: ${product.sku}\n\nМожете предоставить дополнительную информацию?`
-    );
-    return `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=${message}`;
+  const handleWhatsAppOrder = () => {
+    // Create a cart item for single product order
+    const singleProductItem = {
+      id: product._id!,
+      name: product.name,
+      price: product.salePrice || product.price,
+      image: product.images?.[0] || '/images/placeholder-product.svg',
+      quantity: 1,
+      sku: product.sku,
+    };
+
+    try {
+      openWhatsAppOrder([singleProductItem], locale);
+    } catch (error) {
+      console.error('Error opening WhatsApp:', error);
+      // Fallback to simple message
+      const productName = getLocalizedText(product.name, locale);
+      const price = product.salePrice || product.price;
+      const message = `Здравствуйте! Меня интересует товар: ${productName}\nЦена: ${price} ₸\nSKU: ${product.sku}`;
+      const whatsappUrl = `https://wa.me/77753084648?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+    }
   };
 
   const getYouTubeEmbedUrl = (url: string) => {
@@ -402,15 +418,13 @@ export default function ProductDetailsModal({
                       : t('products.outOfStock', locale)}
                   </button>
 
-                  <a
-                    href={generateWhatsAppUrl()}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={handleWhatsAppOrder}
                     className="flex w-full items-center justify-center rounded-lg bg-green-500 px-6 py-3 text-white hover:bg-green-600"
                   >
                     <Package className="mr-2 h-5 w-5" />
                     {t('products.buyNow', locale)}
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

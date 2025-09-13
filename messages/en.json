@@ -117,10 +117,11 @@
     "close": "Close cart",
     "productAdded": "Product added to cart!",
     "added": "added to cart!",
-    "whatsappMessage": "Hello! I would like to order the following products from ZerekLab",
+    "whatsappMessage": "Hello! I would like to order the following products from ZEREKlab",
     "checkout": "Checkout",
     "remove": "Remove",
-    "continueShopping": "Continue shopping"
+    "continueShopping": "Continue shopping",
+    "whatsappError": "Error opening WhatsApp. Please try again."
   },
   "admin": {
     "title": "Admin Panel",
@@ -188,7 +189,7 @@
       "learnMore": "Learn More"
     },
     "benefits": {
-      "title": "Why ZerekLab?",
+      "title": "Why ZEREKlab?",
       "description": "We strive to provide the best educational experience for young minds through innovative kits.",
       "creativity": {
         "title": "Ignite Creativity",
@@ -232,7 +233,7 @@
     },
     "testimonials": {
       "title": "Parent & Educator Reviews",
-      "description": "Join thousands of families who trust ZerekLab for quality educational experiences.",
+      "description": "Join thousands of families who trust ZEREKlab for quality educational experiences.",
       "testimonial1": {
         "name": "Aigerim S.",
         "role": "Parent",
@@ -254,24 +255,24 @@
       "description": "Choose the perfect kit for your child and open the door to a world of engaging learning and endless possibilities.",
       "button": "Choose a Kit"
     },
-    "dailyImage": {
-      "weeklyImage": "Weekly Image • ZerekLab",
-      "addImages": "Add images in admin panel"
+    "dailyQuote": {
+      "dailyQuote": "Daily Quote • ZEREKlab",
+      "noQuotes": "Add quotes in admin panel"
     }
   },
   "about": {
-    "title": "About ZerekLab",
+    "title": "About ZEREKlab",
     "subtitle": "Inspiring the next generation of innovators and creators through hands-on learning.",
     "mission": {
       "title": "Our Mission",
-      "description": "At ZerekLab, our mission is to make STEM education accessible, engaging, and fun for children around the world. We believe that hands-on experience is key to unlocking a child's potential and fostering a lifelong love of learning and discovery."
+      "description": "At ZEREKlab, our mission is to make STEM education accessible, engaging, and fun for children around the world. We believe that hands-on experience is key to unlocking a child's potential and fostering a lifelong love of learning and discovery."
     },
     "vision": {
       "title": "Our Vision",
       "description": "We envision a world where every child has the opportunity to explore their curiosity, develop critical thinking skills, and become confident problem solvers. Our educational kits are designed to be the spark that ignites this journey."
     },
     "whyUs": {
-      "title": "Why ZerekLab?",
+      "title": "Why ZEREKlab?",
       "passion": {
         "title": "Passion for Education",
         "description": "We are driven by a deep passion for education and a commitment to providing high-quality learning tools."
@@ -297,9 +298,36 @@
         "description": "We strive to inspire children to explore science and technology, opening new horizons for them."
       }
     },
+    "certification": {
+      "title": "Certification and Standards Compliance",
+      "description": "All our products undergo strict quality control and comply with international and regional toy safety standards.",
+      "eac": {
+        "title": "EAC Certificate",
+        "description": "Our products have mandatory EAC (Eurasian Conformity) certification and fully comply with technical regulation TR CU 008/2011 'On the safety of toys' for EAEU countries.",
+        "features": {
+          "mechanical": "Mechanical and physical safety",
+          "fire": "Fire safety of materials",
+          "chemical": "Chemical safety of components",
+          "biological": "Biological and microbiological safety",
+          "electrical": "Electrical safety (for electronic components)",
+          "software": "Software safety"
+        },
+        "badge": "✓ EAC Certificate • TR CU 008/2011",
+        "featuresTitle": "Safety Requirements:"
+      },
+      "en71": {
+        "title": "European Standard EN 71",
+        "description": "Additionally, our products are certified according to European standard EN 71, ensuring compliance with the highest international safety requirements.",
+        "badge": "✓ Certified to EN 71 Standard"
+      },
+      "advantage": {
+        "title": "Our Advantage",
+        "description": "Unlike many counterfeits on the market, all our educational kits undergo complete quality verification, have necessary conformity declarations and official marking. This guarantees the safety of your children and the quality of the learning process."
+      }
+    },
     "story": {
       "title": "Our Story",
-      "paragraph1": "ZerekLab was founded by a group of enthusiasts – educators and engineers who recognized the need for better tools to teach children STEM fundamentals. Frustrated by the lack of engaging and accessible options, we decided to create our own. What started as a small project grew into a company dedicated to empowering young minds.",
+      "paragraph1": "ZEREKlab was founded by a group of enthusiasts – educators and engineers who recognized the need for better tools to teach children STEM fundamentals. Frustrated by the lack of engaging and accessible options, we decided to create our own. What started as a small project grew into a company dedicated to empowering young minds.",
       "paragraph2": "Our journey is fueled by the joy we see in children when they build, experiment, and learn with our kits. We are proud to be part of their educational adventure and strive to make learning not only beneficial but truly exciting."
     }
   },
@@ -310,8 +338,8 @@
       "title": "Contact Information",
       "address": {
         "title": "Our Address",
-        "line1": "Kabanbay Batyr Street, 60A/2",
-        "line2": "Almaty, Kazakhstan, 050010",
+        "line1": "Abilkaiyr Khan Ave, 70",
+        "line2": "030000, Aktobe, Aktobe Region, Kazakhstan",
         "action": "Get Directions"
       },
       "email": {
@@ -326,14 +354,14 @@
       },
       "hours": {
         "title": "Working Hours",
-        "weekdays": "Monday - Friday: 9:00 - 18:00 (GMT+6)",
-        "weekend": "Saturday - Sunday: Closed"
+        "weekdays": "Tuesday - Sunday: 10:00 - 19:00 (GMT+6)",
+        "weekend": "Monday: Closed"
       }
     },
     "form": {
       "title": "Send Us a Message",
       "name": "Your Name",
-      "email": "Your Email",
+      "whatsapp": "Your WhatsApp",
       "subject": "Subject",
       "message": "Message",
       "submit": "Send Message",
@@ -343,7 +371,7 @@
       "success": "Message sent successfully! We'll get back to you soon.",
       "placeholders": {
         "name": "John Doe",
-        "email": "john@example.com",
+        "whatsapp": "+77753084648",
         "subject": "Question about product X",
         "message": "Hello, I would like to know more about..."
       }
@@ -353,14 +381,14 @@
     }
   },
   "footer": {
-    "logoAlt": "ZerekLab Logo",
+    "logoAlt": "ZEREKlab Logo",
     "description": "Inspiring children through hands-on educational kits. Creating the future generation of innovators and inventors.",
     "quickLinks": "Quick Links",
     "categoriesTitle": "Categories",
     "contactUs": "Contact Us",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
-    "copyright": "© {year} ZerekLab. All rights reserved.",
+    "copyright": "© {year} ZEREKlab. All rights reserved.",
     "categories": {
       "electronics": "Electronics",
       "robotics": "Robotics",
@@ -368,8 +396,8 @@
       "science": "Science"
     },
     "address": {
-      "street": "123 Innovation Street",
-      "city": "Technograd, KZ 050000"
+      "street": "Abilkaiyr Khan Ave, 70",
+      "city": "Aktobe, KZ 030000"
     }
   },
   "scanner": {

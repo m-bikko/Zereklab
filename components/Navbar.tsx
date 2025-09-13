@@ -61,7 +61,7 @@ export default function Navbar() {
               <div className="relative flex h-12 w-auto items-center">
                 <Image
                   src="/logo/zereklab.jpg"
-                  alt="Логотип ZerekLab"
+                  alt="Логотип ZEREKlab"
                   width={80}
                   height={32}
                   className="rounded-lg object-contain"

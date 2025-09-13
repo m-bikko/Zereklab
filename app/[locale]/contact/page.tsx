@@ -10,7 +10,7 @@ import { Clock, Mail, MapPin, Phone, Send } from 'lucide-react';
 
 interface FormData {
   name: string;
-  email: string;
+  whatsapp: string;
   subject: string;
   message: string;
 }
@@ -19,7 +19,7 @@ export default function ContactPage() {
   const locale = useLocale();
   const [formData, setFormData] = useState<FormData>({
     name: '',
-    email: '',
+    whatsapp: '',
     subject: '',
     message: '',
   });
@@ -35,25 +35,53 @@ export default function ContactPage() {
     e.preventDefault();
     if (
       !formData.name ||
-      !formData.email ||
+      !formData.whatsapp ||
       !formData.subject ||
       !formData.message
     ) {
       toast.error(t('contact.form.validation', locale));
       return;
     }
+    
     setIsSubmitting(true);
-    toast.loading(t('contact.form.loading', locale));
+    const toastId = toast.loading(t('contact.form.loading', locale));
 
-    // ЗАМЕНИТЬ: Интеграция с вашим API для отправки формы
-    // Пример: await fetch('/api/contact', { method: 'POST', body: JSON.stringify(formData) })
-    await new Promise(resolve => setTimeout(resolve, 1500)); // Имитация задержки API
+    try {
+      console.log('🚀 Sending contact form data:', formData);
+      
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    toast.dismiss();
-    console.log('Form data:', formData);
-    toast.success(t('contact.form.success', locale));
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    setIsSubmitting(false);
+      console.log('📡 Response status:', response.status);
+      const result = await response.json();
+      console.log('📋 Response data:', result);
+
+      if (response.ok) {
+        console.log('✅ Contact form submitted successfully');
+        toast.success(t('contact.form.success', locale), { id: toastId });
+        setFormData({ name: '', whatsapp: '', subject: '', message: '' });
+      } else {
+        console.log('❌ Contact form submission failed:', result);
+        // Handle validation errors
+        if (result.details && Array.isArray(result.details)) {
+          result.details.forEach((detail: any) => {
+            toast.error(`${detail.field}: ${detail.message}`);
+          });
+        } else {
+          toast.error(result.error || 'Произошла ошибка при отправке сообщения', { id: toastId });
+        }
+      }
+    } catch (error) {
+      console.error('❌ Contact form network error:', error);
+      toast.error('Ошибка сети. Попробуйте позже.', { id: toastId });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -87,7 +115,7 @@ export default function ContactPage() {
                 t('contact.info.address.line2', locale),
               ]}
               actionText={t('contact.info.address.action', locale)}
-              actionHref="https://go.2gis.com/abc123xyz" // Замените на реальную ссылку 2GIS/Google Maps
+              actionHref="https://www.google.com/maps/place/Abilkaiyr+Khan+Ave+70,+Aktobe+030000/@50.2880955,57.1689562,17.87z/data=!4m6!3m5!1s0x418223d5d7009e03:0x3f40255ef6be250e!8m2!3d50.2879461!4d57.1704296!16s%2Fg%2F11lnkk3ty_?entry=ttu&g_ep=EgoyMDI1MDcyMC4wIKXMDSoASAFQAw%3D%3D"
             />
             <ContactInfoItem
               icon={Mail}
@@ -120,21 +148,21 @@ export default function ContactPage() {
                 <>
                   {t('contact.info.phone.main', locale)}:{' '}
                   <a
-                    href="tel:+77271234567"
+                    href="tel:+77753084648"
                     className="text-primary-600 transition-colors hover:text-primary-700"
                   >
-                    +7 (727) 123-45-67
+                    +7 (775) 308-46-48
                   </a>
                 </>,
                 <>
                   {t('contact.info.phone.whatsapp', locale)}:{' '}
                   <a
-                    href="https://wa.me/77071234567"
+                    href="https://wa.me/77753084648"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary-600 transition-colors hover:text-primary-700"
                   >
-                    +7 (707) 123-45-67
+                    +7 (775) 308-46-48
                   </a>
                 </>,
               ]}
@@ -175,20 +203,20 @@ export default function ContactPage() {
               </div>
               <div>
                 <label
-                  htmlFor="email"
+                  htmlFor="whatsapp"
                   className="mb-1 block text-sm font-medium text-gray-700"
                 >
-                  {t('contact.form.email', locale)}
+                  {t('contact.form.whatsapp', locale)}
                 </label>
                 <input
-                  type="email"
-                  name="email"
-                  id="email"
+                  type="tel"
+                  name="whatsapp"
+                  id="whatsapp"
                   required
-                  value={formData.email}
+                  value={formData.whatsapp}
                   onChange={handleChange}
                   className="w-full rounded-lg border border-gray-300 px-4 py-2.5 shadow-sm transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
-                  placeholder={t('contact.form.placeholders.email', locale)}
+                  placeholder={t('contact.form.placeholders.whatsapp', locale)}
                 />
               </div>
               <div>
@@ -253,16 +281,15 @@ export default function ContactPage() {
             {t('contact.map.title', locale)}
           </h2>
           <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-xl bg-gray-200 shadow-xl">
-            {/* ЗАМЕНИТЬ на реальный код встраивания карты от 2GIS или Google Maps */}
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2906.1234567890123!2d76.91801831548163!3d43.24101597913718!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3883692f0b8b8e3d%3A0x8b1e2e7b7d7b5b8a!2sSatbayev%20University!5e0!3m2!1sru!2skz!4v1678886655123!5m2!1sru!2skz"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2577.8!2d57.1704296!3d50.2879461!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x418223d5d7009e03%3A0x3f40255ef6be250e!2sAbilkaiyr%20Khan%20Ave%2070%2C%20Aktobe%20030000!5e0!3m2!1sru!2skz!4v1678886655123!5m2!1sru!2skz"
               width="100%"
-              height="450" // Можно сделать адаптивным через aspect ratio или CSS
+              height="450"
               style={{ border: 0 }}
               allowFullScreen={false}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Местоположение ZerekLab"
+              title="Местоположение ZEREKlab - Актобе"
             ></iframe>
           </div>
         </div>

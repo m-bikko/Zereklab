@@ -2,6 +2,7 @@
 
 import { useLocale } from '@/hooks/useLocale';
 import { t } from '@/lib/i18n';
+import { openWhatsAppOrder } from '@/lib/whatsapp';
 import { useCartStore } from '@/store/cartStore';
 import { getLocalizedText } from '@/types';
 
@@ -32,9 +33,23 @@ export default function CartModal() {
   }, []);
 
   const handleCheckout = () => {
-    // В будущем здесь будет интеграция с платежной системой
-    alert('Функция оформления заказа будет доступна в ближайшее время!');
-    closeCart();
+    if (items.length === 0) {
+      return;
+    }
+
+    try {
+      // Open WhatsApp with formatted order message
+      openWhatsAppOrder(items, locale);
+      
+      // Optionally clear cart after successful order
+      // clearCart();
+      
+      // Close cart modal
+      closeCart();
+    } catch (error) {
+      console.error('Error opening WhatsApp:', error);
+      alert(t('cart.whatsappError', locale));
+    }
   };
 
   const handleContinueShopping = () => {

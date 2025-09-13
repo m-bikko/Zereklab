@@ -21,7 +21,7 @@ export default function Footer() {
     },
     {
       name: 'WhatsApp',
-      href: 'https://wa.me/71234567890',
+      href: 'https://wa.me/77753084648',
       icon: MessageCircle,
       color: 'hover:text-green-500',
     },
@@ -149,8 +149,8 @@ export default function Footer() {
               </div>
               <div className="flex items-center space-x-3 text-sm text-gray-300">
                 <Phone className="h-4 w-4 flex-shrink-0 text-primary-400" />
-                <a href="tel:+71234567890" className="hover:text-primary-400">
-                  +7 (123) 456-7890
+                <a href="tel:+77753084648" className="hover:text-primary-400">
+                  +7 (775) 308-46-48
                 </a>
               </div>
               <div className="flex items-start space-x-3 text-sm text-gray-300">

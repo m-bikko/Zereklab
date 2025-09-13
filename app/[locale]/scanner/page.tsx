@@ -2,8 +2,8 @@
 
 import BarcodeScannerModal from '@/components/BarcodeScannerModal';
 import ProductDetailsModal from '@/components/ProductDetailsModal';
+import { type Locale, getLocalizedMessage, t } from '@/lib/i18n';
 import { IProduct } from '@/types';
-import { getLocalizedMessage, t, type Locale } from '@/lib/i18n';
 
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -51,7 +51,11 @@ export default function ScannerPage({ params: { locale } }: ScannerPageProps) {
             setSelectedProduct(exactData.products[0]);
             setShowProductDetails(true);
           }
-          toast.success(t('scanner.success.found', locale, { count: exactData.products.length }));
+          toast.success(
+            t('scanner.success.found', locale, {
+              count: exactData.products.length,
+            })
+          );
           return;
         }
       }
@@ -67,7 +71,9 @@ export default function ScannerPage({ params: { locale } }: ScannerPageProps) {
         if (partialData.products && partialData.products.length > 0) {
           setSearchResults(partialData.products);
           toast.success(
-            t('scanner.success.foundPartial', locale, { count: partialData.products.length })
+            t('scanner.success.foundPartial', locale, {
+              count: partialData.products.length,
+            })
           );
         } else {
           setSearchResults([]);
@@ -117,7 +123,9 @@ export default function ScannerPage({ params: { locale } }: ScannerPageProps) {
         <div className="mb-8 text-center">
           <div className="mb-4 flex items-center justify-center">
             <Package className="mr-3 h-12 w-12 text-primary-500" />
-            <h1 className="text-3xl font-bold text-gray-900">{t('scanner.title', locale)}</h1>
+            <h1 className="text-3xl font-bold text-gray-900">
+              {t('scanner.title', locale)}
+            </h1>
           </div>
           <p className="mx-auto max-w-2xl text-gray-600">
             {t('scanner.description', locale)}
@@ -173,7 +181,9 @@ export default function ScannerPage({ params: { locale } }: ScannerPageProps) {
         {searchResults.length > 0 && (
           <div className="rounded-xl bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-xl font-semibold text-gray-900">
-              {t('scanner.resultsCount', locale, { count: searchResults.length })}
+              {t('scanner.resultsCount', locale, {
+                count: searchResults.length,
+              })}
             </h2>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -209,22 +219,32 @@ export default function ScannerPage({ params: { locale } }: ScannerPageProps) {
 
                   <div className="mb-3 space-y-1 text-sm text-gray-600">
                     <p>
-                      <span className="font-medium">{t('scanner.sku', locale)}:</span>{' '}
+                      <span className="font-medium">
+                        {t('scanner.sku', locale)}:
+                      </span>{' '}
                       {product.sku || t('scanner.notSpecified', locale)}
                     </p>
                     <p>
-                      <span className="font-medium">{t('scanner.price', locale)}:</span> {product.price}{' '}
-                      ₸
+                      <span className="font-medium">
+                        {t('scanner.price', locale)}:
+                      </span>{' '}
+                      {product.price} ₸
                     </p>
                     <p>
-                      <span className="font-medium">{t('scanner.category', locale)}:</span>{' '}
+                      <span className="font-medium">
+                        {t('scanner.category', locale)}:
+                      </span>{' '}
                       {product.category}
                     </p>
                     <p
                       className={`${product.inStock ? 'text-green-600' : 'text-red-600'}`}
                     >
-                      <span className="font-medium">{t('scanner.status', locale)}:</span>{' '}
-                      {product.inStock ? t('scanner.inStock', locale) : t('scanner.outOfStock', locale)}
+                      <span className="font-medium">
+                        {t('scanner.status', locale)}:
+                      </span>{' '}
+                      {product.inStock
+                        ? t('scanner.inStock', locale)
+                        : t('scanner.outOfStock', locale)}
                     </p>
                   </div>
 

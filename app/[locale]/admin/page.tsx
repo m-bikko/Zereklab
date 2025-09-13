@@ -2,9 +2,10 @@
 
 import AdminGuard from '@/components/AdminGuard';
 import CategoryManagement from '@/components/admin/CategoryManagement';
+import ContactManagement from '@/components/admin/ContactManagement';
 import ProductManagement from '@/components/admin/ProductManagement';
 import { useAuth } from '@/hooks/useAuth';
-import { ICategory, IProduct } from '@/types';
+import { ICategory, IContact, IProduct } from '@/types';
 
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -15,6 +16,7 @@ import {
   BarChart3,
   Calendar,
   LogOut,
+  Mail,
   Package,
   RefreshCw,
   Settings,
@@ -23,8 +25,8 @@ import {
 } from 'lucide-react';
 
 // Динамический импорт для избежания проблем с SSR
-const DailyImageManagement = dynamic(
-  () => import('@/components/admin/DailyImageManagement'),
+const DailyQuotesManagement = dynamic(
+  () => import('@/components/admin/DailyQuotesManagement'),
   {
     ssr: false,
     loading: () => (
@@ -43,21 +45,24 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<
     | 'products'
     | 'categories'
-    | 'daily-images'
+    | 'contacts'
+    | 'daily-quotes'
     | 'analytics'
     | 'users'
     | 'settings'
   >('products');
   const [products, setProducts] = useState<IProduct[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
+  const [contacts, setContacts] = useState<IContact[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [productsRes, categoriesRes] = await Promise.all([
+      const [productsRes, categoriesRes, contactsRes] = await Promise.all([
         fetch('/api/products?simple=true'),
         fetch('/api/categories'),
+        fetch('/api/contact'),
       ]);
 
       if (productsRes.ok) {
@@ -72,6 +77,13 @@ export default function AdminPage() {
         setCategories(categoriesData);
       } else {
         toast.error('Ошибка загрузки категорий');
+      }
+
+      if (contactsRes.ok) {
+        const contactsData = await contactsRes.json();
+        setContacts(contactsData.data || []);
+      } else {
+        toast.error('Ошибка загрузки обращений');
       }
     } catch (error) {
       console.error('Ошибка загрузки данных:', error);
@@ -157,11 +169,28 @@ export default function AdminPage() {
                   </span>
                 </button>
                 <button
-                  onClick={() => setActiveTab('daily-images')}
-                  className={tabClass('daily-images')}
+                  onClick={() => setActiveTab('contacts')}
+                  className={tabClass('contacts')}
+                >
+                  <Mail className="h-5 w-5" />
+                  <span>Обращения</span>
+                  {contacts.filter(c => c.status === 'new').length > 0 && (
+                    <span className="ml-auto rounded-full bg-red-500 px-2 py-1 text-xs text-white">
+                      {contacts.filter(c => c.status === 'new').length}
+                    </span>
+                  )}
+                  {contacts.filter(c => c.status === 'new').length === 0 && (
+                    <span className="ml-auto rounded-full bg-gray-200 px-2 py-1 text-xs text-gray-700">
+                      {contacts.length}
+                    </span>
+                  )}
+                </button>
+                <button
+                  onClick={() => setActiveTab('daily-quotes')}
+                  className={tabClass('daily-quotes')}
                 >
                   <Calendar className="h-5 w-5" />
-                  <span>Изображения недели</span>
+                  <span>Цитаты дня</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('analytics')}
@@ -206,7 +235,15 @@ export default function AdminPage() {
                 />
               )}
 
-              {activeTab === 'daily-images' && <DailyImageManagement />}
+              {activeTab === 'contacts' && (
+                <ContactManagement
+                  contacts={contacts}
+                  loading={loading}
+                  onRefresh={handleRefresh}
+                />
+              )}
+
+              {activeTab === 'daily-quotes' && <DailyQuotesManagement />}
 
               {activeTab === 'analytics' && (
                 <div className="rounded-lg bg-white p-6">

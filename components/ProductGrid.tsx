@@ -3,6 +3,7 @@
 import { useLocale } from '@/hooks/useLocale';
 import { formatAgeForDisplay } from '@/lib/ageUtils';
 import { t } from '@/lib/i18n';
+import { openWhatsAppOrder } from '@/lib/whatsapp';
 import { useCartStore } from '@/store/cartStore';
 import { getLocalizedText } from '@/types';
 import { IProduct } from '@/types';
@@ -44,13 +45,28 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
     toast.success('Быстрый просмотр будет доступен в ближайшее время');
   };
 
-  const generateWhatsAppUrl = (product: IProduct) => {
-    const productName = getLocalizedText(product.name, locale);
-    const price = product.salePrice || product.price;
-    const message = encodeURIComponent(
-      `Здравствуйте! Меня интересует товар: ${productName}\nЦена: ${price} ₸\nSKU: ${product.sku}\n\nМожете предоставить дополнительную информацию?`
-    );
-    return `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=${message}`;
+  const handleWhatsAppOrder = (product: IProduct) => {
+    // Create a cart item for single product order
+    const singleProductItem = {
+      id: product._id!,
+      name: product.name,
+      price: product.salePrice || product.price,
+      image: product.images?.[0] || '/images/placeholder-product.svg',
+      quantity: 1,
+      sku: product.sku,
+    };
+
+    try {
+      openWhatsAppOrder([singleProductItem], locale);
+    } catch (error) {
+      console.error('Error opening WhatsApp:', error);
+      // Fallback to simple message
+      const productName = getLocalizedText(product.name, locale);
+      const price = product.salePrice || product.price;
+      const message = `Здравствуйте! Меня интересует товар: ${productName}\nЦена: ${price} ₸\nSKU: ${product.sku}`;
+      const whatsappUrl = `https://wa.me/77753084648?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+    }
   };
 
   if (products.length === 0) {
@@ -229,14 +245,12 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
                     <ShoppingCart className="mr-2 h-4 w-4" />
                     {t('products.addToCart', locale)}
                   </button>
-                  <a
-                    href={generateWhatsAppUrl(product)}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => handleWhatsAppOrder(product)}
                     className="flex items-center rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600"
                   >
                     {t('products.buyNow', locale)}
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -248,7 +262,7 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
 
   return (
     <motion.div
-      className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -358,15 +372,13 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
                 >
                   <ShoppingCart className="h-4 w-4" />
                 </button>
-                <a
-                  href={generateWhatsAppUrl(product)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => handleWhatsAppOrder(product)}
                   className="rounded-lg bg-green-500 p-2 text-white hover:bg-green-600"
                   title={t('products.buyNow', locale)}
                 >
                   <Package className="h-4 w-4" />
-                </a>
+                </button>
               </div>
             </div>
           </div>

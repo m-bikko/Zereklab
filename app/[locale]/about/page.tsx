@@ -104,6 +104,117 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Certification Section */}
+      <section className="bg-gradient-to-r from-green-50 to-blue-50 py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="rounded-xl bg-white p-8 shadow-xl">
+            <div className="mb-8 text-center">
+              <div className="mb-6 flex items-center justify-center">
+                <div className="rounded-full bg-green-100 p-6">
+                  <ShieldCheck className="h-12 w-12 text-green-600" />
+                </div>
+              </div>
+              <h2 className="mb-4 text-3xl font-bold text-gray-800 sm:text-4xl">
+                {t('about.certification.title', locale)}
+              </h2>
+              <p className="mx-auto max-w-3xl text-lg leading-relaxed text-gray-600">
+                {t('about.certification.description', locale)}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              {/* EAC Certificate */}
+              <div className="rounded-lg border-2 border-primary-100 bg-gradient-to-br from-primary-50 to-orange-50 p-6">
+                <div className="mb-4 flex items-center">
+                  <div className="rounded-full bg-primary-100 p-3 mr-3">
+                    <ShieldCheck className="h-8 w-8 text-primary-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800">
+                    {t('about.certification.eac.title', locale)}
+                  </h3>
+                </div>
+                <p className="mb-4 text-gray-600">
+                  {t('about.certification.eac.description', locale)}
+                </p>
+                
+                <div className="mb-4">
+                  <h4 className="mb-2 font-semibold text-gray-700">{t('about.certification.eac.featuresTitle', locale)}</h4>
+                  <ul className="space-y-1 text-sm text-gray-600">
+                    <li className="flex items-center">
+                      <span className="mr-2 text-primary-500">✓</span>
+                      {t('about.certification.eac.features.mechanical', locale)}
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-2 text-primary-500">✓</span>
+                      {t('about.certification.eac.features.fire', locale)}
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-2 text-primary-500">✓</span>
+                      {t('about.certification.eac.features.chemical', locale)}
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-2 text-primary-500">✓</span>
+                      {t('about.certification.eac.features.biological', locale)}
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-2 text-primary-500">✓</span>
+                      {t('about.certification.eac.features.electrical', locale)}
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-2 text-primary-500">✓</span>
+                      {t('about.certification.eac.features.software', locale)}
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="mt-4">
+                  <span className="inline-flex items-center rounded-full bg-primary-100 px-4 py-2 text-sm font-semibold text-primary-800">
+                    {t('about.certification.eac.badge', locale)}
+                  </span>
+                </div>
+              </div>
+
+              {/* EN 71 Certificate */}
+              <div className="rounded-lg border-2 border-secondary-100 bg-gradient-to-br from-secondary-50 to-blue-50 p-6">
+                <div className="mb-4 flex items-center">
+                  <div className="rounded-full bg-secondary-100 p-3 mr-3">
+                    <ShieldCheck className="h-8 w-8 text-secondary-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800">
+                    {t('about.certification.en71.title', locale)}
+                  </h3>
+                </div>
+                <p className="mb-4 text-gray-600">
+                  {t('about.certification.en71.description', locale)}
+                </p>
+                <div className="mt-4">
+                  <span className="inline-flex items-center rounded-full bg-secondary-100 px-4 py-2 text-sm font-semibold text-secondary-800">
+                    {t('about.certification.en71.badge', locale)}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Advantage Section */}
+            <div className="mt-8 rounded-lg bg-gradient-to-r from-yellow-50 to-amber-50 border-2 border-yellow-200 p-6">
+              <div className="flex items-start">
+                <div className="rounded-full bg-yellow-100 p-3 mr-4 mt-1">
+                  <Target className="h-8 w-8 text-yellow-600" />
+                </div>
+                <div>
+                  <h3 className="mb-2 text-xl font-bold text-gray-800">
+                    {t('about.certification.advantage.title', locale)}
+                  </h3>
+                  <p className="text-gray-600">
+                    {t('about.certification.advantage.description', locale)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Our Story Section */}
       <section className="bg-white py-16 sm:py-20">
         <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">

@@ -24,25 +24,25 @@ const comfortaa = Comfortaa({
 
 export const metadata: Metadata = {
   metadataBase: new URL('http://localhost:3000'),
-  title: 'ZerekLab - Образовательные наборы для детей',
+  title: 'ZEREKlab - Образовательные наборы для детей',
   description:
     'Откройте для себя удивительные образовательные наборы, которые помогают детям учиться через практический опыт. Идеально для STEM-образования и творческого обучения.',
   keywords:
     'образовательные наборы, робототехника, для детей, STEM, обучение, электроника, программирование, конструкторы',
-  authors: [{ name: 'ZerekLab' }],
+  authors: [{ name: 'ZEREKlab' }],
   robots: 'index, follow',
   openGraph: {
     type: 'website',
     locale: 'ru_RU',
     url: 'https://zereklab.com',
-    title: 'ZerekLab - Образовательные наборы для детей',
+    title: 'ZEREKlab - Образовательные наборы для детей',
     description:
       'Откройте для себя удивительные образовательные наборы, которые помогают детям учиться через практический опыт.',
-    siteName: 'ZerekLab',
+    siteName: 'ZEREKlab',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ZerekLab - Образовательные наборы для детей',
+    title: 'ZEREKlab - Образовательные наборы для детей',
     description:
       'Откройте для себя удивительные образовательные наборы, которые помогают детям учиться через практический опыт.',
   },
