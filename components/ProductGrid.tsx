@@ -25,7 +25,9 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
   const { addItem } = useCartStore();
   const locale = useLocale();
 
-  const handleAddToCart = (product: IProduct) => {
+  const handleAddToCart = (e: React.MouseEvent, product: IProduct) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (!product._id) return;
     
     const cartItem = {
@@ -42,12 +44,16 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleQuickView = (product: IProduct) => {
+  const handleQuickView = (e: React.MouseEvent, product: IProduct) => {
+    e.preventDefault();
+    e.stopPropagation();
     // This will be implemented later with a modal
     toast.success('Быстрый просмотр будет доступен в ближайшее время');
   };
 
-  const handleWhatsAppOrder = (product: IProduct) => {
+  const handleWhatsAppOrder = (e: React.MouseEvent, product: IProduct) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (!product._id) return;
     
     // Create a cart item for single product order
@@ -119,11 +125,11 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
         animate="visible"
       >
         {products.map(product => (
-          <motion.div
-            key={product._id}
-            variants={itemVariants}
-            className="flex overflow-hidden rounded-lg bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl"
-          >
+          <motion.div key={product._id} variants={itemVariants}>
+            <Link
+              href={`/${locale}/products/${product._id}`}
+              className="flex overflow-hidden rounded-lg bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl block"
+            >
             <div className="relative h-48 w-48 flex-shrink-0 sm:h-64 sm:w-64">
               <Image
                 src={product.images?.[0] || '/images/placeholder-product.svg'}
@@ -160,17 +166,12 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
             <div className="flex flex-1 flex-col justify-between p-6">
               <div>
                 <div className="flex items-start justify-between">
-                  <h3 className="text-xl font-semibold text-gray-900">
-                    <Link
-                      href={`/${locale}/products/${product._id}`}
-                      className="hover:text-primary-600"
-                    >
-                      {getLocalizedText(product.name, locale)}
-                    </Link>
+                  <h3 className="text-xl font-semibold text-gray-900 hover:text-primary-600">
+                    {getLocalizedText(product.name, locale)}
                   </h3>
                   <div className="ml-4 flex space-x-2">
                     <button
-                      onClick={() => handleQuickView(product)}
+                      onClick={(e) => handleQuickView(e, product)}
                       className="rounded-full bg-gray-100 p-2 text-gray-600 hover:bg-gray-200"
                       title={t('products.quickView', locale)}
                     >
@@ -242,7 +243,7 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
 
                 <div className="flex space-x-2">
                   <button
-                    onClick={() => handleAddToCart(product)}
+                    onClick={(e) => handleAddToCart(e, product)}
                     disabled={!product.inStock}
                     className="flex items-center rounded-lg bg-primary-500 px-4 py-2 text-sm font-medium text-white hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
                   >
@@ -250,7 +251,7 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
                     {t('products.addToCart', locale)}
                   </button>
                   <button
-                    onClick={() => handleWhatsAppOrder(product)}
+                    onClick={(e) => handleWhatsAppOrder(e, product)}
                     className="flex items-center rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600"
                   >
                     {t('products.buyNow', locale)}
@@ -258,6 +259,7 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
                 </div>
               </div>
             </div>
+            </Link>
           </motion.div>
         ))}
       </motion.div>
@@ -275,8 +277,11 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
         <motion.div
           key={product._id}
           variants={itemVariants}
-          className="group relative overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
         >
+          <Link
+            href={`/${locale}/products/${product._id}`}
+            className="group relative overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl block"
+          >
           <div className="relative aspect-square overflow-hidden">
             <Image
               src={product.images?.[0] || '/images/placeholder-product.svg'}
@@ -309,7 +314,7 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
             )}
             <div className="absolute right-3 top-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
               <button
-                onClick={() => handleQuickView(product)}
+                onClick={(e) => handleQuickView(e, product)}
                 className="rounded-full bg-white bg-opacity-90 p-2 text-gray-600 hover:bg-opacity-100"
                 title={t('products.quickView', locale)}
               >
@@ -320,13 +325,8 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
 
           <div className="p-4">
             <div className="mb-2 flex items-start justify-between">
-              <h3 className="line-clamp-2 text-lg font-semibold text-gray-900">
-                <Link
-                  href={`/${locale}/products/${product._id}`}
-                  className="hover:text-primary-600"
-                >
-                  {getLocalizedText(product.name, locale)}
-                </Link>
+              <h3 className="line-clamp-2 text-lg font-semibold text-gray-900 hover:text-primary-600">
+                {getLocalizedText(product.name, locale)}
               </h3>
             </div>
 
@@ -369,7 +369,7 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
 
               <div className="flex space-x-1">
                 <button
-                  onClick={() => handleAddToCart(product)}
+                  onClick={(e) => handleAddToCart(e, product)}
                   disabled={!product.inStock}
                   className="rounded-lg bg-primary-500 p-2 text-white hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
                   title={t('products.addToCart', locale)}
@@ -377,7 +377,7 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
                   <ShoppingCart className="h-4 w-4" />
                 </button>
                 <button
-                  onClick={() => handleWhatsAppOrder(product)}
+                  onClick={(e) => handleWhatsAppOrder(e, product)}
                   className="rounded-lg bg-green-500 p-2 text-white hover:bg-green-600"
                   title={t('products.buyNow', locale)}
                 >
@@ -386,6 +386,7 @@ export default function ProductGrid({ products, viewMode }: ProductGridProps) {
               </div>
             </div>
           </div>
+          </Link>
         </motion.div>
       ))}
     </motion.div>

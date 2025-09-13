@@ -1,11 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['zereklab-images.s3.amazonaws.com', 'localhost', 'res.cloudinary.com'],
+    domains: ['zereklab-images.s3.amazonaws.com', 'localhost', 'res.cloudinary.com', 'img.youtube.com'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
         port: '',
         pathname: '/**',
       },
