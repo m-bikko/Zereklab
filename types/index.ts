@@ -26,7 +26,7 @@ export interface IProduct {
     height: number;
     weight: number;
   };
-  parameters?: Record<string, any>;
+  parameters?: Record<string, string | number | boolean>;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -37,7 +37,7 @@ export interface ICategory {
   description?: string;
   subcategories?: string[];
   parentCategory?: string;
-  parameters?: Record<string, any>;
+  parameters?: Record<string, string | number | boolean>;
   createdAt?: Date;
   updatedAt?: Date;
 }

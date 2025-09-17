@@ -8,7 +8,7 @@ import { useCartStore } from '@/store/cartStore';
 import { IProduct } from '@/types';
 import { getLocalizedText } from '@/types';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import Image from 'next/image';
@@ -46,6 +46,19 @@ export default function ProductDetailsModal({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   if (!isOpen || !product) return null;
 
@@ -119,175 +132,161 @@ export default function ProductDetailsModal({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 overflow-y-auto">
-        <div className="flex min-h-screen items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
-            onClick={onClose}
-          />
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          onClick={onClose}
+        />
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="relative max-h-[90vh] w-full max-w-6xl overflow-hidden rounded-lg bg-white shadow-xl"
-          >
+        {/* Modal Container */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+          transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          className="relative mx-2 w-full max-w-4xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Modal Content */}
+          <div className="relative flex h-[90vh] max-h-[600px] overflow-hidden rounded-xl bg-white shadow-2xl">
+            {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute right-4 top-4 z-10 rounded-full bg-white bg-opacity-90 p-2 text-gray-600 hover:bg-opacity-100 hover:text-gray-900"
+              className="absolute right-2 top-2 z-20 rounded-full bg-white/80 p-1.5 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:scale-110"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4 text-gray-700" />
             </button>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              {/* Image Section */}
-              <div className="relative bg-gray-50 p-6">
-                <div className="space-y-4">
-                  {/* Main Image */}
-                  <div className="relative aspect-square overflow-hidden rounded-lg bg-white">
-                    {currentImage ? (
-                      <Image
-                        src={currentImage}
-                        alt={getLocalizedText(product.name, locale)}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 1024px) 100vw, 50vw"
-                        onError={e => {
-                          (e.target as HTMLImageElement).src =
-                            '/images/placeholder-product.svg';
-                        }}
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center">
-                        <ImageIcon className="h-16 w-16 text-gray-400" />
-                      </div>
-                    )}
-
-                    {/* Navigation buttons */}
-                    {product.images && product.images.length > 1 && (
-                      <>
-                        <button
-                          onClick={prevImage}
-                          className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white bg-opacity-80 p-2 text-gray-800 hover:bg-opacity-100"
-                        >
-                          <ArrowLeft className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={nextImage}
-                          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white bg-opacity-80 p-2 text-gray-800 hover:bg-opacity-100"
-                        >
-                          <ArrowRight className="h-4 w-4" />
-                        </button>
-                      </>
-                    )}
-
-                    {/* Full screen button */}
-                    {currentImage && (
-                      <button
-                        onClick={() => setIsImageModalOpen(true)}
-                        className="absolute bottom-2 right-2 rounded-full bg-black bg-opacity-50 p-2 text-white hover:bg-opacity-70"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </button>
-                    )}
-
-                    {/* Sale badge */}
-                    {product.salePrice && (
-                      <div className="absolute left-3 top-3">
-                        <span className="rounded-full bg-red-500 px-3 py-1 text-sm font-semibold text-white">
-                          -
-                          {Math.round(
-                            ((product.price - product.salePrice) /
-                              product.price) *
-                              100
-                          )}
-                          %
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Thumbnail images */}
-                  {product.images && product.images.length > 1 && (
-                    <div className="flex space-x-2 overflow-x-auto pb-2">
-                      {product.images.map((image, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setSelectedImageIndex(index)}
-                          className={`relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border-2 ${
-                            index === selectedImageIndex
-                              ? 'border-primary-500'
-                              : 'border-gray-200'
-                          }`}
-                        >
-                          <Image
-                            src={image}
-                            alt={`${getLocalizedText(product.name, locale)} ${index + 1}`}
-                            fill
-                            className="object-cover"
-                            sizes="64px"
-                            onError={e => {
-                              (e.target as HTMLImageElement).src =
-                                '/images/placeholder-product.svg';
-                            }}
-                          />
-                        </button>
-                      ))}
+            {/* Image Section */}
+            <div className="relative w-full bg-gray-50 md:w-1/2">
+              <div className="flex h-full flex-col p-3">
+                {/* Main Image */}
+                <div className="relative flex-1 overflow-hidden rounded-lg bg-white">
+                  {currentImage ? (
+                    <Image
+                      src={currentImage}
+                      alt={getLocalizedText(product.name, locale)}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      onError={e => {
+                        (e.target as HTMLImageElement).src =
+                          '/images/placeholder-product.svg';
+                      }}
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center">
+                      <ImageIcon className="h-12 w-12 text-gray-400" />
                     </div>
                   )}
 
-                  {/* Video Section */}
-                  {product.videoUrl && (
-                    <div className="space-y-2">
+                  {/* Image Navigation */}
+                  {product.images && product.images.length > 1 && (
+                    <>
                       <button
-                        onClick={() => setShowVideo(!showVideo)}
-                        className="flex w-full items-center justify-center rounded-lg bg-gray-100 py-3 text-gray-700 hover:bg-gray-200"
+                        onClick={prevImage}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 shadow-md backdrop-blur-sm transition-all hover:bg-white hover:scale-110"
                       >
-                        <Play className="mr-2 h-4 w-4" />
-                        {showVideo ? 'Скрыть видео' : 'Показать видео'}
+                        <ArrowLeft className="h-3 w-3 text-gray-700" />
                       </button>
+                      <button
+                        onClick={nextImage}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 shadow-md backdrop-blur-sm transition-all hover:bg-white hover:scale-110"
+                      >
+                        <ArrowRight className="h-3 w-3 text-gray-700" />
+                      </button>
+                    </>
+                  )}
 
-                      {showVideo && getYouTubeEmbedUrl(product.videoUrl) && (
-                        <div className="aspect-video overflow-hidden rounded-lg">
-                          <iframe
-                            src={getYouTubeEmbedUrl(product.videoUrl) || ''}
-                            title="Product Video"
-                            className="h-full w-full"
-                            allowFullScreen
-                          />
-                        </div>
-                      )}
+                  {/* Fullscreen Button */}
+                  {currentImage && (
+                    <button
+                      onClick={() => setIsImageModalOpen(true)}
+                      className="absolute bottom-2 right-2 rounded-full bg-black/50 p-1.5 text-white transition-all hover:bg-black/70 hover:scale-110"
+                    >
+                      <ExternalLink className="h-3 w-3" />
+                    </button>
+                  )}
+
+                  {/* Sale Badge */}
+                  {product.salePrice && (
+                    <div className="absolute left-2 top-2">
+                      <span className="rounded-full bg-red-500 px-2 py-1 text-xs font-bold text-white shadow-md">
+                        -{Math.round(((product.price - product.salePrice) / product.price) * 100)}%
+                      </span>
                     </div>
                   )}
                 </div>
-              </div>
 
-              {/* Product Details Section */}
-              <div className="flex flex-col p-6">
-                <div className="flex-1 space-y-6 overflow-y-auto">
+                {/* Thumbnails */}
+                {product.images && product.images.length > 1 && (
+                  <div className="mt-2 flex gap-1.5 overflow-x-auto">
+                    {product.images.map((image, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setSelectedImageIndex(index)}
+                        className={`relative h-10 w-10 flex-shrink-0 overflow-hidden rounded border-2 transition-all ${
+                          index === selectedImageIndex
+                            ? 'border-primary-500 scale-110'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <Image
+                          src={image}
+                          alt={`Thumbnail ${index + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="40px"
+                          onError={e => {
+                            (e.target as HTMLImageElement).src = '/images/placeholder-product.svg';
+                          }}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Video Button */}
+                {product.videoUrl && (
+                  <button
+                    onClick={() => setShowVideo(!showVideo)}
+                    className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg bg-gray-100 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200"
+                  >
+                    <Play className="h-3 w-3" />
+                    {showVideo ? 'Скрыть видео' : 'Показать видео'}
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Details Section */}
+            <div className="flex w-full flex-col md:w-1/2">
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto p-4">
+                <div className="space-y-3">
                   {/* Header */}
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-900 lg:text-3xl">
+                    <h2 className="text-lg font-bold text-gray-900 md:text-xl">
                       {getLocalizedText(product.name, locale)}
                     </h2>
-
-                    <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-gray-500">
-                      <span className="flex items-center">
-                        <Tag className="mr-1 h-4 w-4" />
+                    <div className="mt-1 flex flex-wrap gap-2 text-xs text-gray-500">
+                      <span className="flex items-center gap-1">
+                        <Tag className="h-3 w-3" />
                         SKU: {product.sku}
                       </span>
                       {product.ageRange && (
-                        <span className="flex items-center">
-                          <Clock className="mr-1 h-4 w-4" />
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
                           {formatAgeForDisplay(product.ageRange)}
                         </span>
                       )}
                       {product.difficulty && (
-                        <span className="flex items-center">
-                          <Star className="mr-1 h-4 w-4" />
+                        <span className="flex items-center gap-1">
+                          <Star className="h-3 w-3" />
                           {product.difficulty}
                         </span>
                       )}
@@ -295,25 +294,25 @@ export default function ProductDetailsModal({
                   </div>
 
                   {/* Price */}
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center gap-3">
                     {product.salePrice ? (
                       <>
-                        <span className="text-3xl font-bold text-red-600">
+                        <span className="text-xl font-bold text-red-600">
                           {product.salePrice.toLocaleString()} ₸
                         </span>
-                        <span className="text-xl text-gray-500 line-through">
+                        <span className="text-sm text-gray-500 line-through">
                           {product.price.toLocaleString()} ₸
                         </span>
                       </>
                     ) : (
-                      <span className="text-3xl font-bold text-gray-900">
+                      <span className="text-xl font-bold text-gray-900">
                         {product.price.toLocaleString()} ₸
                       </span>
                     )}
                   </div>
 
                   {/* Stock Status */}
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center gap-2">
                     <div
                       className={`h-2 w-2 rounded-full ${
                         product.inStock ? 'bg-green-500' : 'bg-red-500'
@@ -337,10 +336,10 @@ export default function ProductDetailsModal({
 
                   {/* Description */}
                   <div>
-                    <h3 className="mb-2 font-semibold text-gray-900">
+                    <h3 className="mb-2 text-sm font-semibold text-gray-900">
                       {t('products.description', locale)}
                     </h3>
-                    <p className="leading-relaxed text-gray-600">
+                    <p className="text-sm leading-relaxed text-gray-600">
                       {getLocalizedText(product.description, locale)}
                     </p>
                   </div>
@@ -348,14 +347,14 @@ export default function ProductDetailsModal({
                   {/* Features */}
                   {product.features && product.features.length > 0 && (
                     <div>
-                      <h3 className="mb-3 font-semibold text-gray-900">
+                      <h3 className="mb-2 text-sm font-semibold text-gray-900">
                         {t('products.features', locale)}
                       </h3>
-                      <ul className="space-y-2">
+                      <ul className="space-y-1">
                         {product.features.map((feature, index) => (
-                          <li key={index} className="flex items-start">
-                            <div className="mr-3 mt-2 h-1.5 w-1.5 rounded-full bg-primary-500" />
-                            <span className="text-gray-600">
+                          <li key={index} className="flex items-start gap-2">
+                            <div className="mt-1.5 h-1 w-1 rounded-full bg-primary-500" />
+                            <span className="text-sm text-gray-600">
                               {getLocalizedText(feature, locale)}
                             </span>
                           </li>
@@ -365,41 +364,33 @@ export default function ProductDetailsModal({
                   )}
 
                   {/* Specifications */}
-                  {product.specifications &&
-                    Object.keys(product.specifications).length > 0 && (
-                      <div>
-                        <h3 className="mb-3 font-semibold text-gray-900">
-                          {t('products.specifications', locale)}
-                        </h3>
-                        <div className="space-y-2">
-                          {Object.entries(product.specifications).map(
-                            ([key, value]) => (
-                              <div
-                                key={key}
-                                className="flex justify-between border-b border-gray-100 pb-2"
-                              >
-                                <span className="text-gray-600">{key}:</span>
-                                <span className="font-medium text-gray-900">
-                                  {value}
-                                </span>
-                              </div>
-                            )
-                          )}
-                        </div>
+                  {product.specifications && Object.keys(product.specifications).length > 0 && (
+                    <div>
+                      <h3 className="mb-2 text-sm font-semibold text-gray-900">
+                        {t('products.specifications', locale)}
+                      </h3>
+                      <div className="space-y-1">
+                        {Object.entries(product.specifications).map(([key, value]) => (
+                          <div key={key} className="flex justify-between border-b border-gray-100 pb-1">
+                            <span className="text-sm text-gray-600">{key}:</span>
+                            <span className="text-sm font-medium text-gray-900">{value}</span>
+                          </div>
+                        ))}
                       </div>
-                    )}
+                    </div>
+                  )}
 
                   {/* Tags */}
                   {product.tags && product.tags.length > 0 && (
                     <div>
-                      <h3 className="mb-3 font-semibold text-gray-900">
+                      <h3 className="mb-2 text-sm font-semibold text-gray-900">
                         {t('products.tags', locale)}
                       </h3>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1">
                         {product.tags.map((tag, index) => (
                           <span
                             key={index}
-                            className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700"
+                            className="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-700"
                           >
                             {tag}
                           </span>
@@ -407,16 +398,30 @@ export default function ProductDetailsModal({
                       </div>
                     </div>
                   )}
-                </div>
 
-                {/* Action Buttons */}
-                <div className="mt-6 space-y-3 border-t pt-6">
+                  {/* Video Embed */}
+                  {showVideo && product.videoUrl && getYouTubeEmbedUrl(product.videoUrl) && (
+                    <div className="aspect-video overflow-hidden rounded-lg">
+                      <iframe
+                        src={getYouTubeEmbedUrl(product.videoUrl) || ''}
+                        title="Product Video"
+                        className="h-full w-full"
+                        allowFullScreen
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="border-t bg-gray-50 p-3">
+                <div className="space-y-2">
                   <button
                     onClick={handleAddToCart}
                     disabled={!product.inStock}
-                    className="flex w-full items-center justify-center rounded-lg bg-primary-500 px-6 py-3 text-white hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <ShoppingCart className="mr-2 h-5 w-5" />
+                    <ShoppingCart className="h-4 w-4" />
                     {product.inStock
                       ? t('products.addToCart', locale)
                       : t('products.outOfStock', locale)}
@@ -424,29 +429,29 @@ export default function ProductDetailsModal({
 
                   <button
                     onClick={handleWhatsAppOrder}
-                    className="flex w-full items-center justify-center rounded-lg bg-green-500 px-6 py-3 text-white hover:bg-green-600"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-green-500 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-green-600"
                   >
-                    <Package className="mr-2 h-5 w-5" />
+                    <Package className="h-4 w-4" />
                     {t('products.buyNow', locale)}
                   </button>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Image Modal */}
-            {isImageModalOpen && currentImage && product.images && (
-              <ImageModal
-                images={product.images}
-                selectedIndex={selectedImageIndex}
-                isOpen={isImageModalOpen}
-                onClose={() => setIsImageModalOpen(false)}
-                onPrevious={prevImage}
-                onNext={nextImage}
-                alt={getLocalizedText(product.name, locale)}
-              />
-            )}
-          </motion.div>
-        </div>
+          {/* Image Modal */}
+          {isImageModalOpen && currentImage && product.images && (
+            <ImageModal
+              images={product.images}
+              selectedIndex={selectedImageIndex}
+              isOpen={isImageModalOpen}
+              onClose={() => setIsImageModalOpen(false)}
+              onPrevious={prevImage}
+              onNext={nextImage}
+              alt={getLocalizedText(product.name, locale)}
+            />
+          )}
+        </motion.div>
       </div>
     </AnimatePresence>
   );
