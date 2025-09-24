@@ -117,8 +117,507 @@ export default function ScannerPage({ params: { locale } }: ScannerPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-8 relative overflow-hidden" style={{
+      background: 'linear-gradient(135deg, #fff5e6 0%, #ffe4cc 100%)'
+    }}>
+      {/* STEM Elements from forScanner.html */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        
+        {/* Atoms */}
+        <div className="absolute opacity-10" style={{
+          top: '8%', right: '20%', 
+          animationDelay: '0s'
+        }}>
+          <div className="atom element" style={{
+            animation: 'float 15s ease-in-out infinite'
+          }}>
+            <div style={{
+              position: 'absolute',
+              width: '20px',
+              height: '20px',
+              background: '#ff6b35',
+              borderRadius: '50%',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              boxShadow: '0 0 20px rgba(255, 107, 53, 0.5)'
+            }}></div>
+            <div style={{
+              position: 'absolute',
+              border: '3px solid #ff8c42',
+              borderRadius: '50%',
+              animation: 'rotate 10s linear infinite',
+              width: '60px',
+              height: '60px',
+              top: '10px',
+              left: '10px'
+            }}>
+              <div style={{
+                position: 'absolute',
+                width: '8px',
+                height: '8px',
+                background: '#ff6b35',
+                borderRadius: '50%',
+                top: '-4px',
+                left: '50%',
+                transform: 'translateX(-50%)'
+              }}></div>
+            </div>
+            <div style={{
+              position: 'absolute',
+              border: '3px solid #ff8c42',
+              borderRadius: '50%',
+              animation: 'rotate 10s linear infinite',
+              width: '70px',
+              height: '35px',
+              top: '22.5px',
+              left: '5px',
+              transform: 'rotate(60deg)'
+            }}>
+              <div style={{
+                position: 'absolute',
+                width: '8px',
+                height: '8px',
+                background: '#ff6b35',
+                borderRadius: '50%',
+                top: '-4px',
+                left: '50%',
+                transform: 'translateX(-50%)'
+              }}></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="absolute opacity-8" style={{
+          bottom: '50%', left: '10%', 
+          animationDelay: '3s'
+        }}>
+          <div className="atom element" style={{
+            animation: 'float 15s ease-in-out infinite'
+          }}>
+            <div style={{
+              position: 'absolute',
+              width: '16px',
+              height: '16px',
+              background: '#ff6b35',
+              borderRadius: '50%',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              boxShadow: '0 0 15px rgba(255, 107, 53, 0.4)'
+            }}></div>
+            <div style={{
+              position: 'absolute',
+              border: '2px solid #ff8c42',
+              borderRadius: '50%',
+              animation: 'rotate 8s linear infinite',
+              width: '50px',
+              height: '50px',
+              top: '10px',
+              left: '10px'
+            }}>
+              <div style={{
+                position: 'absolute',
+                width: '6px',
+                height: '6px',
+                background: '#ff6b35',
+                borderRadius: '50%',
+                top: '-3px',
+                left: '50%',
+                transform: 'translateX(-50%)'
+              }}></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Gears */}
+        <div className="absolute opacity-8" style={{
+          top: '30%', left: '15%', 
+          animationDelay: '1s'
+        }}>
+          <div className="gear element" style={{
+            animation: 'rotate 8s linear infinite',
+            width: '60px',
+            height: '60px',
+            position: 'absolute'
+          }}>
+            <div style={{
+              width: '100%',
+              height: '100%',
+              background: '#ff8c42',
+              borderRadius: '50%',
+              position: 'relative',
+              boxShadow: '0 0 15px rgba(255, 140, 66, 0.3)'
+            }}>
+              {[...Array(8)].map((_, i) => (
+                <div 
+                  key={i}
+                  style={{
+                    position: 'absolute',
+                    width: '15px',
+                    height: '20px',
+                    background: '#ff8c42',
+                    top: '-10px',
+                    left: '50%',
+                    transform: `translateX(-50%) rotate(${i * 45}deg)`,
+                    transformOrigin: 'center 40px'
+                  }}
+                ></div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="absolute opacity-6" style={{
+          bottom: '35%', right: '30%', 
+          animationDelay: '4s'
+        }}>
+          <div className="gear element" style={{
+            animation: 'rotate 12s linear infinite reverse',
+            width: '45px',
+            height: '45px',
+            position: 'absolute'
+          }}>
+            <div style={{
+              width: '100%',
+              height: '100%',
+              background: '#ff8c42',
+              borderRadius: '50%',
+              position: 'relative',
+              boxShadow: '0 0 10px rgba(255, 140, 66, 0.3)'
+            }}>
+              {[...Array(6)].map((_, i) => (
+                <div 
+                  key={i}
+                  style={{
+                    position: 'absolute',
+                    width: '12px',
+                    height: '15px',
+                    background: '#ff8c42',
+                    top: '-7px',
+                    left: '50%',
+                    transform: `translateX(-50%) rotate(${i * 60}deg)`,
+                    transformOrigin: 'center 30px'
+                  }}
+                ></div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Flasks */}
+        <div className="absolute opacity-8" style={{
+          top: '18%', left: '40%', 
+          animationDelay: '2s'
+        }}>
+          <div className="flask element" style={{
+            animation: 'float 15s ease-in-out infinite',
+            width: '50px',
+            height: '70px',
+            position: 'absolute'
+          }}>
+            <div style={{
+              width: '40px',
+              height: '45px',
+              background: 'linear-gradient(to bottom, transparent 40%, #ff6b35 40%)',
+              border: '3px solid #ff8c42',
+              borderRadius: '0 0 20px 20px',
+              position: 'absolute',
+              bottom: 0,
+              left: '5px'
+            }}>
+              <div style={{
+                position: 'absolute',
+                width: '6px',
+                height: '6px',
+                background: '#ffa652',
+                borderRadius: '50%',
+                bottom: '10px',
+                left: '10px',
+                animation: 'bubble-up 3s ease-in-out infinite'
+              }}></div>
+              <div style={{
+                position: 'absolute',
+                width: '6px',
+                height: '6px',
+                background: '#ffa652',
+                borderRadius: '50%',
+                bottom: '15px',
+                left: '20px',
+                animation: 'bubble-up 3s ease-in-out infinite',
+                animationDelay: '1s'
+              }}></div>
+            </div>
+            <div style={{
+              width: '16px',
+              height: '25px',
+              borderLeft: '3px solid #ff8c42',
+              borderRight: '3px solid #ff8c42',
+              position: 'absolute',
+              top: 0,
+              left: '17px'
+            }}></div>
+          </div>
+        </div>
+
+        <div className="absolute opacity-6" style={{
+          bottom: '55%', right: '15%', 
+          animationDelay: '5s'
+        }}>
+          <div className="flask element" style={{
+            animation: 'float 18s ease-in-out infinite',
+            width: '40px',
+            height: '55px',
+            position: 'absolute'
+          }}>
+            <div style={{
+              width: '32px',
+              height: '35px',
+              background: 'linear-gradient(to bottom, transparent 40%, #ff6b35 40%)',
+              border: '2px solid #ff8c42',
+              borderRadius: '0 0 16px 16px',
+              position: 'absolute',
+              bottom: 0,
+              left: '4px'
+            }}>
+              <div style={{
+                position: 'absolute',
+                width: '4px',
+                height: '4px',
+                background: '#ffa652',
+                borderRadius: '50%',
+                bottom: '8px',
+                left: '8px',
+                animation: 'bubble-up 4s ease-in-out infinite'
+              }}></div>
+            </div>
+            <div style={{
+              width: '12px',
+              height: '20px',
+              borderLeft: '2px solid #ff8c42',
+              borderRight: '2px solid #ff8c42',
+              position: 'absolute',
+              top: 0,
+              left: '14px'
+            }}></div>
+          </div>
+        </div>
+
+        {/* Lightning bolts */}
+        <div className="absolute opacity-6" style={{
+          top: '45%', right: '40%', 
+          animationDelay: '1.5s'
+        }}>
+          <div className="lightning element" style={{
+            animation: 'float 20s ease-in-out infinite',
+            width: '30px',
+            height: '60px',
+            position: 'absolute'
+          }}>
+            <div style={{
+              width: 0,
+              height: 0,
+              borderStyle: 'solid',
+              borderWidth: '30px 15px 0 0',
+              borderColor: '#ff6b35 transparent transparent transparent',
+              position: 'relative'
+            }}>
+              <div style={{
+                content: '',
+                width: 0,
+                height: 0,
+                borderStyle: 'solid',
+                borderWidth: '0 0 30px 15px',
+                borderColor: 'transparent transparent #ff6b35 transparent',
+                position: 'absolute',
+                top: '15px',
+                left: '-8px'
+              }}></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="absolute opacity-5" style={{
+          top: '5%', left: '60%', 
+          animationDelay: '3.5s'
+        }}>
+          <div className="lightning element" style={{
+            animation: 'float 25s ease-in-out infinite',
+            width: '25px',
+            height: '50px',
+            position: 'absolute'
+          }}>
+            <div style={{
+              width: 0,
+              height: 0,
+              borderStyle: 'solid',
+              borderWidth: '25px 12px 0 0',
+              borderColor: '#ff6b35 transparent transparent transparent',
+              position: 'relative'
+            }}>
+              <div style={{
+                content: '',
+                width: 0,
+                height: 0,
+                borderStyle: 'solid',
+                borderWidth: '0 0 25px 12px',
+                borderColor: 'transparent transparent #ff6b35 transparent',
+                position: 'absolute',
+                top: '12px',
+                left: '-6px'
+              }}></div>
+            </div>
+          </div>
+        </div>
+
+        {/* DNA Helix */}
+        <div className="absolute opacity-6" style={{
+          bottom: '25%', left: '35%', 
+          animationDelay: '2.5s'
+        }}>
+          <div className="dna element" style={{
+            animation: 'float 20s ease-in-out infinite',
+            width: '40px',
+            height: '80px',
+            position: 'absolute'
+          }}>
+            <div style={{
+              width: '4px',
+              height: '100%',
+              background: 'linear-gradient(to bottom, #ff6b35 0%, #ff8c42 25%, #ff6b35 50%, #ff8c42 75%, #ff6b35 100%)',
+              position: 'absolute',
+              left: '18px',
+              animation: 'wave 4s ease-in-out infinite'
+            }}></div>
+            <div style={{
+              width: '4px',
+              height: '100%',
+              background: 'linear-gradient(to bottom, #ff6b35 0%, #ff8c42 25%, #ff6b35 50%, #ff8c42 75%, #ff6b35 100%)',
+              position: 'absolute',
+              left: '18px',
+              transform: 'translateX(10px)',
+              animation: 'wave 4s ease-in-out infinite',
+              animationDelay: '0.5s'
+            }}></div>
+          </div>
+        </div>
+
+        {/* Rocket */}
+        <div className="absolute opacity-7" style={{
+          top: '55%', left: '70%'
+        }}>
+          <div className="rocket" style={{
+            animation: 'rocket-fly 20s ease-in-out infinite',
+            width: '40px',
+            height: '60px',
+            position: 'absolute'
+          }}>
+            <div style={{
+              width: '24px',
+              height: '40px',
+              background: '#ff6b35',
+              borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%',
+              position: 'absolute',
+              left: '8px',
+              top: 0
+            }}></div>
+            <div style={{
+              width: 0,
+              height: 0,
+              borderStyle: 'solid',
+              borderWidth: '0 8px 20px 8px',
+              borderColor: 'transparent transparent #ff8c42 transparent',
+              position: 'absolute',
+              bottom: '15px',
+              left: '-4px'
+            }}></div>
+            <div style={{
+              width: 0,
+              height: 0,
+              borderStyle: 'solid',
+              borderWidth: '0 8px 20px 8px',
+              borderColor: 'transparent transparent #ff8c42 transparent',
+              position: 'absolute',
+              bottom: '15px',
+              right: '-4px'
+            }}></div>
+            <div style={{
+              width: '16px',
+              height: '20px',
+              background: 'linear-gradient(to bottom, #ffa652, #ff6b35)',
+              borderRadius: '0 0 50% 50%',
+              position: 'absolute',
+              bottom: '-15px',
+              left: '12px',
+              animation: 'flame 0.3s ease-in-out infinite alternate'
+            }}></div>
+          </div>
+        </div>
+
+        {/* Pattern dots */}
+        <div className="absolute opacity-4" style={{top: '2%', right: '10%'}}>
+          <div style={{
+            position: 'absolute',
+            width: '8px',
+            height: '8px',
+            background: '#ff6b35',
+            borderRadius: '50%'
+          }}></div>
+        </div>
+        <div className="absolute opacity-3" style={{top: '35%', left: '5%'}}>
+          <div style={{
+            position: 'absolute',
+            width: '6px',
+            height: '6px',
+            background: '#ff6b35',
+            borderRadius: '50%'
+          }}></div>
+        </div>
+        <div className="absolute opacity-5" style={{bottom: '20%', right: '50%'}}>
+          <div style={{
+            position: 'absolute',
+            width: '8px',
+            height: '8px',
+            background: '#ff6b35',
+            borderRadius: '50%'
+          }}></div>
+        </div>
+      </div>
+      
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          25% { transform: translateY(-20px) rotate(5deg); }
+          75% { transform: translateY(10px) rotate(-5deg); }
+        }
+        
+        @keyframes rotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        
+        @keyframes bubble-up {
+          0% { transform: translateY(0); opacity: 1; }
+          100% { transform: translateY(-20px); opacity: 0; }
+        }
+        
+        @keyframes wave {
+          0%, 100% { transform: scaleX(1); }
+          50% { transform: scaleX(1.2); }
+        }
+        
+        @keyframes rocket-fly {
+          0%, 100% { transform: translateY(0) rotate(-45deg); }
+          50% { transform: translateY(-30px) rotate(-45deg); }
+        }
+        
+        @keyframes flame {
+          from { transform: scaleY(1); opacity: 0.8; }
+          to { transform: scaleY(1.2); opacity: 1; }
+        }
+      `}</style>
+      
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Заголовок */}
         <div className="mb-8 text-center">
           <div className="mb-4 flex items-center justify-center">

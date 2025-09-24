@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZEREKLAB Wallpaper</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe4cc 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .wallpaper-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            animation: subtle-float 20s ease-in-out infinite;
+        }
+
+        /* Logo text elements scattered */
+        .logo-text {
+            position: absolute;
+            font-family: 'Arial Black', sans-serif;
+            font-weight: 900;
+            color: #ff6b35;
+            opacity: 0.1;
+            font-size: 120px;
+            transform: rotate(-15deg);
+            user-select: none;
+        }
+
+        .logo-text.main {
+            top: 10%;
+            left: 20%;
+            opacity: 0.15;
+            font-size: 180px;
+        }
+
+        /* STEM Elements */
+        .element {
+            position: absolute;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        /* Atom/Molecule */
+        .atom {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+        }
+
+        .atom::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff6b35;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+        }
+
+        .orbit {
+            position: absolute;
+            border: 3px solid #ff8c42;
+            border-radius: 50%;
+            animation: rotate 10s linear infinite;
+        }
+
+        .orbit1 {
+            width: 60px;
+            height: 60px;
+            top: 10px;
+            left: 10px;
+        }
+
+        .orbit2 {
+            width: 70px;
+            height: 35px;
+            top: 22.5px;
+            left: 5px;
+            transform: rotate(60deg);
+        }
+
+        .orbit3 {
+            width: 70px;
+            height: 35px;
+            top: 22.5px;
+            left: 5px;
+            transform: rotate(-60deg);
+        }
+
+        .electron {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff6b35;
+            border-radius: 50%;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Gear */
+        .gear {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            animation: rotate 8s linear infinite;
+        }
+
+        .gear-inner {
+            width: 100%;
+            height: 100%;
+            background: #ff8c42;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 15px rgba(255, 140, 66, 0.3);
+        }
+
+        .gear-tooth {
+            position: absolute;
+            width: 15px;
+            height: 20px;
+            background: #ff8c42;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            transform-origin: center 40px;
+        }
+
+        .gear-tooth:nth-child(2) { transform: translateX(-50%) rotate(45deg); }
+        .gear-tooth:nth-child(3) { transform: translateX(-50%) rotate(90deg); }
+        .gear-tooth:nth-child(4) { transform: translateX(-50%) rotate(135deg); }
+        .gear-tooth:nth-child(5) { transform: translateX(-50%) rotate(180deg); }
+        .gear-tooth:nth-child(6) { transform: translateX(-50%) rotate(225deg); }
+        .gear-tooth:nth-child(7) { transform: translateX(-50%) rotate(270deg); }
+        .gear-tooth:nth-child(8) { transform: translateX(-50%) rotate(315deg); }
+
+        /* Flask/Beaker */
+        .flask {
+            width: 50px;
+            height: 70px;
+            position: absolute;
+        }
+
+        .flask-body {
+            width: 40px;
+            height: 45px;
+            background: linear-gradient(to bottom, transparent 40%, #ff6b35 40%);
+            border: 3px solid #ff8c42;
+            border-radius: 0 0 20px 20px;
+            position: absolute;
+            bottom: 0;
+            left: 5px;
+        }
+
+        .flask-neck {
+            width: 16px;
+            height: 25px;
+            border-left: 3px solid #ff8c42;
+            border-right: 3px solid #ff8c42;
+            position: absolute;
+            top: 0;
+            left: 17px;
+        }
+
+        .bubble {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ffa652;
+            border-radius: 50%;
+            bottom: 10px;
+            animation: bubble-up 3s ease-in-out infinite;
+        }
+
+        /* Lightning bolt (electricity) */
+        .lightning {
+            width: 30px;
+            height: 60px;
+            position: absolute;
+        }
+
+        .lightning-bolt {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 30px 15px 0 0;
+            border-color: #ff6b35 transparent transparent transparent;
+            position: relative;
+        }
+
+        .lightning-bolt::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 30px 15px;
+            border-color: transparent transparent #ff6b35 transparent;
+            position: absolute;
+            top: 15px;
+            left: -8px;
+        }
+
+        /* DNA Helix */
+        .dna {
+            width: 40px;
+            height: 100px;
+            position: absolute;
+        }
+
+        .dna-strand {
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                #ff6b35 0%, #ff8c42 25%, #ff6b35 50%, #ff8c42 75%, #ff6b35 100%);
+            position: absolute;
+            left: 18px;
+            animation: wave 4s ease-in-out infinite;
+        }
+
+        .dna-strand:first-child {
+            animation-delay: 0.5s;
+            transform: translateX(-10px);
+        }
+
+        .dna-strand:last-child {
+            transform: translateX(10px);
+        }
+
+        /* Rocket */
+        .rocket {
+            width: 40px;
+            height: 60px;
+            position: absolute;
+            animation: rocket-fly 20s ease-in-out infinite;
+        }
+
+        .rocket-body {
+            width: 24px;
+            height: 40px;
+            background: #ff6b35;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            left: 8px;
+            top: 0;
+        }
+
+        .rocket-fin {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 8px 20px 8px;
+            border-color: transparent transparent #ff8c42 transparent;
+            position: absolute;
+            bottom: 15px;
+        }
+
+        .rocket-fin.left { left: -4px; }
+        .rocket-fin.right { right: -4px; }
+
+        .rocket-flame {
+            width: 16px;
+            height: 20px;
+            background: linear-gradient(to bottom, #ffa652, #ff6b35);
+            border-radius: 0 0 50% 50%;
+            position: absolute;
+            bottom: -15px;
+            left: 12px;
+            animation: flame 0.3s ease-in-out infinite alternate;
+        }
+
+        /* Positioning elements */
+        .atom1 { top: 15%; right: 20%; animation-delay: 0s; }
+        .atom2 { bottom: 30%; left: 10%; animation-delay: 3s; }
+        
+        .gear1 { top: 40%; left: 15%; animation-delay: 1s; }
+        .gear2 { bottom: 20%; right: 30%; animation-delay: 4s; }
+        
+        .flask1 { top: 25%; left: 40%; animation-delay: 2s; }
+        .flask2 { bottom: 40%; right: 15%; animation-delay: 5s; }
+        
+        .lightning1 { top: 60%; right: 40%; animation-delay: 1.5s; }
+        .lightning2 { top: 10%; left: 60%; animation-delay: 3.5s; }
+        
+        .dna1 { bottom: 15%; left: 35%; animation-delay: 2.5s; }
+        
+        .rocket1 { top: 70%; left: 70%; }
+
+        /* Pattern dots */
+        .dot-pattern {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff6b35;
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+
+        .dot-pattern::before,
+        .dot-pattern::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff6b35;
+            border-radius: 50%;
+        }
+
+        .dot-pattern::before {
+            top: 20px;
+            left: 20px;
+        }
+
+        .dot-pattern::after {
+            top: 40px;
+            left: 0;
+        }
+
+        .dots1 { top: 5%; right: 10%; }
+        .dots2 { top: 50%; left: 5%; }
+        .dots3 { bottom: 10%; right: 50%; }
+        .dots4 { top: 30%; right: 35%; }
+        .dots5 { bottom: 35%; left: 25%; }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            75% { transform: translateY(10px) rotate(-5deg); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes bubble-up {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-20px); opacity: 0; }
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: scaleX(1); }
+            50% { transform: scaleX(1.2); }
+        }
+
+        @keyframes rocket-fly {
+            0%, 100% { transform: translateY(0) rotate(-45deg); }
+            50% { transform: translateY(-30px) rotate(-45deg); }
+        }
+
+        @keyframes flame {
+            from { transform: scaleY(1); opacity: 0.8; }
+            to { transform: scaleY(1.2); opacity: 1; }
+        }
+
+        @keyframes subtle-float {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* Central brand area */
+        .brand-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        .brand-title {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 72px;
+            font-weight: 900;
+            color: #ff6b35;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 0 rgba(255, 140, 66, 0.3);
+            margin-bottom: 10px;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .brand-tagline {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            color: #ff8c42;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @media (max-width: 768px) {
+            .brand-title { font-size: 48px; }
+            .brand-tagline { font-size: 14px; }
+            .logo-text { font-size: 80px; }
+            .logo-text.main { font-size: 120px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wallpaper-container">
+        <!-- Background logo text -->
+        <div class="logo-text main">ZEREKLAB</div>
+        
+        <!-- STEM Elements -->
+        <!-- Atoms -->
+        <div class="atom atom1 element">
+            <div class="orbit orbit1"><div class="electron"></div></div>
+            <div class="orbit orbit2"><div class="electron"></div></div>
+            <div class="orbit orbit3"><div class="electron"></div></div>
+        </div>
+        <div class="atom atom2 element">
+            <div class="orbit orbit1"><div class="electron"></div></div>
+            <div class="orbit orbit2"><div class="electron"></div></div>
+        </div>
+        
+        <!-- Gears -->
+        <div class="gear gear1 element">
+            <div class="gear-inner">
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+            </div>
+        </div>
+        <div class="gear gear2 element">
+            <div class="gear-inner">
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+                <div class="gear-tooth"></div>
+            </div>
+        </div>
+        
+        <!-- Flasks -->
+        <div class="flask flask1 element">
+            <div class="flask-neck"></div>
+            <div class="flask-body">
+                <div class="bubble" style="left: 10px;"></div>
+                <div class="bubble" style="left: 20px; animation-delay: 1s;"></div>
+                <div class="bubble" style="left: 15px; animation-delay: 2s;"></div>
+            </div>
+        </div>
+        <div class="flask flask2 element">
+            <div class="flask-neck"></div>
+            <div class="flask-body">
+                <div class="bubble" style="left: 12px;"></div>
+                <div class="bubble" style="left: 18px; animation-delay: 1.5s;"></div>
+            </div>
+        </div>
+        
+        <!-- Lightning bolts -->
+        <div class="lightning lightning1 element">
+            <div class="lightning-bolt"></div>
+        </div>
+        <div class="lightning lightning2 element">
+            <div class="lightning-bolt"></div>
+        </div>
+        
+        <!-- DNA -->
+        <div class="dna dna1 element">
+            <div class="dna-strand"></div>
+            <div class="dna-strand"></div>
+        </div>
+        
+        <!-- Rocket -->
+        <div class="rocket rocket1">
+            <div class="rocket-body"></div>
+            <div class="rocket-fin left"></div>
+            <div class="rocket-fin right"></div>
+            <div class="rocket-flame"></div>
+        </div>
+        
+        <!-- Dot patterns -->
+        <div class="dot-pattern dots1"></div>
+        <div class="dot-pattern dots2"></div>
+        <div class="dot-pattern dots3"></div>
+        <div class="dot-pattern dots4"></div>
+        <div class="dot-pattern dots5"></div>
+        
+        <!-- Central branding -->
+        <div class="brand-center">
+            <div class="brand-title">ZEREKLAB</div>
+            <div class="brand-tagline">EXPLORE • CREATE • DISCOVER</div>
+        </div>
+    </div>
+</body>
+</html>
