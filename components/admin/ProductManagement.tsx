@@ -206,8 +206,8 @@ export default function ProductManagement({
         type === 'checkbox'
           ? checked
           : type === 'number'
-            ? value === ''
-              ? 0
+            ? value === '' || value === '0'
+              ? name === 'salePrice' ? undefined : 0  // salePrice can be undefined, others default to 0
               : Number(value)
             : value,
     }));
@@ -522,7 +522,7 @@ export default function ProductManagement({
       // Send full multilingual data to server
       const apiData = {
         ...formData,
-        salePrice: formData.salePrice || undefined,
+        salePrice: formData.salePrice && formData.salePrice > 0 ? formData.salePrice : null,
         difficulty: formData.difficulty || 'Beginner',
       };
 

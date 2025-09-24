@@ -193,8 +193,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Handle salePrice - remove if null or 0
+    const productData = { ...body };
+    if (productData.salePrice === null || productData.salePrice === 0) {
+      delete productData.salePrice;
+    }
+
     // Create new product using Mongoose model
-    const product = new Product(body);
+    const product = new Product(productData);
     const savedProduct = await product.save();
 
     return NextResponse.json(savedProduct, { status: 201 });
