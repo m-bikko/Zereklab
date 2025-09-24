@@ -53,11 +53,11 @@ Messages are automatically translated based on current locale:
 ### Environment Variables
 Set the following in your `.env.local` file:
 ```
-NEXT_PUBLIC_WHATSAPP_NUMBER=77713918840
+NEXT_PUBLIC_WHATSAPP_NUMBER=77753084648
 ```
 
 ### Default WhatsApp Number
-If environment variable is not set, defaults to: `77713918840`
+If environment variable is not set, defaults to: `77753084648`
 
 ## Usage for Customers
 
