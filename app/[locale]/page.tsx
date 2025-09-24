@@ -19,7 +19,6 @@ import {
   GraduationCap,
   Lightbulb,
   Rocket,
-  Star,
   Wrench,
 } from 'lucide-react';
 
@@ -101,26 +100,6 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
     },
   ];
 
-  const testimonials = [
-    {
-      name: t('home.testimonials.testimonial1.name', currentLocale),
-      role: t('home.testimonials.testimonial1.role', currentLocale),
-      content: t('home.testimonials.testimonial1.content', currentLocale),
-      rating: 5,
-    },
-    {
-      name: t('home.testimonials.testimonial2.name', currentLocale),
-      role: t('home.testimonials.testimonial2.role', currentLocale),
-      content: t('home.testimonials.testimonial2.content', currentLocale),
-      rating: 5,
-    },
-    {
-      name: t('home.testimonials.testimonial3.name', currentLocale),
-      role: t('home.testimonials.testimonial3.role', currentLocale),
-      content: t('home.testimonials.testimonial3.content', currentLocale),
-      rating: 5,
-    },
-  ];
 
   const stats = [
     { number: '10,000+', label: t('home.stats.children', currentLocale) },
@@ -509,96 +488,6 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
           </section>
         </AnimatedSection>
 
-        {/* Testimonials Section */}
-        <AnimatedSection>
-          <section className="bg-white py-16 sm:py-20">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <motion.div
-                className="mb-12 text-center sm:mb-16"
-                variants={fadeInUp}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true }}
-              >
-                <h2 className="mb-3 font-fredoka text-3xl font-bold text-gray-900 sm:mb-4 lg:text-4xl">
-                  {t('home.testimonials.title', currentLocale)}
-                </h2>
-                <p className="mx-auto max-w-3xl text-lg text-gray-600 sm:text-xl">
-                  {t('home.testimonials.description', currentLocale)}
-                </p>
-              </motion.div>
-
-              <motion.div
-                className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
-                variants={staggerContainer}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true }}
-              >
-                {testimonials.map((testimonial, index) => (
-                  <motion.div
-                    key={index}
-                    variants={scaleIn}
-                    whileHover={{ y: -5, scale: 1.01 }}
-                    className="transform rounded-2xl bg-gray-50 p-6 shadow-xl transition-all duration-200 sm:p-8"
-                  >
-                    <motion.div
-                      className="mb-4 flex items-center"
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      transition={{ duration: 0.4, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                    >
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="h-5 w-5 fill-yellow-400 text-yellow-400"
-                        />
-                      ))}
-                      {[...Array(5 - testimonial.rating)].map((_, i) => (
-                        <Star
-                          key={`empty-${i}`}
-                          className="h-5 w-5 fill-gray-300 text-gray-300"
-                        />
-                      ))}
-                    </motion.div>
-                    <motion.p
-                      className="mb-5 text-sm leading-relaxed text-gray-700 sm:mb-6 sm:text-base"
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      transition={{ duration: 0.4, delay: index * 0.1 + 0.1 }}
-                      viewport={{ once: true }}
-                    >
-                      «{testimonial.content}»
-                    </motion.p>
-                    <motion.div
-                      className="flex items-center"
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
-                      viewport={{ once: true }}
-                    >
-                      <motion.div
-                        className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 text-lg font-semibold text-white sm:mr-4 sm:h-12 sm:w-12"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        {testimonial.name.charAt(0)}
-                      </motion.div>
-                      <div>
-                        <h4 className="text-sm font-semibold text-gray-900 sm:text-base">
-                          {testimonial.name}
-                        </h4>
-                        <p className="text-xs text-gray-500 sm:text-sm">
-                          {testimonial.role}
-                        </p>
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </section>
-        </AnimatedSection>
 
         {/* Call to Action Section */}
         <AnimatedSection>
