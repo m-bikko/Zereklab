@@ -28,6 +28,16 @@ export const metadata: Metadata = {
     'образовательные наборы, робототехника, для детей, STEM, обучение, электроника, программирование, конструкторы',
   authors: [{ name: 'ZEREKlab' }],
   robots: 'index, follow',
+  icons: {
+    icon: [
+      { url: '/favicon.png', sizes: 'any' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
   openGraph: {
     type: 'website',
     locale: 'ru_RU',
@@ -36,12 +46,21 @@ export const metadata: Metadata = {
     description:
       'Откройте для себя удивительные образовательные наборы, которые помогают детям учиться через практический опыт.',
     siteName: 'ZEREKlab',
+    images: [
+      {
+        url: '/logo/zereklab.png',
+        width: 1200,
+        height: 630,
+        alt: 'ZEREKlab Logo',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'ZEREKlab - Образовательные наборы для детей',
     description:
       'Откройте для себя удивительные образовательные наборы, которые помогают детям учиться через практический опыт.',
+    images: ['/logo/zereklab.png'],
   },
 };
 
