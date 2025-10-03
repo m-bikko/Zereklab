@@ -1,5 +1,6 @@
 'use client';
 
+import BonusLookup from '@/components/BonusLookup';
 import ClientOnly from '@/components/ClientOnly';
 import DailyImageRotation from '@/components/DailyImageRotation';
 import { StaticGear } from '@/components/FloatingGears';
@@ -564,6 +565,24 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
                   </Link>
                 </motion.div>
               </motion.div>
+            </div>
+          </section>
+        </AnimatedSection>
+
+        {/* Bonus Lookup Section */}
+        <AnimatedSection className="py-16 bg-gray-50">
+          <section className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+                Система бонусов
+              </h2>
+              <p className="mt-4 text-lg text-gray-600">
+                Проверьте накопленные бонусы по номеру телефона
+              </p>
+            </div>
+            
+            <div className="flex justify-center">
+              <BonusLookup />
             </div>
           </section>
         </AnimatedSection>

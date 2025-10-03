@@ -5,6 +5,7 @@ import CategoryManagement from '@/components/admin/CategoryManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
 import ProductManagement from '@/components/admin/ProductManagement';
 import QRAnalytics from '@/components/admin/QRAnalytics';
+import SalesStaffManagement from '@/components/admin/SalesStaffManagement';
 import { useAuth } from '@/hooks/useAuth';
 import { ICategory, IProduct } from '@/types';
 import { IContactDocument } from '@/models/Contact';
@@ -50,6 +51,7 @@ export default function AdminPage() {
     | 'contacts'
     | 'daily-quotes'
     | 'analytics'
+    | 'sales-staff'
     | 'users'
     | 'settings'
   >('products');
@@ -202,6 +204,13 @@ export default function AdminPage() {
                   <span>Аналитика</span>
                 </button>
                 <button
+                  onClick={() => setActiveTab('sales-staff')}
+                  className={tabClass('sales-staff')}
+                >
+                  <Users className="h-5 w-5" />
+                  <span>Сотрудники продаж</span>
+                </button>
+                <button
                   onClick={() => setActiveTab('users')}
                   className={tabClass('users')}
                 >
@@ -316,6 +325,15 @@ export default function AdminPage() {
                   <div className="rounded-lg bg-white p-6">
                     <QRAnalytics />
                   </div>
+                </div>
+              )}
+
+              {activeTab === 'sales-staff' && (
+                <div className="rounded-lg bg-white p-6">
+                  <SalesStaffManagement
+                    loading={loading}
+                    onRefresh={handleRefresh}
+                  />
                 </div>
               )}
 

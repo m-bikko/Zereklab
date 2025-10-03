@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "@tailwindcss/line-clamp": "^0.4.4",
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^3.0.2",
     "cloudinary": "^2.7.0",
     "framer-motion": "^12.17.0",
     "lucide-react": "^0.511.0",
