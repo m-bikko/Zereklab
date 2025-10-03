@@ -4,6 +4,7 @@ import AdminGuard from '@/components/AdminGuard';
 import CategoryManagement from '@/components/admin/CategoryManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
 import ProductManagement from '@/components/admin/ProductManagement';
+import QRAnalytics from '@/components/admin/QRAnalytics';
 import { useAuth } from '@/hooks/useAuth';
 import { ICategory, IProduct } from '@/types';
 import { IContactDocument } from '@/models/Contact';
@@ -247,76 +248,73 @@ export default function AdminPage() {
               {activeTab === 'daily-quotes' && <DailyQuotesManagement />}
 
               {activeTab === 'analytics' && (
-                <div className="rounded-lg bg-white p-6">
-                  <h2 className="mb-6 text-xl font-semibold">Аналитика</h2>
+                <div className="space-y-8">
+                  {/* Products Analytics */}
+                  <div className="rounded-lg bg-white p-6">
+                    <h2 className="mb-6 text-xl font-semibold">Аналитика товаров</h2>
 
-                  <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                    <div className="rounded-lg bg-blue-50 p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-blue-600">
-                            Всего товаров
-                          </p>
-                          <p className="text-3xl font-bold text-blue-900">
-                            {products.length}
-                          </p>
+                    <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                      <div className="rounded-lg bg-blue-50 p-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium text-blue-600">
+                              Всего товаров
+                            </p>
+                            <p className="text-3xl font-bold text-blue-900">
+                              {products.length}
+                            </p>
+                          </div>
+                          <Package className="h-8 w-8 text-blue-500" />
                         </div>
-                        <Package className="h-8 w-8 text-blue-500" />
                       </div>
-                    </div>
 
-                    <div className="rounded-lg bg-green-50 p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-green-600">
-                            В наличии
-                          </p>
-                          <p className="text-3xl font-bold text-green-900">
-                            {products.filter(p => p.inStock).length}
-                          </p>
+                      <div className="rounded-lg bg-green-50 p-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium text-green-600">
+                              В наличии
+                            </p>
+                            <p className="text-3xl font-bold text-green-900">
+                              {products.filter(p => p.inStock).length}
+                            </p>
+                          </div>
+                          <Package className="h-8 w-8 text-green-500" />
                         </div>
-                        <Package className="h-8 w-8 text-green-500" />
                       </div>
-                    </div>
 
-                    <div className="rounded-lg bg-yellow-50 p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-yellow-600">
-                            Категории
-                          </p>
-                          <p className="text-3xl font-bold text-yellow-900">
-                            {categories.length}
-                          </p>
+                      <div className="rounded-lg bg-yellow-50 p-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium text-yellow-600">
+                              Категории
+                            </p>
+                            <p className="text-3xl font-bold text-yellow-900">
+                              {categories.length}
+                            </p>
+                          </div>
+                          <Tags className="h-8 w-8 text-yellow-500" />
                         </div>
-                        <Tags className="h-8 w-8 text-yellow-500" />
                       </div>
-                    </div>
 
-                    <div className="rounded-lg bg-red-50 p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-red-600">
-                            Нет в наличии
-                          </p>
-                          <p className="text-3xl font-bold text-red-900">
-                            {products.filter(p => !p.inStock).length}
-                          </p>
+                      <div className="rounded-lg bg-red-50 p-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium text-red-600">
+                              Нет в наличии
+                            </p>
+                            <p className="text-3xl font-bold text-red-900">
+                              {products.filter(p => !p.inStock).length}
+                            </p>
+                          </div>
+                          <Package className="h-8 w-8 text-red-500" />
                         </div>
-                        <Package className="h-8 w-8 text-red-500" />
                       </div>
                     </div>
                   </div>
 
-                  <div className="py-10 text-center text-gray-500">
-                    <BarChart3 className="mx-auto mb-4 h-16 w-16 text-gray-300" />
-                    <h3 className="mb-2 text-lg font-medium">
-                      Подробная аналитика в разработке
-                    </h3>
-                    <p>
-                      Здесь будут отображаться графики продаж, популярные товары
-                      и другая статистика
-                    </p>
+                  {/* QR Analytics */}
+                  <div className="rounded-lg bg-white p-6">
+                    <QRAnalytics />
                   </div>
                 </div>
               )}
