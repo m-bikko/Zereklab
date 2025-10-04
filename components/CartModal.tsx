@@ -162,7 +162,7 @@ export default function CartModal() {
                             >
                               <Minus className="h-4 w-4" />
                             </button>
-                            <span className="min-w-[2rem] text-center text-sm font-medium">
+                            <span className="min-w-[2rem] text-center text-sm font-medium text-gray-900">
                               {item.quantity}
                             </span>
                             <button
