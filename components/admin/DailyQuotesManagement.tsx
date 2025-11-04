@@ -6,20 +6,23 @@ import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import {
   AlertTriangle,
-  Calendar,
+  Shuffle,
   Quote,
   Plus,
   Trash2,
   Edit3,
   Save,
   X,
+  RefreshCw,
 } from 'lucide-react';
 
 interface DailyQuote {
-  id: string;
+  _id: string;
   text: string;
   author: string;
-  dateAdded: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default function DailyQuotesManagement() {
@@ -33,80 +36,122 @@ export default function DailyQuotesManagement() {
     loadDailyQuotes();
   }, []);
 
-  const loadDailyQuotes = () => {
+  const loadDailyQuotes = async () => {
     try {
-      const storedQuotes = localStorage.getItem('zereklab_daily_quotes');
-      if (storedQuotes) {
-        const quotes = JSON.parse(storedQuotes);
-        setDailyQuotes(quotes);
+      const response = await fetch('/api/quotes/all');
+      if (!response.ok) {
+        throw new Error('Failed to fetch quotes');
+      }
+      const result = await response.json();
+      if (result.success) {
+        setDailyQuotes(result.data);
       }
     } catch (error) {
       console.error('Error loading daily quotes:', error);
-    }
-  };
-
-  const saveDailyQuotes = (quotes: DailyQuote[]) => {
-    try {
-      localStorage.setItem('zereklab_daily_quotes', JSON.stringify(quotes));
-      setDailyQuotes(quotes);
-    } catch (error) {
-      console.error('Error saving daily quotes:', error);
-      toast.error('Ошибка при сохранении цитат');
+      toast.error('Ошибка при загрузке цитат');
     }
   };
 
   // Добавление новой цитаты
-  const handleAddQuote = () => {
+  const handleAddQuote = async () => {
     if (!newQuote.text.trim() || !newQuote.author.trim()) {
       toast.error('Пожалуйста, заполните все поля');
       return;
     }
 
-    const quote: DailyQuote = {
-      id: Date.now().toString(),
-      text: newQuote.text.trim(),
-      author: newQuote.author.trim(),
-      dateAdded: new Date().toISOString(),
-    };
+    try {
+      const response = await fetch('/api/quotes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: newQuote.text.trim(),
+          author: newQuote.author.trim(),
+        }),
+      });
 
-    const updatedQuotes = [...dailyQuotes, quote];
-    saveDailyQuotes(updatedQuotes);
-    
-    setNewQuote({ text: '', author: '' });
-    setIsAddingQuote(false);
-    toast.success('Цитата добавлена');
+      if (!response.ok) {
+        throw new Error('Failed to add quote');
+      }
+
+      const result = await response.json();
+      if (result.success) {
+        await loadDailyQuotes(); // Reload quotes
+        setNewQuote({ text: '', author: '' });
+        setIsAddingQuote(false);
+        toast.success('Цитата добавлена');
+      }
+    } catch (error) {
+      console.error('Error adding quote:', error);
+      toast.error('Ошибка при добавлении цитаты');
+    }
   };
 
   // Удаление цитаты
-  const handleDeleteQuote = (quoteId: string) => {
-    const updatedQuotes = dailyQuotes.filter(quote => quote.id !== quoteId);
-    saveDailyQuotes(updatedQuotes);
-    toast.success('Цитата удалена');
+  const handleDeleteQuote = async (quoteId: string) => {
+    try {
+      const response = await fetch(`/api/quotes?id=${quoteId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete quote');
+      }
+
+      const result = await response.json();
+      if (result.success) {
+        await loadDailyQuotes(); // Reload quotes
+        toast.success('Цитата удалена');
+      }
+    } catch (error) {
+      console.error('Error deleting quote:', error);
+      toast.error('Ошибка при удалении цитаты');
+    }
   };
 
   // Начало редактирования
   const startEditing = (quote: DailyQuote) => {
-    setEditingQuote(quote.id);
+    setEditingQuote(quote._id);
     setNewQuote({ text: quote.text, author: quote.author });
   };
 
   // Сохранение изменений
-  const saveEdit = (quoteId: string) => {
+  const saveEdit = async (quoteId: string) => {
     if (!newQuote.text.trim() || !newQuote.author.trim()) {
       toast.error('Пожалуйста, заполните все поля');
       return;
     }
 
-    const updatedQuotes = dailyQuotes.map(quote =>
-      quote.id === quoteId
-        ? { ...quote, text: newQuote.text.trim(), author: newQuote.author.trim() }
-        : quote
-    );
-    
-    saveDailyQuotes(updatedQuotes);
-    setEditingQuote(null);
-    setNewQuote({ text: '', author: '' });
-    toast.success('Цитата обновлена');
+    try {
+      const response = await fetch('/api/quotes/all', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: quoteId,
+          text: newQuote.text.trim(),
+          author: newQuote.author.trim(),
+          isActive: true,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update quote');
+      }
+
+      const result = await response.json();
+      if (result.success) {
+        await loadDailyQuotes(); // Reload quotes
+        setEditingQuote(null);
+        setNewQuote({ text: '', author: '' });
+        toast.success('Цитата обновлена');
+      }
+    } catch (error) {
+      console.error('Error updating quote:', error);
+      toast.error('Ошибка при обновлении цитаты');
+    }
   };
 
   // Отмена редактирования
@@ -115,17 +160,20 @@ export default function DailyQuotesManagement() {
     setNewQuote({ text: '', author: '' });
   };
 
-  // Вычисление текущей цитаты дня
-  const getCurrentDayQuote = (): DailyQuote | null => {
-    if (dailyQuotes.length === 0) return null;
+  // Получение случайной цитаты для предварительного просмотра
+  const [previewQuote, setPreviewQuote] = useState<DailyQuote | null>(null);
 
-    const today = new Date();
-    const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
-    const quoteIndex = dayOfYear % dailyQuotes.length;
-    return dailyQuotes[quoteIndex];
+  const getRandomQuote = async () => {
+    try {
+      const response = await fetch('/api/quotes');
+      const result = await response.json();
+      if (result.success && result.data) {
+        setPreviewQuote(result.data);
+      }
+    } catch (error) {
+      console.error('Error getting random quote:', error);
+    }
   };
-
-  const currentDayQuote = getCurrentDayQuote();
 
   return (
     <div className="space-y-6">
@@ -141,37 +189,50 @@ export default function DailyQuotesManagement() {
       {/* Информация о системе */}
       <div className="rounded-lg bg-blue-50 p-4">
         <h3 className="mb-2 flex items-center text-lg font-semibold text-blue-900">
-          <Calendar className="mr-2 h-5 w-5" />
-          Как работает система
+          <Shuffle className="mr-2 h-5 w-5" />
+          Как работает новая система
         </h3>
         <div className="text-sm text-blue-800">
           <ul className="list-disc space-y-1 pl-5">
-            <li>Цитаты автоматически меняются каждый день</li>
-            <li>Основаны на дне года (1-365/366)</li>
-            <li>Цикл повторяется: день % количество_цитат</li>
-            <li>Цитаты вводятся только на одном языке</li>
-            <li>На лендинге отображается как &ldquo;Цитата дня&rdquo;</li>
+            <li>Цитаты выбираются случайным образом при каждом обновлении страницы</li>
+            <li>Цитаты хранятся в базе данных (больше не в localStorage)</li>
+            <li>Всегда есть резервные цитаты, если база данных пуста</li>
+            <li>Работает стабильно на всех устройствах, включая мобильные</li>
+            <li>На главной странице показывается как &ldquo;Случайная цитата&rdquo;</li>
           </ul>
         </div>
       </div>
 
-      {/* Текущая цитата дня */}
-      {currentDayQuote && (
-        <div className="rounded-xl bg-gradient-to-r from-primary-50 to-secondary-50 p-6">
-          <h3 className="mb-4 flex items-center text-lg font-semibold text-gray-900">
+      {/* Предварительный просмотр случайной цитаты */}
+      <div className="rounded-xl bg-gradient-to-r from-primary-50 to-secondary-50 p-6">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="flex items-center text-lg font-semibold text-gray-900">
             <Quote className="mr-2 h-5 w-5 text-primary-600" />
-            Цитата сегодня
+            Предварительный просмотр
           </h3>
+          <button
+            onClick={getRandomQuote}
+            className="inline-flex items-center rounded-lg bg-primary-500 px-3 py-2 text-sm font-medium text-white hover:bg-primary-600"
+          >
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Получить случайную
+          </button>
+        </div>
+        {previewQuote ? (
           <div className="rounded-lg bg-white p-4 shadow-sm">
             <blockquote className="mb-3 text-lg font-medium text-gray-900">
-              &ldquo;{currentDayQuote.text}&rdquo;
+              &ldquo;{previewQuote.text}&rdquo;
             </blockquote>
             <cite className="text-sm font-medium text-gray-600">
-              - {currentDayQuote.author}
+              - {previewQuote.author}
             </cite>
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="rounded-lg bg-white p-4 shadow-sm text-center text-gray-500">
+            Нажмите кнопку выше, чтобы загрузить случайную цитату
+          </div>
+        )}
+      </div>
 
       {/* Добавление новой цитаты */}
       <div className="rounded-xl border border-gray-200 bg-white p-6">
@@ -248,13 +309,13 @@ export default function DailyQuotesManagement() {
           <div className="space-y-3">
             {dailyQuotes.map((quote, index) => (
               <motion.div
-                key={quote.id}
+                key={quote._id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.2, delay: index * 0.05 }}
                 className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
               >
-                {editingQuote === quote.id ? (
+                {editingQuote === quote._id ? (
                   <div className="space-y-4">
                     <textarea
                       value={newQuote.text}
@@ -270,7 +331,7 @@ export default function DailyQuotesManagement() {
                     />
                     <div className="flex space-x-2">
                       <button
-                        onClick={() => saveEdit(quote.id)}
+                        onClick={() => saveEdit(quote._id)}
                         className="inline-flex items-center rounded-lg bg-green-500 px-3 py-1 text-sm font-medium text-white hover:bg-green-600"
                       >
                         <Save className="mr-1 h-3 w-3" />
@@ -295,9 +356,12 @@ export default function DailyQuotesManagement() {
                         - {quote.author}
                       </cite>
                       <div className="mt-2 flex items-center space-x-4 text-xs text-gray-500">
-                        <span>День {(index % dailyQuotes.length) + 1} в цикле</span>
+                        <span>ID: {quote._id.slice(-6)}</span>
                         <span>
-                          Добавлено: {new Date(quote.dateAdded).toLocaleDateString('ru-RU')}
+                          Добавлено: {new Date(quote.createdAt).toLocaleDateString('ru-RU')}
+                        </span>
+                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${quote.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                          {quote.isActive ? 'Активна' : 'Неактивна'}
                         </span>
                       </div>
                     </div>
@@ -309,7 +373,7 @@ export default function DailyQuotesManagement() {
                         <Edit3 className="h-4 w-4" />
                       </button>
                       <button
-                        onClick={() => handleDeleteQuote(quote.id)}
+                        onClick={() => handleDeleteQuote(quote._id)}
                         className="rounded-full bg-red-100 p-2 text-red-600 hover:bg-red-200"
                       >
                         <Trash2 className="h-4 w-4" />

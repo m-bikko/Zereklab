@@ -1,7 +1,7 @@
 'use client';
 
-import { useLocale } from '@/hooks/useLocale';
-import { t } from '@/lib/i18n';
+// import { useLocale } from '@/hooks/useLocale';
+// import { t } from '@/lib/i18n';
 
 import { useEffect, useState } from 'react';
 
@@ -9,54 +9,48 @@ import { Quote } from 'lucide-react';
 
 import ClientOnly from './ClientOnly';
 
-interface DailyQuote {
-  id: string;
+interface RandomQuote {
+  _id?: string;
   text: string;
   author: string;
-  dateAdded: string;
+  isActive?: boolean;
 }
 
 export default function DailyImageRotation() {
-  const locale = useLocale();
-  const [currentQuote, setCurrentQuote] = useState<DailyQuote | null>(null);
+  // const locale = useLocale();
+  const [currentQuote, setCurrentQuote] = useState<RandomQuote | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isDefault, setIsDefault] = useState(false);
 
   useEffect(() => {
-    const loadDailyQuote = () => {
+    const loadRandomQuote = async () => {
       try {
-        // Загружаем цитаты из localStorage
-        const storedQuotes = localStorage.getItem('zereklab_daily_quotes');
-        if (!storedQuotes) {
-          setCurrentQuote(null);
-          setLoading(false);
-          return;
+        const response = await fetch('/api/quotes');
+        if (!response.ok) {
+          throw new Error('Failed to fetch quote');
         }
-
-        const quotes: DailyQuote[] = JSON.parse(storedQuotes);
-        if (quotes.length === 0) {
+        
+        const result = await response.json();
+        if (result.success && result.data) {
+          setCurrentQuote(result.data);
+          setIsDefault(result.isDefault || false);
+        } else {
           setCurrentQuote(null);
-          setLoading(false);
-          return;
         }
-
-        // Вычисляем день года для ежедневной ротации
-        const today = new Date();
-        const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
-
-        // Выбираем цитату на основе дня года
-        const quoteIndex = dayOfYear % quotes.length;
-        const selectedQuote = quotes[quoteIndex];
-
-        setCurrentQuote(selectedQuote);
       } catch (error) {
-        console.error('Error loading daily quote:', error);
-        setCurrentQuote(null);
+        console.error('Error loading random quote:', error);
+        // Fallback quote if API fails
+        setCurrentQuote({
+          text: 'Образование — это самое мощное оружие, которое вы можете использовать, чтобы изменить мир.',
+          author: 'Нельсон Мандела',
+        });
+        setIsDefault(true);
       } finally {
         setLoading(false);
       }
     };
 
-    loadDailyQuote();
+    loadRandomQuote();
   }, []);
 
   if (loading || !currentQuote) {
@@ -105,44 +99,10 @@ export default function DailyImageRotation() {
             <Quote className="h-6 w-6 text-black/40 rotate-180" />
           </div>
           
-          {/* Daily indicator */}
+          {/* Quote indicator */}
           <div className="absolute bottom-4 left-4">
             <span className="inline-flex items-center rounded-full bg-black/10 px-3 py-1 text-xs font-medium text-black/80">
-              📅 {t('home.dailyQuote.dailyQuote', locale)}
-            </span>
-          </div>
-        </div>
-      </div>
-    </ClientOnly>
-  );
-
-  // Fallback when no quotes available
-  return (
-    <ClientOnly>
-      <div className="relative mx-auto w-full max-w-lg">
-        <div className="animate-pulse-slow absolute -inset-4 rounded-full bg-yellow-300/30 blur-xl"></div>
-        <div className="relative aspect-square overflow-hidden rounded-2xl border-2 border-yellow-600/50 shadow-2xl transform rotate-2" style={{ backgroundColor: '#f6e22a' }}>
-          {/* Quote Icon */}
-          <div className="absolute left-6 top-6">
-            <Quote className="h-8 w-8 text-black/70" />
-          </div>
-          
-          {/* No quotes message */}
-          <div className="flex h-full flex-col items-center justify-center p-8 text-center">
-            <blockquote className="mb-4 text-lg font-bold leading-relaxed text-black sm:text-xl lg:text-2xl">
-              {t('home.dailyQuote.noQuotes', locale)}
-            </blockquote>
-          </div>
-          
-          {/* Decorative elements */}
-          <div className="absolute bottom-6 right-6">
-            <Quote className="h-6 w-6 text-black/40 rotate-180" />
-          </div>
-          
-          {/* Daily indicator */}
-          <div className="absolute bottom-4 left-4">
-            <span className="inline-flex items-center rounded-full bg-black/10 px-3 py-1 text-xs font-medium text-black/80">
-              📅 {t('home.dailyQuote.dailyQuote', locale)}
+              🎲 {isDefault ? 'Цитата по умолчанию' : 'Случайная цитата'}
             </span>
           </div>
         </div>
