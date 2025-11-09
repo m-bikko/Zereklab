@@ -15,6 +15,7 @@
     "migrate-age-format": "node scripts/migrate-age-format.js",
     "seed": "node scripts/seed-data.js",
     "seed-quotes": "node scripts/seed-quotes.js",
+    "import-quotes": "node scripts/import-quotes.js",
     "vercel-build": "next build"
   },
   "dependencies": {

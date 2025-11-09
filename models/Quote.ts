@@ -17,13 +17,13 @@ const QuoteSchema: Schema<IQuoteDocument> = new Schema(
       required: [true, 'Quote text is required'],
       trim: true,
       minlength: [10, 'Quote text must be at least 10 characters long'],
-      maxlength: [500, 'Quote text must be less than 500 characters'],
+      maxlength: [1000, 'Quote text must be less than 1000 characters'],
     },
     author: {
       type: String,
       required: [true, 'Quote author is required'],
       trim: true,
-      maxlength: [100, 'Author name must be less than 100 characters'],
+      maxlength: [200, 'Author name must be less than 200 characters'],
     },
     isActive: {
       type: Boolean,
