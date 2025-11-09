@@ -12,10 +12,9 @@ interface CloudinaryTransforms {
 
 // Настройка Cloudinary
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'dompaomgm',
-  api_key: process.env.CLOUDINARY_API_KEY || '164551813528573',
-  api_secret:
-    process.env.CLOUDINARY_API_SECRET || 'P41Zy2qWQ0toX2hfc_Iw41axUng',
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
   secure: true, // Всегда использовать HTTPS
 });
 

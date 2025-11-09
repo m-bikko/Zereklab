@@ -91,7 +91,7 @@ async function importQuotes() {
     console.log('📚 Starting quotes import...');
     
     // Connect to MongoDB
-    const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://beimbetm04:qweasdqwe123@zereklab.wqblhwz.mongodb.net/zereklab?retryWrites=true&w=majority&appName=zereklab';
+    const mongoUri = process.env.MONGODB_URI;
     if (!mongoUri) {
       throw new Error('MONGODB_URI not found in environment variables');
     }
