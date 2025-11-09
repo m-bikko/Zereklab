@@ -1,6 +1,7 @@
 'use client';
 
 import AdminGuard from '@/components/AdminGuard';
+import BonusManagement from '@/components/admin/BonusManagement';
 import CategoryManagement from '@/components/admin/CategoryManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
 import ProductManagement from '@/components/admin/ProductManagement';
@@ -18,6 +19,7 @@ import dynamic from 'next/dynamic';
 import {
   BarChart3,
   Calendar,
+  Gift,
   LogOut,
   Mail,
   Package,
@@ -52,6 +54,7 @@ export default function AdminPage() {
     | 'daily-quotes'
     | 'analytics'
     | 'sales-staff'
+    | 'bonuses'
     | 'users'
     | 'settings'
   >('products');
@@ -211,6 +214,13 @@ export default function AdminPage() {
                   <span>Сотрудники продаж</span>
                 </button>
                 <button
+                  onClick={() => setActiveTab('bonuses')}
+                  className={tabClass('bonuses')}
+                >
+                  <Gift className="h-5 w-5" />
+                  <span>Бонусы</span>
+                </button>
+                <button
                   onClick={() => setActiveTab('users')}
                   className={tabClass('users')}
                 >
@@ -334,6 +344,12 @@ export default function AdminPage() {
                     loading={loading}
                     onRefresh={handleRefresh}
                   />
+                </div>
+              )}
+
+              {activeTab === 'bonuses' && (
+                <div className="rounded-lg bg-white p-6">
+                  <BonusManagement />
                 </div>
               )}
 
