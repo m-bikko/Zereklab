@@ -3,6 +3,8 @@
 import { useSalesAuth } from '@/hooks/useSalesAuth';
 import { IProduct, getLocalizedText } from '@/types';
 import { cleanPhoneInput, isValidPhoneNumber } from '@/lib/phoneUtils';
+import BonusManagement from '@/components/admin/BonusManagement';
+import BonusProcessing from '@/components/admin/BonusProcessing';
 
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -19,7 +21,9 @@ import {
   Calculator,
   Phone,
   LogOut,
-  User
+  User,
+  Clock,
+  CreditCard
 } from 'lucide-react';
 
 interface SaleItem {
@@ -27,15 +31,42 @@ interface SaleItem {
   quantity: number;
 }
 
+interface BonusData {
+  phoneNumber: string;
+  fullName?: string;
+  availableBonuses: number;
+  totalBonuses: number;
+  usedBonuses: number;
+  lastUpdated: string;
+  pendingBonuses?: {
+    available: Array<{
+      _id: string;
+      bonusAmount: number;
+      availableDate: string;
+    }>;
+    upcoming: Array<{
+      _id: string;
+      bonusAmount: number;
+      availableDate: string;
+    }>;
+    totalAvailable: number;
+    totalUpcoming: number;
+  };
+}
+
 export default function SalesPage() {
   const { isAuthenticated, isLoading, user, logout } = useSalesAuth();
   const [products, setProducts] = useState<IProduct[]>([]);
   const [selectedItems, setSelectedItems] = useState<SaleItem[]>([]);
   const [customerPhone, setCustomerPhone] = useState('');
+  const [customerFullName, setCustomerFullName] = useState('');
   const [showProductModal, setShowProductModal] = useState(false);
+  const [showBonusModal, setShowBonusModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [bonusData, setBonusData] = useState<BonusData | null>(null);
+  const [activeTab, setActiveTab] = useState('sales');
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -70,6 +101,50 @@ export default function SalesPage() {
   const handlePhoneChange = (value: string) => {
     const cleaned = cleanPhoneInput(value);
     setCustomerPhone(cleaned);
+    
+    // Clear bonus data when phone changes
+    if (bonusData) {
+      setBonusData(null);
+    }
+  };
+
+  const searchBonuses = async () => {
+    if (!isValidPhoneNumber(customerPhone)) {
+      toast.error('Введите корректный номер телефона');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      
+      // Fetch both current bonuses and pending bonuses
+      const [bonusResponse, pendingResponse] = await Promise.all([
+        fetch(`/api/bonuses?phone=${encodeURIComponent(customerPhone)}`),
+        fetch(`/api/pending-bonuses?phone=${encodeURIComponent(customerPhone)}`)
+      ]);
+      
+      if (bonusResponse.ok) {
+        const bonusData = await bonusResponse.json();
+        const combinedData = bonusData;
+        
+        // Add pending bonus data if available
+        if (pendingResponse.ok) {
+          const pendingData = await pendingResponse.json();
+          combinedData.pendingBonuses = pendingData.pendingBonuses;
+        }
+        
+        setBonusData(combinedData);
+        setShowBonusModal(true);
+      } else {
+        const errorData = await bonusResponse.json();
+        toast.error(errorData.error || 'Ошибка при поиске бонусов');
+      }
+    } catch (err) {
+      console.error('Error fetching bonuses:', err);
+      toast.error('Ошибка при поиске бонусов');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const addProductToSale = (product: IProduct) => {
@@ -118,7 +193,7 @@ export default function SalesPage() {
   };
 
   const calculateBonuses = () => {
-    return Math.floor(calculateTotal() * 0.05);
+    return Math.floor(calculateTotal() * 0.03);
   };
 
   const processSale = async () => {
@@ -137,6 +212,7 @@ export default function SalesPage() {
       
       const saleData = {
         customerPhone,
+        customerFullName: customerFullName.trim() || undefined,
         items: selectedItems.map(item => ({
           productId: item.product._id,
           quantity: item.quantity,
@@ -153,11 +229,13 @@ export default function SalesPage() {
 
       if (response.ok) {
         const result = await response.json();
-        toast.success(`Продажа оформлена! Начислено ${result.sale.bonusesEarned} бонусов`);
+        toast.success(`Продажа оформлена! ${result.sale.bonusesEarned} бонусов будут доступны ${new Date(result.sale.bonusAvailableDate).toLocaleDateString('ru-RU')}`);
         
         // Reset form
         setSelectedItems([]);
         setCustomerPhone('');
+        setCustomerFullName('');
+        setBonusData(null);
         
         // Refresh products to update stock
         fetchProducts();
@@ -201,7 +279,7 @@ export default function SalesPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="mb-2 text-2xl font-bold text-gray-900">Система продаж</h1>
-              <p className="text-gray-600">Оформление продаж и начисление бонусов</p>
+              <p className="text-gray-600">Оформление продаж и управление бонусами</p>
             </div>
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2 text-gray-600">
@@ -219,9 +297,51 @@ export default function SalesPage() {
           </div>
         </div>
 
+        {/* Navigation Tabs */}
+        <div className="mb-6 rounded-lg bg-white shadow-sm">
+          <div className="flex border-b border-gray-200">
+            <button
+              onClick={() => setActiveTab('sales')}
+              className={`flex items-center space-x-2 px-6 py-4 text-sm font-medium transition-colors ${
+                activeTab === 'sales'
+                  ? 'border-b-2 border-green-500 text-green-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <ShoppingCart className="h-5 w-5" />
+              <span>Продажи</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('bonuses')}
+              className={`flex items-center space-x-2 px-6 py-4 text-sm font-medium transition-colors ${
+                activeTab === 'bonuses'
+                  ? 'border-b-2 border-green-500 text-green-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <Gift className="h-5 w-5" />
+              <span>Управление бонусами</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('processing')}
+              className={`flex items-center space-x-2 px-6 py-4 text-sm font-medium transition-colors ${
+                activeTab === 'processing'
+                  ? 'border-b-2 border-green-500 text-green-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <CreditCard className="h-5 w-5" />
+              <span>Обработка бонусов</span>
+            </button>
+          </div>
+        </div>
+        
+        {/* Tab Content */}
+        {activeTab === 'sales' && (
+          <>
         {/* Top Controls Row */}
         <div className="mb-6 rounded-lg bg-white p-6 shadow-sm">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
             {/* Customer Phone */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -244,18 +364,42 @@ export default function SalesPage() {
               )}
             </div>
 
+            {/* Customer Full Name */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                ФИО покупателя (необязательно)
+              </label>
+              <input
+                type="text"
+                value={customerFullName}
+                onChange={(e) => setCustomerFullName(e.target.value)}
+                placeholder="Иванов Иван Иванович"
+                className="w-full rounded-lg border border-gray-300 py-2 px-4 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+
             {/* Add Product Button */}
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
-                Выбор товара
+                Действия
               </label>
-              <button
-                onClick={() => setShowProductModal(true)}
-                className="flex w-full items-center justify-center space-x-2 rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
-              >
-                <Plus className="h-5 w-5" />
-                <span>Добавить товар</span>
-              </button>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => setShowProductModal(true)}
+                  className="flex items-center justify-center space-x-2 rounded-lg bg-blue-500 px-3 py-2 text-sm text-white transition-colors hover:bg-blue-600"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>Товар</span>
+                </button>
+                <button
+                  onClick={searchBonuses}
+                  disabled={!isValidPhoneNumber(customerPhone) || loading}
+                  className="flex items-center justify-center space-x-2 rounded-lg bg-purple-500 px-3 py-2 text-sm text-white transition-colors hover:bg-purple-600 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <Gift className="h-4 w-4" />
+                  <span>Бонусы</span>
+                </button>
+              </div>
             </div>
 
             {/* Quick Stats */}
@@ -366,10 +510,10 @@ export default function SalesPage() {
                   
                   <div className="flex justify-between border-t pt-3">
                     <div className="flex items-center space-x-2">
-                      <Gift className="h-5 w-5 text-green-500" />
-                      <span className="text-gray-600">Бонусы к начислению:</span>
+                      <Clock className="h-5 w-5 text-orange-500" />
+                      <span className="text-gray-600">Бонусы через 10 дней:</span>
                     </div>
-                    <span className="font-semibold text-green-600">
+                    <span className="font-semibold text-orange-600">
                       {calculateBonuses()} бонусов
                     </span>
                   </div>
@@ -491,6 +635,118 @@ export default function SalesPage() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Bonus Modal */}
+        {showBonusModal && bonusData && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div className="max-h-[80vh] w-full max-w-md overflow-hidden rounded-lg bg-white m-4">
+              <div className="flex items-center justify-between border-b bg-white p-4">
+                <h2 className="text-xl font-semibold text-gray-900">Бонусы клиента</h2>
+                <button
+                  onClick={() => setShowBonusModal(false)}
+                  className="rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+              
+              <div className="p-6 max-h-96 overflow-y-auto">
+                <div className="space-y-4">
+                  {/* Current Available Bonuses */}
+                  <div className="rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 p-4">
+                    <div className="text-center">
+                      <p className="text-sm text-gray-600 mb-1">Доступные сейчас</p>
+                      <p className="text-3xl font-bold text-green-600">
+                        {bonusData.availableBonuses}
+                      </p>
+                      <p className="text-sm text-gray-500">бонусов</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="rounded-lg bg-blue-50 p-3 text-center">
+                      <p className="text-xs text-gray-600 mb-1">Всего накоплено</p>
+                      <p className="text-lg font-semibold text-blue-600">
+                        {bonusData.totalBonuses}
+                      </p>
+                    </div>
+                    <div className="rounded-lg bg-purple-50 p-3 text-center">
+                      <p className="text-xs text-gray-600 mb-1">Потрачено</p>
+                      <p className="text-lg font-semibold text-purple-600">
+                        {bonusData.usedBonuses}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Pending Bonuses Section */}
+                  {bonusData.pendingBonuses && (
+                    <div className="space-y-3">
+                      {/* Ready to credit bonuses */}
+                      {bonusData.pendingBonuses.available && bonusData.pendingBonuses.available.length > 0 && (
+                        <div className="rounded-lg bg-yellow-50 border border-yellow-200 p-4">
+                          <div className="text-center mb-3">
+                            <p className="text-sm font-medium text-yellow-800">Готовы к начислению</p>
+                            <p className="text-2xl font-bold text-yellow-700">
+                              {bonusData.pendingBonuses.totalAvailable}
+                            </p>
+                            <p className="text-xs text-yellow-600">бонусов</p>
+                          </div>
+                          <div className="space-y-2">
+                            {bonusData.pendingBonuses.available.map((bonus) => (
+                              <div key={bonus._id} className="flex justify-between text-xs text-yellow-700">
+                                <span>Покупка от {new Date(bonus.availableDate).toLocaleDateString('ru-RU')}</span>
+                                <span>{bonus.bonusAmount} бонусов</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Upcoming bonuses */}
+                      {bonusData.pendingBonuses.upcoming && bonusData.pendingBonuses.upcoming.length > 0 && (
+                        <div className="rounded-lg bg-orange-50 border border-orange-200 p-4">
+                          <div className="text-center mb-3">
+                            <p className="text-sm font-medium text-orange-800">Ожидают начисления</p>
+                            <p className="text-2xl font-bold text-orange-700">
+                              {bonusData.pendingBonuses.totalUpcoming}
+                            </p>
+                            <p className="text-xs text-orange-600">бонусов</p>
+                          </div>
+                          <div className="space-y-2">
+                            {bonusData.pendingBonuses.upcoming.map((bonus) => (
+                              <div key={bonus._id} className="flex justify-between text-xs text-orange-700">
+                                <span>Будут доступны {new Date(bonus.availableDate).toLocaleDateString('ru-RU')}</span>
+                                <span>{bonus.bonusAmount} бонусов</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500">
+                      Последнее обновление: {new Date(bonusData.lastUpdated).toLocaleDateString('ru-RU')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+          </>
+        )}
+
+        {/* Bonus Management Tab */}
+        {activeTab === 'bonuses' && (
+          <BonusManagement />
+        )}
+
+        {/* Bonus Processing Tab */}
+        {activeTab === 'processing' && (
+          <BonusProcessing />
         )}
       </div>
     </div>

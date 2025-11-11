@@ -22,6 +22,7 @@ import {
 interface BonusData {
   _id: string;
   phoneNumber: string;
+  fullName?: string;
   totalBonuses: number;
   usedBonuses: number;
   availableBonuses: number;
@@ -35,6 +36,8 @@ export default function BonusManagement() {
   const [bonuses, setBonuses] = useState<BonusData[]>([]);
   const [filteredBonuses, setFilteredBonuses] = useState<BonusData[]>([]);
   const [searchPhone, setSearchPhone] = useState('');
+  const [searchName] = useState('');
+  const [searchType] = useState<'phone' | 'name'>('phone');
   const [selectedBonus, setSelectedBonus] = useState<BonusData | null>(null);
   const [operationType, setOperationType] = useState<'add' | 'deduct' | null>(null);
   const [operationAmount, setOperationAmount] = useState<number>(0);
@@ -42,22 +45,27 @@ export default function BonusManagement() {
   const [fetchingBonuses, setFetchingBonuses] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [newPhoneNumber, setNewPhoneNumber] = useState('');
+  // const [newFullName] = useState('');
 
   useEffect(() => {
     fetchAllBonuses();
   }, []);
 
   useEffect(() => {
-    if (!searchPhone.trim()) {
-      setFilteredBonuses(bonuses);
-      return;
+    let filtered = bonuses;
+
+    if (searchType === 'phone' && searchPhone.trim()) {
+      filtered = bonuses.filter(bonus =>
+        bonus.phoneNumber.toLowerCase().includes(searchPhone.toLowerCase())
+      );
+    } else if (searchType === 'name' && searchName.trim()) {
+      filtered = bonuses.filter(bonus =>
+        bonus.fullName?.toLowerCase().includes(searchName.toLowerCase())
+      );
     }
 
-    const filtered = bonuses.filter(bonus =>
-      bonus.phoneNumber.toLowerCase().includes(searchPhone.toLowerCase())
-    );
     setFilteredBonuses(filtered);
-  }, [bonuses, searchPhone]);
+  }, [bonuses, searchPhone, searchName, searchType]);
 
   const fetchAllBonuses = async () => {
     setFetchingBonuses(true);
@@ -305,6 +313,9 @@ export default function BonusManagement() {
                     Телефон
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                    ФИО
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                     Всего накоплено
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
@@ -329,6 +340,9 @@ export default function BonusManagement() {
                         <Phone className="mr-2 h-4 w-4 text-gray-400" />
                         <span className="font-medium text-gray-900">{bonus.phoneNumber}</span>
                       </div>
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                      {bonus.fullName || 'Не указано'}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
                       {bonus.totalBonuses.toLocaleString()}

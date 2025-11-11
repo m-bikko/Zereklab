@@ -11,9 +11,12 @@ export interface ISaleItem {
 
 export interface ISale extends Document {
   customerPhone: string;
+  customerFullName?: string;
   items: ISaleItem[];
   totalAmount: number;
   bonusesEarned: number;
+  bonusStatus: 'pending' | 'credited';
+  bonusAvailableDate: Date;
   saleDate: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -57,6 +60,11 @@ const SaleSchema = new Schema<ISale>(
       match: /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/,
       index: true,
     },
+    customerFullName: {
+      type: String,
+      trim: true,
+      index: true,
+    },
     items: {
       type: [SaleItemSchema],
       required: true,
@@ -77,6 +85,16 @@ const SaleSchema = new Schema<ISale>(
       required: true,
       min: 0,
     },
+    bonusStatus: {
+      type: String,
+      enum: ['pending', 'credited'],
+      default: 'pending',
+      required: true,
+    },
+    bonusAvailableDate: {
+      type: Date,
+      index: true,
+    },
     saleDate: {
       type: Date,
       default: Date.now,
@@ -91,7 +109,14 @@ const SaleSchema = new Schema<ISale>(
 // Calculate total amount and bonuses before saving
 SaleSchema.pre('save', function(next) {
   this.totalAmount = this.items.reduce((sum, item) => sum + item.totalPrice, 0);
-  this.bonusesEarned = Math.floor(this.totalAmount * 0.05); // 5% bonus
+  this.bonusesEarned = Math.floor(this.totalAmount * 0.03); // 3% bonus
+  
+  // Set bonus available date to 10 days from sale date
+  const saleDate = this.saleDate || new Date();
+  const availableDate = new Date(saleDate);
+  availableDate.setDate(availableDate.getDate() + 10);
+  this.bonusAvailableDate = availableDate;
+  
   next();
 });
 

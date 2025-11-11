@@ -3,45 +3,63 @@ import Bonus from '@/models/Bonus';
 
 import { NextRequest, NextResponse } from 'next/server';
 
-// Get bonus by phone number
+// Get bonus by phone number or full name
 export async function GET(request: NextRequest) {
   try {
     await getDatabase();
     
     const { searchParams } = new URL(request.url);
     const phoneNumber = searchParams.get('phone');
+    const fullName = searchParams.get('name');
 
-    if (!phoneNumber) {
+    if (!phoneNumber && !fullName) {
       return NextResponse.json(
-        { error: 'Phone number is required' },
+        { error: 'Phone number or full name is required' },
         { status: 400 }
       );
     }
 
-    // Validate phone format
-    const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-    if (!phoneRegex.test(phoneNumber)) {
-      return NextResponse.json(
-        { error: 'Invalid phone number format. Use +7 (777) 123-12-12' },
-        { status: 400 }
-      );
-    }
+    let bonus;
 
-    let bonus = await Bonus.findOne({ phoneNumber });
-    
-    if (!bonus) {
-      // Create new bonus record if doesn't exist
-      bonus = new Bonus({
-        phoneNumber,
-        totalBonuses: 0,
-        usedBonuses: 0,
-        availableBonuses: 0,
+    if (phoneNumber) {
+      // Validate phone format
+      const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+      if (!phoneRegex.test(phoneNumber)) {
+        return NextResponse.json(
+          { error: 'Invalid phone number format. Use +7 (777) 123-12-12' },
+          { status: 400 }
+        );
+      }
+
+      bonus = await Bonus.findOne({ phoneNumber });
+      
+      if (!bonus) {
+        // Create new bonus record if doesn't exist
+        bonus = new Bonus({
+          phoneNumber,
+          totalBonuses: 0,
+          usedBonuses: 0,
+          availableBonuses: 0,
+        });
+        await bonus.save();
+      }
+    } else if (fullName) {
+      // Search by full name (case insensitive)
+      bonus = await Bonus.findOne({ 
+        fullName: { $regex: fullName.trim(), $options: 'i' } 
       });
-      await bonus.save();
+      
+      if (!bonus) {
+        return NextResponse.json(
+          { error: 'Customer not found with this name' },
+          { status: 404 }
+        );
+      }
     }
 
     return NextResponse.json({
       phoneNumber: bonus.phoneNumber,
+      fullName: bonus.fullName,
       availableBonuses: bonus.availableBonuses,
       totalBonuses: bonus.totalBonuses,
       usedBonuses: bonus.usedBonuses,

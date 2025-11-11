@@ -2,6 +2,7 @@ import { getDatabase } from '@/lib/mongodb';
 import Bonus from '@/models/Bonus';
 import Product from '@/models/Product';
 import Sale from '@/models/Sale';
+import PendingBonus from '@/models/PendingBonus';
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest) {
     await getDatabase();
     
     const body = await request.json();
-    const { customerPhone, items } = body;
+    const { customerPhone, customerFullName, items } = body;
 
     // Validate input
     if (!customerPhone || !items || !Array.isArray(items) || items.length === 0) {
@@ -142,12 +143,13 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Calculate bonuses (5%)
-    const bonusesEarned = Math.floor(totalAmount * 0.05);
+    // Calculate bonuses (3%)
+    const bonusesEarned = Math.floor(totalAmount * 0.03);
 
     // Create sale record
     const sale = new Sale({
       customerPhone,
+      customerFullName: customerFullName?.trim() || undefined,
       items: processedItems,
       totalAmount,
       bonusesEarned,
@@ -155,20 +157,22 @@ export async function POST(request: NextRequest) {
 
     await sale.save();
 
-    // Add bonuses to customer account
-    let bonus = await Bonus.findOne({ phoneNumber: customerPhone });
-    if (!bonus) {
-      bonus = new Bonus({
-        phoneNumber: customerPhone,
-        totalBonuses: bonusesEarned,
-        usedBonuses: 0,
-        availableBonuses: bonusesEarned,
-      });
-    } else {
-      bonus.totalBonuses += bonusesEarned;
-      bonus.availableBonuses = bonus.totalBonuses - bonus.usedBonuses;
-    }
-    await bonus.save();
+    // Create pending bonus record (will be credited after 10 days)
+    const pendingBonus = new PendingBonus({
+      phoneNumber: customerPhone,
+      fullName: customerFullName?.trim() || undefined,
+      saleId: String(sale._id),
+      bonusAmount: bonusesEarned,
+      availableDate: sale.bonusAvailableDate,
+    });
+
+    await pendingBonus.save();
+
+    // Don't immediately add bonuses to customer account anymore
+    // Bonuses will be added after 10 days through the automatic system
+
+    // Get current bonus status
+    const currentBonus = await Bonus.findOne({ phoneNumber: customerPhone });
 
     return NextResponse.json({
       sale: {
@@ -177,17 +181,30 @@ export async function POST(request: NextRequest) {
         items: sale.items,
         totalAmount: sale.totalAmount,
         bonusesEarned: sale.bonusesEarned,
+        bonusStatus: sale.bonusStatus,
+        bonusAvailableDate: sale.bonusAvailableDate,
         saleDate: sale.saleDate,
       },
       customerBonuses: {
-        availableBonuses: bonus.availableBonuses,
-        totalBonuses: bonus.totalBonuses,
+        availableBonuses: currentBonus?.availableBonuses || 0,
+        totalBonuses: currentBonus?.totalBonuses || 0,
+      },
+      pendingBonuses: {
+        amount: bonusesEarned,
+        availableDate: sale.bonusAvailableDate,
       },
     }, { status: 201 });
   } catch (error) {
     console.error('Failed to create sale:', error);
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
+    });
     return NextResponse.json(
-      { error: 'Failed to create sale' },
+      { 
+        error: 'Failed to create sale',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }

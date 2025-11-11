@@ -2,6 +2,7 @@
 
 import AdminGuard from '@/components/AdminGuard';
 import BonusManagement from '@/components/admin/BonusManagement';
+import BonusProcessing from '@/components/admin/BonusProcessing';
 import CategoryManagement from '@/components/admin/CategoryManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
 import ProductManagement from '@/components/admin/ProductManagement';
@@ -19,6 +20,7 @@ import dynamic from 'next/dynamic';
 import {
   BarChart3,
   Calendar,
+  Clock,
   Gift,
   LogOut,
   Mail,
@@ -55,6 +57,7 @@ export default function AdminPage() {
     | 'analytics'
     | 'sales-staff'
     | 'bonuses'
+    | 'bonus-processing'
     | 'users'
     | 'settings'
   >('products');
@@ -221,6 +224,13 @@ export default function AdminPage() {
                   <span>Бонусы</span>
                 </button>
                 <button
+                  onClick={() => setActiveTab('bonus-processing')}
+                  className={tabClass('bonus-processing')}
+                >
+                  <Clock className="h-5 w-5" />
+                  <span>Обработка бонусов</span>
+                </button>
+                <button
                   onClick={() => setActiveTab('users')}
                   className={tabClass('users')}
                 >
@@ -350,6 +360,11 @@ export default function AdminPage() {
               {activeTab === 'bonuses' && (
                 <div className="rounded-lg bg-white p-6">
                   <BonusManagement />
+                </div>
+              )}
+              {activeTab === 'bonus-processing' && (
+                <div className="rounded-lg bg-white p-6">
+                  <BonusProcessing />
                 </div>
               )}
 
