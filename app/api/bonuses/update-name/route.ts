@@ -1,5 +1,6 @@
 import { getDatabase } from '@/lib/mongodb';
 import Bonus from '@/models/Bonus';
+import { extractPhoneDigits } from '@/lib/phoneUtils';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Update customer's full name
@@ -17,17 +18,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate phone format
-    const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-    if (!phoneRegex.test(phoneNumber)) {
+    // Find bonus by matching phone digits
+    const searchDigits = extractPhoneDigits(phoneNumber);
+    const allBonuses = await Bonus.find({}).lean();
+    const bonusRecord = allBonuses.find(b => extractPhoneDigits(b.phoneNumber) === searchDigits);
+    
+    if (!bonusRecord) {
       return NextResponse.json(
-        { error: 'Invalid phone number format. Use +7 (777) 123-12-12' },
-        { status: 400 }
+        { error: 'Customer not found' },
+        { status: 404 }
       );
     }
 
-    const bonus = await Bonus.findOneAndUpdate(
-      { phoneNumber },
+    const bonus = await Bonus.findByIdAndUpdate(
+      bonusRecord._id,
       { fullName: fullName.trim() },
       { new: true }
     );

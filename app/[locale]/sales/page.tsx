@@ -5,6 +5,7 @@ import { IProduct, getLocalizedText } from '@/types';
 import { cleanPhoneInput, isValidPhoneNumber } from '@/lib/phoneUtils';
 import BonusManagement from '@/components/admin/BonusManagement';
 import BonusProcessing from '@/components/admin/BonusProcessing';
+import { formatNumber, formatPrice } from '@/lib/formatNumber';
 
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -67,6 +68,7 @@ export default function SalesPage() {
   const [processing, setProcessing] = useState(false);
   const [bonusData, setBonusData] = useState<BonusData | null>(null);
   const [activeTab, setActiveTab] = useState('sales');
+  const [bonusesToUse, setBonusesToUse] = useState<number>(0);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -103,6 +105,8 @@ export default function SalesPage() {
     setCustomerPhone(cleaned);
     
     // Clear bonus data when phone changes
+    setBonusData(null);
+    setBonusesToUse(0);
     if (bonusData) {
       setBonusData(null);
     }
@@ -191,6 +195,11 @@ export default function SalesPage() {
       return total + (price * item.quantity);
     }, 0);
   };
+  
+  const calculateFinalTotal = () => {
+    const subtotal = calculateTotal();
+    return Math.max(0, subtotal - bonusesToUse); // Не может быть меньше 0
+  };
 
   const calculateBonuses = () => {
     return Math.floor(calculateTotal() * 0.03);
@@ -210,6 +219,26 @@ export default function SalesPage() {
     try {
       setProcessing(true);
       
+      // Сначала списываем бонусы если они используются
+      if (bonusesToUse > 0) {
+        const deductResponse = await fetch('/api/bonuses/deduct', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            phoneNumber: customerPhone,
+            bonusesToDeduct: bonusesToUse
+          })
+        });
+
+        if (!deductResponse.ok) {
+          const error = await deductResponse.json();
+          toast.error(error.error || 'Ошибка при списании бонусов');
+          return;
+        }
+      }
+
       const saleData = {
         customerPhone,
         customerFullName: customerFullName.trim() || undefined,
@@ -217,6 +246,7 @@ export default function SalesPage() {
           productId: item.product._id,
           quantity: item.quantity,
         })),
+        bonusesUsed: bonusesToUse, // Добавляем информацию об использованных бонусах
       };
 
       const response = await fetch('/api/sales', {
@@ -236,6 +266,7 @@ export default function SalesPage() {
         setCustomerPhone('');
         setCustomerFullName('');
         setBonusData(null);
+        setBonusesToUse(0);
         
         // Refresh products to update stock
         fetchProducts();
@@ -456,7 +487,7 @@ export default function SalesPage() {
                         <div className="flex-1">
                           <h4 className="font-medium text-gray-900">{getLocalizedText(item.product.name, 'ru')}</h4>
                           <p className="text-sm text-gray-600">
-                            {price.toLocaleString()} ₸
+                            {formatPrice(price)}
                             {item.product.salePrice && (
                               <span className="ml-2 text-xs text-green-600">Скидка</span>
                             )}
@@ -504,9 +535,54 @@ export default function SalesPage() {
                 
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Общая сумма:</span>
-                    <span className="font-semibold">{calculateTotal().toLocaleString()} ₸</span>
+                    <span className="text-gray-600">Сумма товаров:</span>
+                    <span className="font-semibold">{formatPrice(calculateTotal())}</span>
                   </div>
+                  
+                  {/* Бонусы к списанию */}
+                  {bonusData && bonusData.availableBonuses > 0 && (
+                    <div className="space-y-3 border-t pt-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Доступно бонусов:</span>
+                        <span className="text-sm font-medium text-purple-600">
+                          {formatNumber(bonusData.availableBonuses)}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <label className="text-sm text-gray-600 whitespace-nowrap">Списать бонусов:</label>
+                        <div className="flex-1 flex items-center space-x-2">
+                          <input
+                            type="number"
+                            min="0"
+                            max={Math.min(bonusData.availableBonuses, calculateTotal())}
+                            value={bonusesToUse}
+                            onChange={(e) => setBonusesToUse(Math.max(0, parseInt(e.target.value) || 0))}
+                            className="w-full rounded border border-gray-300 px-2 py-1 text-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                            placeholder="0"
+                          />
+                          <button
+                            onClick={() => setBonusesToUse(Math.min(bonusData.availableBonuses, calculateTotal()))}
+                            className="text-xs text-purple-600 hover:text-purple-800 whitespace-nowrap"
+                          >
+                            Максимум
+                          </button>
+                        </div>
+                      </div>
+                      {bonusesToUse > 0 && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-red-600">Скидка бонусами:</span>
+                          <span className="text-red-600">-{formatPrice(bonusesToUse)}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
+                  {bonusesToUse > 0 && (
+                    <div className="flex justify-between border-t pt-3 font-bold">
+                      <span className="text-gray-900">Итого к оплате:</span>
+                      <span className="text-green-600">{formatPrice(calculateFinalTotal())}</span>
+                    </div>
+                  )}
                   
                   <div className="flex justify-between border-t pt-3">
                     <div className="flex items-center space-x-2">
@@ -609,10 +685,10 @@ export default function SalesPage() {
                             <h4 className="font-medium text-gray-900">{getLocalizedText(product.name, 'ru')}</h4>
                             <p className="text-sm text-gray-600">SKU: {product.sku}</p>
                             <p className="text-sm font-medium text-blue-600">
-                              {(product.salePrice || product.price).toLocaleString()} ₸
+                              {formatPrice(product.salePrice || product.price)}
                               {product.salePrice && (
                                 <span className="ml-2 text-xs text-gray-500 line-through">
-                                  {product.price.toLocaleString()} ₸
+                                  {formatPrice(product.price)}
                                 </span>
                               )}
                             </p>

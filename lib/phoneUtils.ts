@@ -32,6 +32,21 @@ export function isValidPhoneNumber(phone: string): boolean {
   return phoneRegex.test(phone);
 }
 
+/**
+ * Извлекает только цифры из номера телефона для поиска
+ * Пример: "+7 (777) 123-45-67" -> "77771234567"
+ */
+export function extractPhoneDigits(phone: string): string {
+  return phone.replace(/\D/g, '');
+}
+
+/**
+ * Проверяет совпадение телефонов по цифрам, игнорируя форматирование
+ */
+export function phonesMatch(phone1: string, phone2: string): boolean {
+  return extractPhoneDigits(phone1) === extractPhoneDigits(phone2);
+}
+
 export function cleanPhoneInput(input: string): string {
   // Keep only digits and format progressively
   const digits = input.replace(/\D/g, '');

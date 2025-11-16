@@ -1,5 +1,6 @@
 import { getDatabase } from '@/lib/mongodb';
 import Bonus from '@/models/Bonus';
+import { extractPhoneDigits } from '@/lib/phoneUtils';
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -18,15 +19,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate phone format
-    const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-    if (!phoneRegex.test(phoneNumber)) {
-      return NextResponse.json(
-        { error: 'Invalid phone number format. Use +7 (777) 123-12-12' },
-        { status: 400 }
-      );
-    }
-
     if (bonusesToDeduct <= 0) {
       return NextResponse.json(
         { error: 'Bonuses to deduct must be positive' },
@@ -34,7 +26,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const bonus = await Bonus.findOne({ phoneNumber });
+    // Find bonus by matching phone digits
+    const searchDigits = extractPhoneDigits(phoneNumber);
+    const allBonuses = await Bonus.find({}).lean();
+    const bonusRecord = allBonuses.find(b => extractPhoneDigits(b.phoneNumber) === searchDigits);
+    
+    if (!bonusRecord) {
+      return NextResponse.json(
+        { error: 'Customer not found in bonus system' },
+        { status: 404 }
+      );
+    }
+
+    const bonus = await Bonus.findById(bonusRecord._id);
     
     if (!bonus) {
       return NextResponse.json(

@@ -1,5 +1,6 @@
 import { getDatabase } from '@/lib/mongodb';
 import PendingBonus from '@/models/PendingBonus';
+import { extractPhoneDigits } from '@/lib/phoneUtils';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Get pending bonuses for a customer
@@ -20,14 +21,26 @@ export async function GET(request: NextRequest) {
 
     const filter: Record<string, unknown> = { isProcessed: false };
 
+    let pendingBonuses;
+
     if (phone) {
-      filter.phoneNumber = phone;
+      // Search by phone digits
+      const searchDigits = extractPhoneDigits(phone);
+      const allPendingBonuses = await PendingBonus.find({ isProcessed: false }).lean();
+      pendingBonuses = allPendingBonuses.filter(bonus => 
+        extractPhoneDigits(bonus.phoneNumber) === searchDigits
+      );
+      // Sort by availableDate
+      pendingBonuses.sort((a, b) => new Date(a.availableDate).getTime() - new Date(b.availableDate).getTime());
     } else if (name) {
+      // Search by name
       filter.fullName = { $regex: name.trim(), $options: 'i' };
+      pendingBonuses = await PendingBonus.find(filter).sort({ availableDate: 1 });
     }
 
-    // Get all pending bonuses for the customer
-    const pendingBonuses = await PendingBonus.find(filter).sort({ availableDate: 1 });
+    if (!pendingBonuses) {
+      pendingBonuses = [];
+    }
 
     // Separate into available and upcoming bonuses
     const now = new Date();

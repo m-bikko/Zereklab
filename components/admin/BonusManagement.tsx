@@ -1,6 +1,7 @@
 'use client';
 
 import { cleanPhoneInput, isValidPhoneNumber } from '@/lib/phoneUtils';
+import { formatNumber } from '@/lib/formatNumber';
 
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -244,7 +245,7 @@ export default function BonusManagement() {
             </div>
             <div className="ml-5">
               <p className="text-sm font-medium text-gray-500">Выдано бонусов</p>
-              <p className="text-2xl font-semibold text-gray-900">{totalBonusesIssued.toLocaleString()}</p>
+              <p className="text-2xl font-semibold text-gray-900">{formatNumber(totalBonusesIssued)}</p>
             </div>
           </div>
         </div>
@@ -256,7 +257,7 @@ export default function BonusManagement() {
             </div>
             <div className="ml-5">
               <p className="text-sm font-medium text-gray-500">Потрачено бонусов</p>
-              <p className="text-2xl font-semibold text-gray-900">{totalBonusesUsed.toLocaleString()}</p>
+              <p className="text-2xl font-semibold text-gray-900">{formatNumber(totalBonusesUsed)}</p>
             </div>
           </div>
         </div>
@@ -268,7 +269,7 @@ export default function BonusManagement() {
             </div>
             <div className="ml-5">
               <p className="text-sm font-medium text-gray-500">Доступно бонусов</p>
-              <p className="text-2xl font-semibold text-gray-900">{totalAvailableBonuses.toLocaleString()}</p>
+              <p className="text-2xl font-semibold text-gray-900">{formatNumber(totalAvailableBonuses)}</p>
             </div>
           </div>
         </div>
@@ -345,14 +346,14 @@ export default function BonusManagement() {
                       {bonus.fullName || 'Не указано'}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
-                      {bonus.totalBonuses.toLocaleString()}
+                      {formatNumber(bonus.totalBonuses)}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
-                      {bonus.usedBonuses.toLocaleString()}
+                      {formatNumber(bonus.usedBonuses)}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
                       <span className="inline-flex rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-800">
-                        {bonus.availableBonuses.toLocaleString()}
+                        {formatNumber(bonus.availableBonuses)}
                       </span>
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { Clock, CheckCircle, RefreshCw, Play, Calendar, User, Users } from 'lucide-react';
+import { formatNumber, formatBonus } from '@/lib/formatNumber';
 
 interface BonusStats {
   totalPending: number;
@@ -114,7 +115,7 @@ export default function BonusProcessing() {
               <div className="ml-4">
                 <p className="text-sm font-medium text-yellow-800">Готовы к начислению</p>
                 <p className="text-2xl font-bold text-yellow-900">{stats.readyForProcessing}</p>
-                <p className="text-sm text-yellow-700">{stats.readyAmount.toLocaleString()} бонусов</p>
+                <p className="text-sm text-yellow-700">{formatBonus(stats.readyAmount)}</p>
               </div>
             </div>
           </div>
@@ -128,7 +129,7 @@ export default function BonusProcessing() {
               <div className="ml-4">
                 <p className="text-sm font-medium text-orange-800">Ожидают</p>
                 <p className="text-2xl font-bold text-orange-900">{stats.totalPending}</p>
-                <p className="text-sm text-orange-700">{stats.totalPendingAmount.toLocaleString()} бонусов</p>
+                <p className="text-sm text-orange-700">{formatBonus(stats.totalPendingAmount)}</p>
               </div>
             </div>
           </div>
@@ -228,12 +229,12 @@ export default function BonusProcessing() {
                           </div>
                           <div>
                             <p className="text-gray-500">Всего бонусов</p>
-                            <p className="font-medium text-gray-900">{customer.totalBonuses.toLocaleString()}</p>
+                            <p className="font-medium text-gray-900">{formatNumber(customer.totalBonuses)}</p>
                           </div>
                           <div>
                             <p className="text-gray-500">Готовы к начислению</p>
                             <p className="font-medium text-green-600">
-                              {readyBonuses.reduce((sum, b) => sum + b.bonusAmount, 0).toLocaleString()}
+                              {formatNumber(readyBonuses.reduce((sum, b) => sum + b.bonusAmount, 0))}
                             </p>
                           </div>
                         </div>

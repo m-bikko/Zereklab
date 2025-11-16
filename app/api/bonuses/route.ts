@@ -1,5 +1,6 @@
 import { getDatabase } from '@/lib/mongodb';
 import Bonus from '@/models/Bonus';
+import { extractPhoneDigits } from '@/lib/phoneUtils';
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -22,19 +23,21 @@ export async function GET(request: NextRequest) {
     let bonus;
 
     if (phoneNumber) {
-      // Validate phone format
-      const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-      if (!phoneRegex.test(phoneNumber)) {
-        return NextResponse.json(
-          { error: 'Invalid phone number format. Use +7 (777) 123-12-12' },
-          { status: 400 }
-        );
+      // Extract digits from the search phone number
+      const searchDigits = extractPhoneDigits(phoneNumber);
+      
+      // Find bonus by matching phone digits
+      const allBonuses = await Bonus.find({}).lean();
+      bonus = allBonuses.find(b => extractPhoneDigits(b.phoneNumber) === searchDigits);
+      
+      if (bonus) {
+        // Convert back to mongoose document
+        bonus = await Bonus.findById(bonus._id);
       }
-
-      bonus = await Bonus.findOne({ phoneNumber });
       
       if (!bonus) {
         // Create new bonus record if doesn't exist
+        // Use the original formatted phone number from the request
         bonus = new Bonus({
           phoneNumber,
           totalBonuses: 0,

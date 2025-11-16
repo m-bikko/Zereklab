@@ -5,6 +5,7 @@ import { useLocale } from '@/hooks/useLocale';
 import { formatAgeForDisplay } from '@/lib/ageUtils';
 import { t } from '@/lib/i18n';
 import { openWhatsAppOrder } from '@/lib/whatsapp';
+import { formatPrice } from '@/lib/formatNumber';
 import {
   extractYouTubeVideoId,
   getYouTubeEmbedUrl,
@@ -152,7 +153,7 @@ export default function ProductPage() {
       // Fallback to simple message
       const productName = getLocalizedText(product.name, locale);
       const price = product.salePrice || product.price;
-      const message = `Здравствуйте! Меня интересует товар: ${productName}\nЦена: ${price.toLocaleString()} ₸\nSKU: ${product.sku}`;
+      const message = `Здравствуйте! Меня интересует товар: ${productName}\nЦена: ${formatPrice(price)}\nSKU: ${product.sku}`;
       const whatsappUrl = `https://wa.me/77753084648?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
     }
@@ -442,7 +443,7 @@ export default function ProductPage() {
                   </h1>
                   <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
                     <span className="text-3xl font-bold text-primary-600 lg:text-4xl">
-                      ₸{product.price.toLocaleString()}
+                      {formatPrice(product.price)}
                     </span>
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-semibold shadow-sm sm:text-sm ${

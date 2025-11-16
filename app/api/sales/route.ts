@@ -3,6 +3,7 @@ import Bonus from '@/models/Bonus';
 import Product from '@/models/Product';
 import Sale from '@/models/Sale';
 import PendingBonus from '@/models/PendingBonus';
+import { extractPhoneDigits } from '@/lib/phoneUtils';
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -20,10 +21,34 @@ export async function GET(request: NextRequest) {
     
     // Build filter
     const filter: Record<string, unknown> = {};
+    let salesList;
     if (phone && phone.trim()) {
-      // Properly escape regex special characters in phone numbers
-      const escapedPhone = phone.trim().replace(/[+\-()\\s]/g, '\\$&');
-      filter.customerPhone = { $regex: escapedPhone, $options: 'i' };
+      // Search by phone digits to ignore formatting
+      const searchDigits = extractPhoneDigits(phone.trim());
+      const allSales = await Sale.find({}).lean();
+      const matchingSales = allSales.filter(sale => 
+        extractPhoneDigits(sale.customerPhone) === searchDigits
+      );
+      
+      // Apply pagination to filtered results
+      const startIndex = skip;
+      const endIndex = skip + limit;
+      salesList = matchingSales.slice(startIndex, endIndex);
+      
+      // Calculate total for pagination
+      const total = matchingSales.length;
+      const totalPages = Math.ceil(total / limit);
+
+      return NextResponse.json({
+        sales: salesList,
+        pagination: {
+          currentPage: page,
+          totalPages,
+          totalSales: total,
+          hasNextPage: page < totalPages,
+          hasPrevPage: page > 1,
+        },
+      });
     }
 
     // Get sales with pagination
