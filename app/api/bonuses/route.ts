@@ -4,6 +4,130 @@ import { extractPhoneDigits } from '@/lib/phoneUtils';
 
 import { NextRequest, NextResponse } from 'next/server';
 
+/**
+ * @swagger
+ * /bonuses:
+ *   get:
+ *     tags: [Bonuses]
+ *     summary: Получение бонусов клиента
+ *     description: Получение информации о бонусах клиента по номеру телефона или имени
+ *     parameters:
+ *       - in: query
+ *         name: phone
+ *         schema:
+ *           type: string
+ *         description: Номер телефона клиента
+ *         example: "+7 (777) 123-12-12"
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         description: Полное имя клиента
+ *         example: "Иван Петров"
+ *     responses:
+ *       200:
+ *         description: Информация о бонусах
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 phoneNumber:
+ *                   type: string
+ *                   description: Номер телефона
+ *                 fullName:
+ *                   type: string
+ *                   description: Полное имя
+ *                 availableBonuses:
+ *                   type: number
+ *                   description: Доступные бонусы
+ *                 totalBonuses:
+ *                   type: number
+ *                   description: Общее количество бонусов
+ *                 usedBonuses:
+ *                   type: number
+ *                   description: Использованные бонусы
+ *                 lastUpdated:
+ *                   type: string
+ *                   format: date-time
+ *                   description: Дата последнего обновления
+ *       400:
+ *         description: Ошибка в параметрах запроса
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: Клиент не найден
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *   post:
+ *     tags: [Bonuses]
+ *     summary: Начисление бонусов
+ *     description: Начисление бонусов на счет клиента
+ *     security:
+ *       - SalesAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - phoneNumber
+ *               - bonusesToAdd
+ *             properties:
+ *               phoneNumber:
+ *                 type: string
+ *                 pattern: '^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$'
+ *                 description: Номер телефона в формате +7 (777) 123-12-12
+ *                 example: "+7 (777) 123-12-12"
+ *               bonusesToAdd:
+ *                 type: number
+ *                 minimum: 0
+ *                 description: Количество бонусов для начисления
+ *                 example: 100
+ *     responses:
+ *       200:
+ *         description: Бонусы успешно начислены
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 phoneNumber:
+ *                   type: string
+ *                   description: Номер телефона
+ *                 availableBonuses:
+ *                   type: number
+ *                   description: Доступные бонусы
+ *                 totalBonuses:
+ *                   type: number
+ *                   description: Общее количество бонусов
+ *                 bonusesAdded:
+ *                   type: number
+ *                   description: Начислено бонусов
+ *       400:
+ *         description: Ошибка в данных запроса
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 // Get bonus by phone number or full name
 export async function GET(request: NextRequest) {
   try {

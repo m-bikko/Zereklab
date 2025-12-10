@@ -32,8 +32,133 @@ const ALLOWED_TYPES = [
 ];
 
 /**
- * POST /api/upload
- * Загружает изображения в Cloudinary
+ * @swagger
+ * /upload:
+ *   post:
+ *     tags: [Upload]
+ *     summary: Загрузка изображений
+ *     description: Загрузка изображений в Cloudinary для товаров и категорий
+ *     security:
+ *       - AdminAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - files
+ *             properties:
+ *               files:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: base64
+ *                 description: Массив файлов в формате base64
+ *               folder:
+ *                 type: string
+ *                 default: "zereklab"
+ *                 description: Папка для загрузки
+ *     responses:
+ *       200:
+ *         description: Изображения успешно загружены
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 uploaded:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       url:
+ *                         type: string
+ *                         description: URL загруженного изображения
+ *                       publicId:
+ *                         type: string
+ *                         description: Public ID в Cloudinary
+ *                 count:
+ *                   type: number
+ *                   description: Количество загруженных файлов
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   description: Ошибки при загрузке
+ *       400:
+ *         description: Ошибка в данных запроса
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *   delete:
+ *     tags: [Upload]
+ *     summary: Удаление изображений
+ *     description: Удаление изображений из Cloudinary
+ *     security:
+ *       - AdminAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - imageUrls
+ *             properties:
+ *               imageUrls:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: Массив URL изображений для удаления
+ *     responses:
+ *       200:
+ *         description: Изображения успешно удалены
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 deleted:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       url:
+ *                         type: string
+ *                       publicId:
+ *                         type: string
+ *                       deleted:
+ *                         type: boolean
+ *                 count:
+ *                   type: number
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *       400:
+ *         description: Ошибка в данных запроса
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 export async function POST(request: NextRequest) {
   // Диагностика переменных окружения

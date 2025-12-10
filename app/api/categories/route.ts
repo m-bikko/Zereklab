@@ -62,6 +62,75 @@ const validateCategory = (category: CategoryData): string[] => {
   return errors;
 };
 
+/**
+ * @swagger
+ * /categories:
+ *   get:
+ *     tags: [Categories]
+ *     summary: Получение списка категорий
+ *     description: Получение всех категорий товаров
+ *     responses:
+ *       200:
+ *         description: Список категорий
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Category'
+ *       500:
+ *         description: Ошибка получения категорий
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *   post:
+ *     tags: [Categories]
+ *     summary: Создание новой категории
+ *     description: Добавление новой категории товаров
+ *     security:
+ *       - AdminAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Category'
+ *           example:
+ *             name:
+ *               ru: "Электроника"
+ *               kk: "Электроника"
+ *               en: "Electronics"
+ *             description:
+ *               ru: "Образовательные наборы по электронике"
+ *               kk: "Электроника бойынша білім жиынтықтары"
+ *               en: "Educational electronics kits"
+ *     responses:
+ *       201:
+ *         description: Категория успешно создана
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Category'
+ *       400:
+ *         description: Ошибка валидации
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       409:
+ *         description: Категория с таким названием уже существует
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Ошибка создания категории
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 export async function GET() {
   try {
     await getDatabase();

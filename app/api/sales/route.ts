@@ -7,6 +7,96 @@ import { extractPhoneDigits } from '@/lib/phoneUtils';
 
 import { NextRequest, NextResponse } from 'next/server';
 
+/**
+ * @swagger
+ * /sales:
+ *   get:
+ *     tags: [Sales]
+ *     summary: Получение списка продаж
+ *     description: Получение списка всех продаж с пагинацией и фильтрацией
+ *     security:
+ *       - SalesAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Номер страницы
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 20
+ *         description: Количество продаж на странице
+ *       - in: query
+ *         name: phone
+ *         schema:
+ *           type: string
+ *         description: Фильтр по номеру телефона клиента
+ *     responses:
+ *       200:
+ *         description: Список продаж
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 sales:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Sale'
+ *                 pagination:
+ *                   type: object
+ *                   properties:
+ *                     currentPage:
+ *                       type: number
+ *                     totalPages:
+ *                       type: number
+ *                     totalSales:
+ *                       type: number
+ *                     hasNextPage:
+ *                       type: boolean
+ *                     hasPrevPage:
+ *                       type: boolean
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *   post:
+ *     tags: [Sales]
+ *     summary: Создание новой продажи
+ *     description: Регистрация новой продажи с обработкой бонусов
+ *     security:
+ *       - SalesAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Sale'
+ *     responses:
+ *       200:
+ *         description: Продажа успешно создана
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Sale'
+ *       400:
+ *         description: Ошибка в данных запроса
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 // Get all sales with pagination
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);

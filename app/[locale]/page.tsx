@@ -1,5 +1,6 @@
 'use client';
 
+import BlogSection from '@/components/BlogSection';
 import BonusLookup from '@/components/BonusLookup';
 import ClientOnly from '@/components/ClientOnly';
 import DailyImageRotation from '@/components/DailyImageRotation';
@@ -565,6 +566,32 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
                   </Link>
                 </motion.div>
               </motion.div>
+            </div>
+          </section>
+        </AnimatedSection>
+
+        {/* Latest Blog Posts Section */}
+        <AnimatedSection className="py-16 bg-white">
+          <section className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+                {t('blog.latest', currentLocale)}
+              </h2>
+              <p className="mt-4 text-lg text-gray-600">
+                Новости и полезная информация о образовательных технологиях
+              </p>
+            </div>
+            
+            <BlogSection locale={currentLocale} />
+            
+            <div className="text-center mt-8">
+              <Link
+                href={`/${currentLocale}/blog`}
+                className="inline-flex items-center px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors font-medium"
+              >
+                {t('blog.allPosts', currentLocale)}
+                <ChevronRight className="ml-2 h-5 w-5" />
+              </Link>
             </div>
           </section>
         </AnimatedSection>

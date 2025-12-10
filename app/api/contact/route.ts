@@ -35,6 +35,107 @@ const contactSchema = z.object({
     .trim(),
 });
 
+/**
+ * @swagger
+ * /contact:
+ *   get:
+ *     tags: [Contact]
+ *     summary: Получение обращений
+ *     description: Получение списка обращений от клиентов
+ *     security:
+ *       - AdminAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: [new, read, replied]
+ *         description: Фильтр по статусу обращения
+ *     responses:
+ *       200:
+ *         description: Список обращений
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Contact'
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *   post:
+ *     tags: [Contact]
+ *     summary: Отправка обращения
+ *     description: Отправка нового обращения от клиента
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - whatsapp
+ *               - subject
+ *               - message
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 minLength: 2
+ *                 maxLength: 100
+ *                 description: Имя отправителя
+ *                 example: "Алия Казыбаева"
+ *               whatsapp:
+ *                 type: string
+ *                 pattern: '^\+?[1-9]\d{1,14}$'
+ *                 minLength: 10
+ *                 maxLength: 16
+ *                 description: Номер WhatsApp
+ *                 example: "+77753084648"
+ *               subject:
+ *                 type: string
+ *                 minLength: 5
+ *                 maxLength: 200
+ *                 description: Тема обращения
+ *                 example: "Вопрос по доставке"
+ *               message:
+ *                 type: string
+ *                 minLength: 10
+ *                 maxLength: 2000
+ *                 description: Текст сообщения
+ *                 example: "Когда будет доставлен заказ?"
+ *     responses:
+ *       200:
+ *         description: Обращение успешно отправлено
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Обращение успешно отправлено"
+ *                 contact:
+ *                   $ref: '#/components/schemas/Contact'
+ *       400:
+ *         description: Ошибка валидации
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 // POST - Create new contact submission
 export async function POST(request: NextRequest) {
   console.log('🔥 Contact API POST called');

@@ -5,6 +5,64 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import bcrypt from 'bcryptjs';
 
+/**
+ * @swagger
+ * /auth/sales-login:
+ *   post:
+ *     tags: [Authentication]
+ *     summary: Аутентификация сотрудника продаж
+ *     description: Авторизация сотрудника отдела продаж
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Логин сотрудника
+ *                 example: "ivanov"
+ *               password:
+ *                 type: string
+ *                 description: Пароль сотрудника
+ *                 example: "password123"
+ *     responses:
+ *       200:
+ *         description: Успешная авторизация
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 username:
+ *                   type: string
+ *                   description: Логин сотрудника
+ *                 fullName:
+ *                   type: string
+ *                   description: Полное имя сотрудника
+ *       400:
+ *         description: Отсутствуют обязательные поля
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Неверные учетные данные
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Ошибка сервера
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 export async function POST(request: NextRequest) {
   try {
     await getDatabase();

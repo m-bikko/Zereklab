@@ -1,6 +1,7 @@
 'use client';
 
 import AdminGuard from '@/components/AdminGuard';
+import BlogManagement from '@/components/admin/BlogManagement';
 import BonusManagement from '@/components/admin/BonusManagement';
 import BonusProcessing from '@/components/admin/BonusProcessing';
 import CategoryManagement from '@/components/admin/CategoryManagement';
@@ -24,6 +25,7 @@ import {
   Gift,
   LogOut,
   Mail,
+  Newspaper,
   Package,
   RefreshCw,
   Settings,
@@ -52,6 +54,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<
     | 'products'
     | 'categories'
+    | 'blog'
     | 'contacts'
     | 'daily-quotes'
     | 'analytics'
@@ -179,6 +182,13 @@ export default function AdminPage() {
                   </span>
                 </button>
                 <button
+                  onClick={() => setActiveTab('blog')}
+                  className={tabClass('blog')}
+                >
+                  <Newspaper className="h-5 w-5" />
+                  <span>Блог</span>
+                </button>
+                <button
                   onClick={() => setActiveTab('contacts')}
                   className={tabClass('contacts')}
                 >
@@ -272,6 +282,12 @@ export default function AdminPage() {
                   loading={loading}
                   onRefresh={handleRefresh}
                 />
+              )}
+
+              {activeTab === 'blog' && (
+                <div className="rounded-lg bg-white p-6">
+                  <BlogManagement locale="ru" />
+                </div>
               )}
 
               {activeTab === 'daily-quotes' && <DailyQuotesManagement />}

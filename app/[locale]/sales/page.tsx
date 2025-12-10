@@ -539,50 +539,47 @@ export default function SalesPage() {
                     <span className="font-semibold">{formatPrice(calculateTotal())}</span>
                   </div>
                   
-                  {/* Бонусы к списанию */}
+                  {/* Бонусы к использованию */}
                   {bonusData && bonusData.availableBonuses > 0 && (
-                    <div className="space-y-3 border-t pt-3">
-                      <div className="flex items-center justify-between">
+                    <div className="border-t pt-3">
+                      <div className="flex items-center justify-between mb-3">
                         <span className="text-sm text-gray-600">Доступно бонусов:</span>
                         <span className="text-sm font-medium text-purple-600">
                           {formatNumber(bonusData.availableBonuses)}
                         </span>
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <label className="text-sm text-gray-600 whitespace-nowrap">Списать бонусов:</label>
-                        <div className="flex-1 flex items-center space-x-2">
-                          <input
-                            type="number"
-                            min="0"
-                            max={Math.min(bonusData.availableBonuses, calculateTotal())}
-                            value={bonusesToUse}
-                            onChange={(e) => setBonusesToUse(Math.max(0, parseInt(e.target.value) || 0))}
-                            className="w-full rounded border border-gray-300 px-2 py-1 text-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
-                            placeholder="0"
-                          />
+                      
+                      {bonusesToUse === 0 ? (
+                        <button
+                          onClick={() => setBonusesToUse(Math.min(bonusData.availableBonuses, calculateTotal()))}
+                          className="w-full flex items-center justify-center space-x-2 rounded-lg bg-purple-500 px-4 py-2 text-white text-sm font-medium transition-colors hover:bg-purple-600"
+                        >
+                          <Gift className="h-4 w-4" />
+                          <span>Использовать бонусы</span>
+                        </button>
+                      ) : (
+                        <div className="space-y-3">
+                          <div className="flex justify-between text-sm">
+                            <span className="text-purple-600">Списано бонусами:</span>
+                            <span className="text-purple-600 font-medium">-{formatPrice(bonusesToUse)}</span>
+                          </div>
                           <button
-                            onClick={() => setBonusesToUse(Math.min(bonusData.availableBonuses, calculateTotal()))}
-                            className="text-xs text-purple-600 hover:text-purple-800 whitespace-nowrap"
+                            onClick={() => setBonusesToUse(0)}
+                            className="w-full rounded-lg border border-purple-300 bg-white px-4 py-2 text-purple-600 text-sm font-medium transition-colors hover:bg-purple-50"
                           >
-                            Максимум
+                            Отменить использование бонусов
                           </button>
-                        </div>
-                      </div>
-                      {bonusesToUse > 0 && (
-                        <div className="flex justify-between text-sm">
-                          <span className="text-red-600">Скидка бонусами:</span>
-                          <span className="text-red-600">-{formatPrice(bonusesToUse)}</span>
                         </div>
                       )}
                     </div>
                   )}
                   
-                  {bonusesToUse > 0 && (
-                    <div className="flex justify-between border-t pt-3 font-bold">
-                      <span className="text-gray-900">Итого к оплате:</span>
-                      <span className="text-green-600">{formatPrice(calculateFinalTotal())}</span>
-                    </div>
-                  )}
+                  <div className="flex justify-between border-t pt-3 font-bold text-lg">
+                    <span className="text-gray-900">Итого к оплате:</span>
+                    <span className={bonusesToUse > 0 ? "text-green-600" : "text-gray-900"}>
+                      {formatPrice(calculateFinalTotal())}
+                    </span>
+                  </div>
                   
                   <div className="flex justify-between border-t pt-3">
                     <div className="flex items-center space-x-2">

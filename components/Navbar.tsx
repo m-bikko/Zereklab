@@ -46,6 +46,7 @@ export default function Navbar() {
   const navLinks = [
     { href: `/${locale}`, label: t('nav.home', locale) },
     { href: `/${locale}/products`, label: t('nav.products', locale) },
+    { href: `/${locale}/blog`, label: t('nav.blog', locale) },
     { href: `/${locale}/about`, label: t('nav.about', locale) },
     { href: `/${locale}/contact`, label: t('nav.contact', locale) },
     // { href: `/${locale}/admin`, label: t('nav.admin', locale) } // Admin link
