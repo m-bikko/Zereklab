@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { IBlog } from '@/models/Blog';
 import { getLocalizedText } from '@/types';
 import { type Locale, t } from '@/lib/i18n';
+import { getBlogDesign } from '@/lib/blogDesign';
+import MagazineBlogList from '@/components/blog/MagazineBlogList';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -38,6 +40,8 @@ const CATEGORIES = [
   'программирование',
   'diy'
 ];
+
+const blogDesign = getBlogDesign();
 
 export default function BlogPage({ params: { locale } }: BlogPageProps) {
   const currentLocale = locale as Locale;
@@ -137,6 +141,35 @@ export default function BlogPage({ params: { locale } }: BlogPageProps) {
     return text.substring(0, maxLength) + '...';
   };
 
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setSelectedCategory('');
+    setCurrentPage(1);
+  };
+
+  // Magazine Design
+  if (blogDesign === 'magazine') {
+    return (
+      <MagazineBlogList
+        locale={currentLocale}
+        blogs={blogs}
+        featuredBlogs={featuredBlogs}
+        isLoading={isLoading}
+        searchTerm={searchTerm}
+        selectedCategory={selectedCategory}
+        totalBlogs={totalBlogs}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        categories={CATEGORIES}
+        onSearch={handleSearch}
+        onCategoryChange={handleCategoryChange}
+        onPageChange={setCurrentPage}
+        onClearFilters={handleClearFilters}
+      />
+    );
+  }
+
+  // Default Design
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}

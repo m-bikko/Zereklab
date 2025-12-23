@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { IBlog } from '@/models/Blog';
 import { getLocalizedText } from '@/types';
 import { type Locale } from '@/lib/i18n';
+import { getBlogDesign } from '@/lib/blogDesign';
+import MagazineBlogSection from '@/components/blog/MagazineBlogSection';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -21,7 +23,18 @@ interface BlogSectionProps {
   locale: Locale;
 }
 
+const blogDesign = getBlogDesign();
+
 export default function BlogSection({ locale }: BlogSectionProps) {
+  // Magazine Design
+  if (blogDesign === 'magazine') {
+    return <MagazineBlogSection locale={locale} />;
+  }
+
+  return <DefaultBlogSection locale={locale} />;
+}
+
+function DefaultBlogSection({ locale }: BlogSectionProps) {
   const [blogs, setBlogs] = useState<IBlog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 

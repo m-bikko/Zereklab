@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { IBlog } from '@/models/Blog';
 import { getLocalizedText } from '@/types';
 import { type Locale, t } from '@/lib/i18n';
+import { getBlogDesign } from '@/lib/blogDesign';
+import MagazineBlogPost from '@/components/blog/MagazineBlogPost';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -29,6 +31,8 @@ interface BlogPostPageProps {
 interface BlogWithRelated extends Omit<IBlog, 'relatedPosts'> {
   relatedPosts?: IBlog[];
 }
+
+const blogDesign = getBlogDesign();
 
 export default function BlogPostPage({ params: { locale, slug } }: BlogPostPageProps) {
   const currentLocale = locale as Locale;
@@ -168,6 +172,21 @@ export default function BlogPostPage({ params: { locale, slug } }: BlogPostPageP
     notFound();
   }
 
+  // Magazine Design
+  if (blogDesign === 'magazine') {
+    return (
+      <MagazineBlogPost
+        locale={currentLocale}
+        blog={blog}
+        recentBlogs={recentBlogs}
+        hasLiked={hasLiked}
+        isLiking={isLiking}
+        onLike={handleLike}
+      />
+    );
+  }
+
+  // Default Design
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Навигация назад */}
