@@ -401,6 +401,24 @@
       "city": "Aktobe, KZ 030000"
     }
   },
+  "reviews": {
+    "title": "Customer Reviews",
+    "subtitle": "See what parents and educators say about our educational toys",
+    "loadMore": "Load more",
+    "empty": "No reviews yet. Be the first!",
+    "form": {
+      "title": "Leave a Review",
+      "phone": "Phone Number",
+      "phoneHint": "Your phone number will not be published",
+      "content": "Your Review",
+      "contentPlaceholder": "Share your experience with our products...",
+      "submit": "Submit Review"
+    },
+    "submit": {
+      "success": "Thank you! Your review has been submitted and will be published after moderation.",
+      "error": "Failed to submit review. Please try again later."
+    }
+  },
   "scanner": {
     "title": "Product Search",
     "description": "Scan barcode or enter product SKU for quick catalog search",

@@ -2,6 +2,7 @@
 
 import BlogSection from '@/components/BlogSection';
 import BonusLookup from '@/components/BonusLookup';
+import ReviewSection from '@/components/ReviewSection';
 import ClientOnly from '@/components/ClientOnly';
 import DailyImageRotation from '@/components/DailyImageRotation';
 import { StaticGear } from '@/components/FloatingGears';
@@ -596,6 +597,11 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
           </section>
         </AnimatedSection>
 
+        {/* Reviews Section */}
+        <AnimatedSection>
+          <ReviewSection locale={currentLocale} />
+        </AnimatedSection>
+
         {/* Bonus Lookup Section */}
         <AnimatedSection className="py-16 bg-gray-50">
           <section className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -607,7 +613,7 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
                 Проверьте накопленные бонусы по номеру телефона
               </p>
             </div>
-            
+
             <div className="flex justify-center">
               <BonusLookup />
             </div>

@@ -8,10 +8,12 @@ import CategoryManagement from '@/components/admin/CategoryManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
 import ProductManagement from '@/components/admin/ProductManagement';
 import QRAnalytics from '@/components/admin/QRAnalytics';
+import ReviewManagement from '@/components/admin/ReviewManagement';
 import SalesStaffManagement from '@/components/admin/SalesStaffManagement';
 import { useAuth } from '@/hooks/useAuth';
 import { ICategory, IProduct } from '@/types';
 import { IContactDocument } from '@/models/Contact';
+import { IReview } from '@/models/Review';
 
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -25,6 +27,7 @@ import {
   Gift,
   LogOut,
   Mail,
+  MessageSquare,
   Newspaper,
   Package,
   RefreshCw,
@@ -56,6 +59,7 @@ export default function AdminPage() {
     | 'categories'
     | 'blog'
     | 'contacts'
+    | 'reviews'
     | 'daily-quotes'
     | 'analytics'
     | 'sales-staff'
@@ -67,15 +71,18 @@ export default function AdminPage() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [contacts, setContacts] = useState<IContactDocument[]>([]);
+  const [reviews, setReviews] = useState<IReview[]>([]);
+  const [reviewsPendingCount, setReviewsPendingCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [productsRes, categoriesRes, contactsRes] = await Promise.all([
+      const [productsRes, categoriesRes, contactsRes, reviewsRes] = await Promise.all([
         fetch('/api/products?simple=true'),
         fetch('/api/categories'),
         fetch('/api/contact'),
+        fetch('/api/reviews/admin'),
       ]);
 
       if (productsRes.ok) {
@@ -97,6 +104,14 @@ export default function AdminPage() {
         setContacts(contactsData.data || []);
       } else {
         toast.error('Ошибка загрузки обращений');
+      }
+
+      if (reviewsRes.ok) {
+        const reviewsData = await reviewsRes.json();
+        setReviews(reviewsData.reviews || []);
+        setReviewsPendingCount(reviewsData.pendingCount || 0);
+      } else {
+        toast.error('Ошибка загрузки отзывов');
       }
     } catch (error) {
       console.error('Ошибка загрузки данных:', error);
@@ -206,6 +221,23 @@ export default function AdminPage() {
                   )}
                 </button>
                 <button
+                  onClick={() => setActiveTab('reviews')}
+                  className={tabClass('reviews')}
+                >
+                  <MessageSquare className="h-5 w-5" />
+                  <span>Отзывы</span>
+                  {reviewsPendingCount > 0 && (
+                    <span className="ml-auto rounded-full bg-yellow-500 px-2 py-1 text-xs text-white">
+                      {reviewsPendingCount}
+                    </span>
+                  )}
+                  {reviewsPendingCount === 0 && (
+                    <span className="ml-auto rounded-full bg-gray-200 px-2 py-1 text-xs text-gray-700">
+                      {reviews.length}
+                    </span>
+                  )}
+                </button>
+                <button
                   onClick={() => setActiveTab('daily-quotes')}
                   className={tabClass('daily-quotes')}
                 >
@@ -279,6 +311,15 @@ export default function AdminPage() {
               {activeTab === 'contacts' && (
                 <ContactManagement
                   contacts={contacts}
+                  loading={loading}
+                  onRefresh={handleRefresh}
+                />
+              )}
+
+              {activeTab === 'reviews' && (
+                <ReviewManagement
+                  reviews={reviews}
+                  pendingCount={reviewsPendingCount}
                   loading={loading}
                   onRefresh={handleRefresh}
                 />
