@@ -20,7 +20,6 @@ export default function DailyImageRotation() {
   // const locale = useLocale();
   const [currentQuote, setCurrentQuote] = useState<RandomQuote | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isDefault, setIsDefault] = useState(false);
 
   useEffect(() => {
     const loadRandomQuote = async () => {
@@ -33,7 +32,6 @@ export default function DailyImageRotation() {
         const result = await response.json();
         if (result.success && result.data) {
           setCurrentQuote(result.data);
-          setIsDefault(result.isDefault || false);
         } else {
           setCurrentQuote(null);
         }
@@ -44,7 +42,6 @@ export default function DailyImageRotation() {
           text: 'Образование — это самое мощное оружие, которое вы можете использовать, чтобы изменить мир.',
           author: 'Нельсон Мандела',
         });
-        setIsDefault(true);
       } finally {
         setLoading(false);
       }
@@ -97,13 +94,6 @@ export default function DailyImageRotation() {
           {/* Decorative elements */}
           <div className="absolute bottom-6 right-6">
             <Quote className="h-6 w-6 text-black/40 rotate-180" />
-          </div>
-          
-          {/* Quote indicator */}
-          <div className="absolute bottom-4 left-4">
-            <span className="inline-flex items-center rounded-full bg-black/10 px-3 py-1 text-xs font-medium text-black/80">
-              🎲 {isDefault ? 'Цитата по умолчанию' : 'Случайная цитата'}
-            </span>
           </div>
         </div>
       </div>

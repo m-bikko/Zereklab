@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IReview extends Document {
   _id: string;
-  phone: string;
+  name: string;
   content: string;
   status: 'pending' | 'approved' | 'rejected';
   createdAt: Date;
@@ -12,11 +12,12 @@ export interface IReview extends Document {
 
 const ReviewSchema = new Schema<IReview>(
   {
-    phone: {
+    name: {
       type: String,
-      required: [true, 'Номер телефона обязателен'],
+      required: [true, 'Имя обязательно'],
       trim: true,
-      match: [/^\+?[0-9\s\-()]+$/, 'Некорректный формат номера телефона']
+      minlength: [2, 'Имя должно содержать минимум 2 символа'],
+      maxlength: [50, 'Имя не должно превышать 50 символов']
     },
     content: {
       type: String,

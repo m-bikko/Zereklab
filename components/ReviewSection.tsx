@@ -6,6 +6,7 @@ import { MessageSquare, Send, ChevronDown, Loader2, Quote } from 'lucide-react';
 
 interface Review {
   _id: string;
+  name: string;
   content: string;
   createdAt: string;
 }
@@ -22,7 +23,7 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
   const [page, setPage] = useState(1);
 
   // Form state
-  const [phone, setPhone] = useState('');
+  const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -73,7 +74,7 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
       const response = await fetch('/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, content })
+        body: JSON.stringify({ name, content })
       });
 
       const data = await response.json();
@@ -86,7 +87,7 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
         type: 'success',
         text: t('reviews.submit.success', locale)
       });
-      setPhone('');
+      setName('');
       setContent('');
     } catch (error) {
       setSubmitMessage({
@@ -147,9 +148,11 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
                           <p className="text-gray-700 leading-relaxed mb-3">
                             {review.content}
                           </p>
-                          <span className="text-sm text-gray-500">
-                            {formatDate(review.createdAt)}
-                          </span>
+                          <div className="flex items-center gap-2 text-sm text-gray-500">
+                            <span className="font-medium text-gray-700">{review.name}</span>
+                            <span>•</span>
+                            <span>{formatDate(review.createdAt)}</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -190,21 +193,20 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                    {t('reviews.form.phone', locale)}
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                    {t('reviews.form.name', locale)}
                   </label>
                   <input
-                    type="tel"
-                    id="phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+7 (___) ___-__-__"
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder={t('reviews.form.namePlaceholder', locale)}
                     required
+                    minLength={2}
+                    maxLength={50}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
                   />
-                  <p className="text-xs text-gray-500 mt-1">
-                    {t('reviews.form.phoneHint', locale)}
-                  </p>
                 </div>
 
                 <div>

@@ -10,9 +10,9 @@ import {
   Clock,
   Eye,
   MessageSquare,
-  Phone,
   RefreshCw,
   Trash2,
+  User,
   X,
   XCircle,
 } from 'lucide-react';
@@ -195,7 +195,7 @@ export default function ReviewManagement({
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-6">
-                  Телефон
+                  Имя
                 </th>
                 <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-6">
                   Отзыв
@@ -217,15 +217,12 @@ export default function ReviewManagement({
                   <td className="px-3 py-4 sm:px-6">
                     <div className="flex items-center">
                       <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 sm:h-10 sm:w-10">
-                        <Phone className="h-4 w-4 text-primary-600 sm:h-5 sm:w-5" />
+                        <User className="h-4 w-4 text-primary-600 sm:h-5 sm:w-5" />
                       </div>
                       <div className="ml-2 sm:ml-4">
-                        <a
-                          href={`tel:${review.phone}`}
-                          className="text-xs font-medium text-primary-600 hover:text-primary-800 sm:text-sm"
-                        >
-                          {review.phone}
-                        </a>
+                        <span className="text-xs font-medium text-gray-900 sm:text-sm">
+                          {review.name}
+                        </span>
                       </div>
                     </div>
                   </td>
@@ -341,23 +338,10 @@ export default function ReviewManagement({
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
-                      Телефон для связи
+                      Имя
                     </label>
                     <p className="mt-1 text-sm text-gray-900">
-                      <a
-                        href={`tel:${selectedReview.phone}`}
-                        className="text-primary-600 hover:text-primary-800 hover:underline"
-                      >
-                        {selectedReview.phone}
-                      </a>
-                      <a
-                        href={`https://wa.me/${selectedReview.phone.replace(/[^0-9]/g, '')}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="ml-3 text-green-600 hover:text-green-800 hover:underline"
-                      >
-                        WhatsApp
-                      </a>
+                      {selectedReview.name}
                     </p>
                   </div>
 

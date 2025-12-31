@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
     const [reviews, total] = await Promise.all([
       Review.find({ status: 'approved' })
-        .select('content createdAt')
+        .select('name content createdAt')
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -49,11 +49,18 @@ export async function POST(request: NextRequest) {
     await connectDB;
 
     const body = await request.json();
-    const { phone, content } = body;
+    const { name, content } = body;
 
-    if (!phone || !content) {
+    if (!name || !content) {
       return NextResponse.json(
-        { error: 'Номер телефона и текст отзыва обязательны' },
+        { error: 'Имя и текст отзыва обязательны' },
+        { status: 400 }
+      );
+    }
+
+    if (name.length < 2 || name.length > 50) {
+      return NextResponse.json(
+        { error: 'Имя должно содержать от 2 до 50 символов' },
         { status: 400 }
       );
     }
@@ -72,16 +79,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const phoneRegex = /^\+?[0-9\s\-()]+$/;
-    if (!phoneRegex.test(phone)) {
-      return NextResponse.json(
-        { error: 'Некорректный формат номера телефона' },
-        { status: 400 }
-      );
-    }
-
     const review = await Review.create({
-      phone: phone.trim(),
+      name: name.trim(),
       content: content.trim(),
       status: 'pending'
     });

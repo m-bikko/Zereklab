@@ -408,8 +408,8 @@
     "empty": "No reviews yet. Be the first!",
     "form": {
       "title": "Leave a Review",
-      "phone": "Phone Number",
-      "phoneHint": "Your phone number will not be published",
+      "name": "Your Name",
+      "namePlaceholder": "Enter your name",
       "content": "Your Review",
       "contentPlaceholder": "Share your experience with our products...",
       "submit": "Submit Review"
