@@ -142,6 +142,9 @@ export async function GET(request: NextRequest) {
     await getDatabase();
     const { searchParams } = new URL(request.url);
 
+    // Автоматически публикуем запланированные посты
+    await Blog.publishScheduledPosts();
+
     // Parse query parameters
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '12');
@@ -152,13 +155,16 @@ export async function GET(request: NextRequest) {
     const sortOrder = searchParams.get('sortOrder') || 'desc';
     const featured = searchParams.get('featured');
     const published = searchParams.get('published') !== 'false'; // По умолчанию только опубликованные
+    const status = searchParams.get('status'); // Фильтр по статусу: draft, scheduled, published
 
     // Build filter object
     const filter: FilterQuery<IBlog> = {};
 
     // Фильтр по статусу публикации
-    if (published) {
-      filter.isPublished = true;
+    if (status) {
+      filter.status = status;
+    } else if (published) {
+      filter.status = 'published';
     }
 
     // Фильтр по рекомендуемым

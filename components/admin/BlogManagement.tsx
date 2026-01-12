@@ -1,24 +1,26 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { IBlog } from '@/models/Blog';
+import { IBlog, BlogStatus } from '@/models/Blog';
 import RichTextEditor from '@/components/RichTextEditor';
 
 import toast from 'react-hot-toast';
 import Image from 'next/image';
-import { 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  EyeOff, 
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Eye,
+  EyeOff,
   Star,
   Search,
   Filter,
   Upload,
   X,
   Link as LinkIcon,
-  ExternalLink
+  ExternalLink,
+  Clock,
+  Calendar
 } from 'lucide-react';
 
 interface BlogManagementProps {
@@ -51,6 +53,8 @@ interface BlogFormData {
   sources: SourceInfo[];
   tags: string[];
   category: string;
+  status: BlogStatus;
+  scheduledAt: string;
   isPublished: boolean;
   isFeatured: boolean;
   author?: {
@@ -68,6 +72,8 @@ const INITIAL_FORM_DATA: BlogFormData = {
   sources: [],
   tags: [],
   category: 'общие',
+  status: 'draft',
+  scheduledAt: '',
   isPublished: false,
   isFeatured: false,
   author: {
@@ -95,7 +101,7 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
   const [formData, setFormData] = useState<BlogFormData>(INITIAL_FORM_DATA);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
-  const [filterStatus, setFilterStatus] = useState<'all' | 'published' | 'draft'>('all');
+  const [filterStatus, setFilterStatus] = useState<'all' | 'published' | 'scheduled' | 'draft'>('all');
   const [currentTab, setCurrentTab] = useState<'ru' | 'kk' | 'en'>('ru');
   const [uploadingImage, setUploadingImage] = useState(false);
   const [newSource, setNewSource] = useState<SourceInfo>({ title: '', url: '' });
@@ -114,6 +120,8 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
         'blog.tags': 'Теги',
         'blog.category': 'Категория',
         'blog.published': 'Опубликовано',
+        'blog.scheduled': 'Запланировано',
+        'blog.draft': 'Черновик',
         'blog.featured': 'Рекомендуемая',
         'blog.author': 'Автор',
         'blog.views': 'Просмотры',
@@ -121,10 +129,16 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
         'blog.search': 'Поиск статей...',
         'blog.filter.all': 'Все статьи',
         'blog.filter.published': 'Опубликованные',
+        'blog.filter.scheduled': 'Запланированные',
         'blog.filter.draft': 'Черновики',
         'blog.save': 'Сохранить',
         'blog.cancel': 'Отмена',
-        'blog.delete.confirm': 'Вы уверены, что хотите удалить эту статью?'
+        'blog.delete.confirm': 'Вы уверены, что хотите удалить эту статью?',
+        'blog.status': 'Статус публикации',
+        'blog.status.draft': 'Черновик',
+        'blog.status.scheduled': 'Запланировать',
+        'blog.status.published': 'Опубликовать сейчас',
+        'blog.scheduledAt': 'Дата и время публикации'
       },
       kk: {
         'blog.management': 'Блогты басқару',
@@ -138,6 +152,8 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
         'blog.tags': 'Тегтер',
         'blog.category': 'Санат',
         'blog.published': 'Жарияланған',
+        'blog.scheduled': 'Жоспарланған',
+        'blog.draft': 'Жоба',
         'blog.featured': 'Ұсынылатын',
         'blog.author': 'Автор',
         'blog.views': 'Көру',
@@ -145,10 +161,16 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
         'blog.search': 'Мақалаларды іздеу...',
         'blog.filter.all': 'Барлық мақалалар',
         'blog.filter.published': 'Жарияланған',
+        'blog.filter.scheduled': 'Жоспарланған',
         'blog.filter.draft': 'Жобалар',
         'blog.save': 'Сақтау',
         'blog.cancel': 'Болдырмау',
-        'blog.delete.confirm': 'Бұл мақаланы жойғыңыз келе ме?'
+        'blog.delete.confirm': 'Бұл мақаланы жойғыңыз келе ме?',
+        'blog.status': 'Жариялау күйі',
+        'blog.status.draft': 'Жоба',
+        'blog.status.scheduled': 'Жоспарлау',
+        'blog.status.published': 'Қазір жариялау',
+        'blog.scheduledAt': 'Жариялау күні мен уақыты'
       },
       en: {
         'blog.management': 'Blog Management',
@@ -162,6 +184,8 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
         'blog.tags': 'Tags',
         'blog.category': 'Category',
         'blog.published': 'Published',
+        'blog.scheduled': 'Scheduled',
+        'blog.draft': 'Draft',
         'blog.featured': 'Featured',
         'blog.author': 'Author',
         'blog.views': 'Views',
@@ -169,10 +193,16 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
         'blog.search': 'Search articles...',
         'blog.filter.all': 'All articles',
         'blog.filter.published': 'Published',
+        'blog.filter.scheduled': 'Scheduled',
         'blog.filter.draft': 'Drafts',
         'blog.save': 'Save',
         'blog.cancel': 'Cancel',
-        'blog.delete.confirm': 'Are you sure you want to delete this article?'
+        'blog.delete.confirm': 'Are you sure you want to delete this article?',
+        'blog.status': 'Publication status',
+        'blog.status.draft': 'Draft',
+        'blog.status.scheduled': 'Schedule',
+        'blog.status.published': 'Publish now',
+        'blog.scheduledAt': 'Publication date and time'
       }
     };
 
@@ -199,6 +229,15 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
     fetchBlogs();
   }, []);
 
+  // Функция для форматирования даты в формат datetime-local
+  const formatDateTimeLocal = (date: Date | string | undefined): string => {
+    if (!date) return '';
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return '';
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  };
+
   // Открыть модальное окно для создания/редактирования
   const openModal = (blog?: IBlog) => {
     if (blog) {
@@ -224,6 +263,8 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
         sources: blog.sources || [],
         tags: blog.tags || [],
         category: blog.category || 'общие',
+        status: blog.status || (blog.isPublished ? 'published' : 'draft'),
+        scheduledAt: formatDateTimeLocal(blog.scheduledAt),
         isPublished: blog.isPublished,
         isFeatured: blog.isFeatured,
         author: blog.author || { name: 'ZerekLab Team', avatar: '' }
@@ -407,36 +448,57 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
         toast.error('Заполните заголовок на всех языках');
         return;
       }
-      
+
       if (!formData.slug) {
         toast.error('Укажите slug для статьи');
         return;
       }
-      
+
       if (!formData.excerpt.ru || !formData.excerpt.kk || !formData.excerpt.en) {
         toast.error('Заполните краткое описание на всех языках');
         return;
       }
-      
+
       if (!formData.content.ru || !formData.content.kk || !formData.content.en) {
         toast.error('Заполните содержание на всех языках');
         return;
       }
-      
+
       if (!formData.previewImage) {
         toast.error('Добавьте превью изображение');
         return;
       }
 
+      // Валидация для запланированных постов
+      if (formData.status === 'scheduled') {
+        if (!formData.scheduledAt) {
+          toast.error('Укажите дату и время публикации');
+          return;
+        }
+        const scheduledDate = new Date(formData.scheduledAt);
+        if (scheduledDate <= new Date()) {
+          toast.error('Дата публикации должна быть в будущем');
+          return;
+        }
+      }
+
       const url = editingBlog ? `/api/blog/${editingBlog.slug}` : '/api/blog';
       const method = editingBlog ? 'PUT' : 'POST';
-      
+
+      // Подготовка данных для отправки
+      const dataToSend = {
+        ...formData,
+        scheduledAt: formData.status === 'scheduled' && formData.scheduledAt
+          ? new Date(formData.scheduledAt).toISOString()
+          : null
+      };
+
       const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSend),
       });
 
       if (!response.ok) {
@@ -444,7 +506,13 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
         throw new Error(error.error || 'Failed to save blog');
       }
 
-      toast.success(editingBlog ? 'Статья обновлена' : 'Статья создана');
+      const statusMessages: Record<string, string> = {
+        draft: editingBlog ? 'Черновик обновлен' : 'Черновик сохранен',
+        scheduled: editingBlog ? 'Публикация запланирована' : 'Публикация запланирована',
+        published: editingBlog ? 'Статья обновлена' : 'Статья опубликована'
+      };
+
+      toast.success(statusMessages[formData.status] || 'Статья сохранена');
       closeModal();
       fetchBlogs();
     } catch (error) {
@@ -476,20 +544,22 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
 
   // Фильтрация блогов
   const filteredBlogs = blogs.filter(blog => {
-    const matchesSearch = searchTerm === '' || 
+    const matchesSearch = searchTerm === '' ||
       blog.title.ru.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.title.kk.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.title.en.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    
+
     const matchesCategory = filterCategory === '' || blog.category === filterCategory;
-    
-    const matchesStatus = 
+
+    const blogStatus = blog.status || (blog.isPublished ? 'published' : 'draft');
+    const matchesStatus =
       filterStatus === 'all' ||
-      (filterStatus === 'published' && blog.isPublished) ||
-      (filterStatus === 'draft' && !blog.isPublished);
-    
+      (filterStatus === 'published' && blogStatus === 'published') ||
+      (filterStatus === 'scheduled' && blogStatus === 'scheduled') ||
+      (filterStatus === 'draft' && blogStatus === 'draft');
+
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
@@ -502,14 +572,14 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full max-w-full overflow-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h2 className="text-2xl font-bold text-gray-900">
+        <h2 className="text-2xl font-bold text-gray-900 flex-shrink-0">
           {t('blog.management')}
         </h2>
         <button
           onClick={() => openModal()}
-          className="inline-flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+          className="inline-flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors flex-shrink-0 whitespace-nowrap"
         >
           <Plus className="w-4 h-4 mr-2" />
           {t('blog.add')}
@@ -548,11 +618,12 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
           {/* Фильтр по статусу */}
           <select
             value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value as 'all' | 'published' | 'draft')}
+            onChange={(e) => setFilterStatus(e.target.value as 'all' | 'published' | 'scheduled' | 'draft')}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           >
             <option value="all">{t('blog.filter.all')}</option>
             <option value="published">{t('blog.filter.published')}</option>
+            <option value="scheduled">{t('blog.filter.scheduled')}</option>
             <option value="draft">{t('blog.filter.draft')}</option>
           </select>
           
@@ -565,27 +636,27 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
       </div>
 
       {/* Список статей */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden w-full">
+        <div className="overflow-x-auto max-w-full">
+          <table className="w-full divide-y divide-gray-200 table-fixed">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="w-[35%] px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {t('blog.title')}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="w-[12%] px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {t('blog.category')}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="w-[18%] px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Статус
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="w-[12%] px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {t('blog.views')}/{t('blog.likes')}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="w-[13%] px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Дата
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="w-[10%] px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Действия
                 </th>
               </tr>
@@ -593,10 +664,10 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredBlogs.map((blog) => (
                 <tr key={blog._id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4">
-                    <div className="flex items-start space-x-3">
+                  <td className="px-4 py-4">
+                    <div className="flex items-start space-x-3 min-w-0">
                       {blog.previewImage && (
-                        <div className="w-12 h-12 relative flex-shrink-0">
+                        <div className="w-10 h-10 relative flex-shrink-0">
                           <Image
                             src={blog.previewImage}
                             alt={blog.title[locale]}
@@ -630,43 +701,55 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-4 text-sm text-gray-900 truncate">
                     {blog.category}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center space-x-2">
-                      {blog.isPublished ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          <Eye className="w-3 h-3 mr-1" />
-                          {t('blog.published')}
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                          <EyeOff className="w-3 h-3 mr-1" />
-                          Черновик
-                        </span>
-                      )}
-                      {blog.isFeatured && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                          <Star className="w-3 h-3 mr-1" />
-                          {t('blog.featured')}
+                  <td className="px-4 py-4">
+                    <div className="flex flex-col space-y-1">
+                      <div className="flex flex-wrap items-center gap-1">
+                        {(blog.status === 'published' || (!blog.status && blog.isPublished)) ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <Eye className="w-3 h-3 mr-1" />
+                            {t('blog.published')}
+                          </span>
+                        ) : blog.status === 'scheduled' ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            <Clock className="w-3 h-3 mr-1" />
+                            {t('blog.scheduled')}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            <EyeOff className="w-3 h-3 mr-1" />
+                            {t('blog.draft')}
+                          </span>
+                        )}
+                        {blog.isFeatured && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            <Star className="w-3 h-3 mr-1" />
+                          </span>
+                        )}
+                      </div>
+                      {blog.status === 'scheduled' && blog.scheduledAt && (
+                        <span className="text-xs text-blue-600 flex items-center">
+                          <Calendar className="w-3 h-3 mr-1 flex-shrink-0" />
+                          <span className="truncate">{new Date(blog.scheduledAt).toLocaleDateString()}</span>
                         </span>
                       )}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <div className="flex items-center space-x-4">
+                  <td className="px-4 py-4 text-sm text-gray-900">
+                    <div className="flex items-center space-x-2">
                       <span className="flex items-center">
-                        <Eye className="w-4 h-4 mr-1 text-gray-400" />
+                        <Eye className="w-3 h-3 mr-1 text-gray-400" />
                         {blog.views || 0}
                       </span>
                       <span className="flex items-center">
-                        <Star className="w-4 h-4 mr-1 text-gray-400" />
+                        <Star className="w-3 h-3 mr-1 text-gray-400" />
                         {blog.likes || 0}
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-4 py-4 text-sm text-gray-500">
                     <div>
                       <p>{blog.publishedAt ? new Date(blog.publishedAt).toLocaleDateString() : '-'}</p>
                       <p className="text-xs text-gray-400">
@@ -674,18 +757,18 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
                       </p>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <td className="px-4 py-4 text-right text-sm font-medium">
                     <div className="flex items-center justify-end space-x-2">
                       <button
                         onClick={() => openModal(blog)}
-                        className="text-primary-600 hover:text-primary-900 transition-colors"
+                        className="text-primary-600 hover:text-primary-900 transition-colors p-1"
                         title="Редактировать"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(blog.slug)}
-                        className="text-red-600 hover:text-red-900 transition-colors"
+                        className="text-red-600 hover:text-red-900 transition-colors p-1"
                         title="Удалить"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -976,26 +1059,92 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
                 </div>
                 
                 
-                {/* Чекбоксы */}
-                <div className="md:col-span-2 flex flex-wrap gap-6">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={formData.isPublished}
-                      onChange={(e) => handleInputChange('isPublished', e.target.checked)}
-                      className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                    />
-                    <span className="ml-2 text-sm text-gray-700">{t('blog.published')}</span>
+                {/* Статус публикации */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    {t('blog.status')}
                   </label>
-                  
-                  <label className="flex items-center">
+                  <div className="flex flex-wrap gap-4">
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="status"
+                        value="draft"
+                        checked={formData.status === 'draft'}
+                        onChange={(e) => handleInputChange('status', e.target.value)}
+                        className="w-4 h-4 text-gray-600 border-gray-300 focus:ring-gray-500"
+                      />
+                      <span className="ml-2 flex items-center text-sm text-gray-700">
+                        <EyeOff className="w-4 h-4 mr-1 text-gray-500" />
+                        {t('blog.status.draft')}
+                      </span>
+                    </label>
+
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="status"
+                        value="scheduled"
+                        checked={formData.status === 'scheduled'}
+                        onChange={(e) => handleInputChange('status', e.target.value)}
+                        className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                      />
+                      <span className="ml-2 flex items-center text-sm text-gray-700">
+                        <Clock className="w-4 h-4 mr-1 text-blue-500" />
+                        {t('blog.status.scheduled')}
+                      </span>
+                    </label>
+
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="status"
+                        value="published"
+                        checked={formData.status === 'published'}
+                        onChange={(e) => handleInputChange('status', e.target.value)}
+                        className="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
+                      />
+                      <span className="ml-2 flex items-center text-sm text-gray-700">
+                        <Eye className="w-4 h-4 mr-1 text-green-500" />
+                        {t('blog.status.published')}
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Дата и время для запланированной публикации */}
+                {formData.status === 'scheduled' && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <Calendar className="inline w-4 h-4 mr-1" />
+                      {t('blog.scheduledAt')}
+                    </label>
+                    <input
+                      type="datetime-local"
+                      value={formData.scheduledAt}
+                      onChange={(e) => handleInputChange('scheduledAt', e.target.value)}
+                      min={new Date().toISOString().slice(0, 16)}
+                      className="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Статья будет автоматически опубликована в указанное время
+                    </p>
+                  </div>
+                )}
+
+                {/* Рекомендуемая статья */}
+                <div className="md:col-span-2">
+                  <label className="flex items-center cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.isFeatured}
                       onChange={(e) => handleInputChange('isFeatured', e.target.checked)}
                       className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                     />
-                    <span className="ml-2 text-sm text-gray-700">{t('blog.featured')}</span>
+                    <span className="ml-2 flex items-center text-sm text-gray-700">
+                      <Star className="w-4 h-4 mr-1 text-yellow-500" />
+                      {t('blog.featured')}
+                    </span>
                   </label>
                 </div>
               </div>

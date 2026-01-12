@@ -21,6 +21,9 @@ export interface SourceInfo {
   url: string; // Ссылка на источник
 }
 
+// Статус публикации
+export type BlogStatus = 'draft' | 'scheduled' | 'published';
+
 // Интерфейс для блога/новости
 export interface IBlog {
   _id?: string;
@@ -33,8 +36,10 @@ export interface IBlog {
   sources?: SourceInfo[]; // Источники информации с форматированными ссылками
   tags?: string[]; // Теги для фильтрации
   category?: string; // Категория новости
-  isPublished: boolean; // Опубликована ли статья
+  status: BlogStatus; // Статус публикации: черновик, запланирована, опубликована
+  isPublished: boolean; // Опубликована ли статья (deprecated, используйте status)
   isFeatured: boolean; // Рекомендуемая статья
+  scheduledAt?: Date; // Дата запланированной публикации
   publishedAt?: Date; // Дата публикации
   views: number; // Количество просмотров
   likes: number; // Количество лайков
@@ -48,6 +53,10 @@ export interface IBlog {
   readingTime?: number; // Время чтения в минутах
   createdAt?: Date;
   updatedAt?: Date;
+  // Методы экземпляра
+  calculateReadingTime(locale?: 'ru' | 'kk' | 'en'): number;
+  incrementViews(): Promise<IBlog>;
+  getPreview(locale?: 'ru' | 'kk' | 'en', length?: number): string;
 }
 
 // Схема для медиа контента
@@ -197,6 +206,12 @@ const BlogSchema = new mongoose.Schema({
     trim: true,
     default: 'общие',
   },
+  status: {
+    type: String,
+    enum: ['draft', 'scheduled', 'published'],
+    default: 'draft',
+    index: true,
+  },
   isPublished: {
     type: Boolean,
     default: false,
@@ -204,6 +219,12 @@ const BlogSchema = new mongoose.Schema({
   isFeatured: {
     type: Boolean,
     default: false,
+  },
+  scheduledAt: {
+    type: Date,
+    default: null,
+    required: false,
+    index: true,
   },
   publishedAt: {
     type: Date,
@@ -265,11 +286,28 @@ BlogSchema.virtual('url').get(function() {
   return `/blog/${this.slug}`;
 });
 
-// Автоматически устанавливать publishedAt при публикации
+// Автоматически устанавливать publishedAt при публикации и синхронизировать isPublished со status
 BlogSchema.pre('save', function(next) {
-  if (this.isPublished && !this.publishedAt) {
-    this.publishedAt = new Date();
+  // Синхронизация status с isPublished для обратной совместимости
+  if (this.status === 'published') {
+    this.isPublished = true;
+    if (!this.publishedAt) {
+      this.publishedAt = new Date();
+    }
+  } else {
+    this.isPublished = false;
   }
+
+  // Если статус scheduled, но scheduledAt не установлен - ставим на час вперёд
+  if (this.status === 'scheduled' && !this.scheduledAt) {
+    this.scheduledAt = new Date(Date.now() + 60 * 60 * 1000);
+  }
+
+  // Если сбросили статус в draft - очищаем scheduledAt
+  if (this.status === 'draft') {
+    (this as unknown as Record<string, unknown>).scheduledAt = undefined;
+  }
+
   next();
 });
 
@@ -300,7 +338,7 @@ BlogSchema.methods.getPreview = function(locale: 'ru' | 'kk' | 'en' = 'ru', leng
 
 // Статический метод для получения популярных статей
 BlogSchema.statics.getPopular = function(limit: number = 10) {
-  return this.find({ isPublished: true })
+  return this.find({ status: 'published' })
     .sort({ views: -1, likes: -1 })
     .limit(limit)
     .lean();
@@ -308,7 +346,7 @@ BlogSchema.statics.getPopular = function(limit: number = 10) {
 
 // Статический метод для получения рекомендуемых статей
 BlogSchema.statics.getFeatured = function(limit: number = 3) {
-  return this.find({ isPublished: true, isFeatured: true })
+  return this.find({ status: 'published', isFeatured: true })
     .sort({ publishedAt: -1 })
     .limit(limit)
     .lean();
@@ -316,12 +354,39 @@ BlogSchema.statics.getFeatured = function(limit: number = 3) {
 
 // Статический метод для получения последних статей
 BlogSchema.statics.getLatest = function(limit: number = 10) {
-  return this.find({ isPublished: true })
+  return this.find({ status: 'published' })
     .sort({ publishedAt: -1 })
     .limit(limit)
     .lean();
 };
 
-const Blog = mongoose.models.Blog || mongoose.model<IBlog>('Blog', BlogSchema);
+// Статический метод для публикации запланированных постов
+BlogSchema.statics.publishScheduledPosts = async function() {
+  const now = new Date();
+  const result = await this.updateMany(
+    {
+      status: 'scheduled',
+      scheduledAt: { $lte: now }
+    },
+    {
+      $set: {
+        status: 'published',
+        isPublished: true,
+        publishedAt: now
+      }
+    }
+  );
+  return result.modifiedCount;
+};
+
+// Интерфейс для статических методов
+interface BlogModel extends mongoose.Model<IBlog> {
+  getPopular(limit?: number): Promise<IBlog[]>;
+  getFeatured(limit?: number): Promise<IBlog[]>;
+  getLatest(limit?: number): Promise<IBlog[]>;
+  publishScheduledPosts(): Promise<number>;
+}
+
+const Blog = (mongoose.models.Blog || mongoose.model<IBlog, BlogModel>('Blog', BlogSchema)) as unknown as BlogModel;
 
 export default Blog;

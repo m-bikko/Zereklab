@@ -40,10 +40,14 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   try {
     await getDatabase();
+
+    // Автоматически публикуем запланированные посты
+    await Blog.publishScheduledPosts();
+
     const searchParams = request.nextUrl.searchParams;
     const limit = Math.min(parseInt(searchParams.get('limit') || '10'), 20);
 
-    const popularBlogs = await Blog.find({ isPublished: true })
+    const popularBlogs = await Blog.find({ status: 'published' })
       .sort({ views: -1, likes: -1 })
       .limit(limit)
       .lean();

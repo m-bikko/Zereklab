@@ -148,14 +148,17 @@ export async function GET(
     const { searchParams } = new URL(request.url);
     const incrementViews = searchParams.get('incrementViews') !== 'false';
 
-    const blog = await Blog.findOne({ 
+    // Автоматически публикуем запланированные посты
+    await Blog.publishScheduledPosts();
+
+    const blog = await Blog.findOne({
       slug: params.slug,
-      isPublished: true 
+      status: 'published'
     });
 
     if (!blog) {
       return NextResponse.json(
-        { error: 'Blog post not found' }, 
+        { error: 'Blog post not found' },
         { status: 404 }
       );
     }
@@ -170,7 +173,7 @@ export async function GET(
     if (blog.relatedPosts && blog.relatedPosts.length > 0) {
       relatedPosts = await Blog.find({
         _id: { $in: blog.relatedPosts },
-        isPublished: true
+        status: 'published'
       })
       .select('title slug excerpt previewImage publishedAt readingTime')
       .lean();
@@ -181,7 +184,7 @@ export async function GET(
       relatedPosts = await Blog.find({
         _id: { $ne: blog._id },
         tags: { $in: blog.tags },
-        isPublished: true
+        status: 'published'
       })
       .select('title slug excerpt previewImage publishedAt readingTime')
       .limit(3)
@@ -232,7 +235,7 @@ export async function PUT(
     // Обновление полей
     Object.keys(body).forEach(key => {
       if (key !== '_id' && key !== 'createdAt' && key !== 'updatedAt') {
-        (blog as Record<string, unknown>)[key] = body[key];
+        (blog as unknown as Record<string, unknown>)[key] = body[key];
       }
     });
 
