@@ -10,8 +10,14 @@
  */
 
 const mongoose = require('mongoose');
+require('dotenv').config({ path: '.env.local' });
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://beimbetm04:qweasdqwe123@zereklab.wqblhwz.mongodb.net/zereklab?retryWrites=true&w=majority&appName=zereklab';
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error('Ошибка: MONGODB_URI не найден в переменных окружения');
+  process.exit(1);
+}
 
 async function migrateBlogStatus() {
   console.log('=== Миграция поля status для блогов ===\n');
