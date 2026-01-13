@@ -47,7 +47,14 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const limit = Math.min(parseInt(searchParams.get('limit') || '3'), 10);
 
-    const featuredBlogs = await Blog.find({ status: 'published', isFeatured: true })
+    // Обратная совместимость: показываем посты где status='published' ИЛИ (isPublished=true и status не установлен)
+    const featuredBlogs = await Blog.find({
+      $or: [
+        { status: 'published', isFeatured: true },
+        { isPublished: true, status: { $exists: false }, isFeatured: true },
+        { isPublished: true, status: null, isFeatured: true }
+      ]
+    })
       .sort({ publishedAt: -1 })
       .limit(limit)
       .lean();

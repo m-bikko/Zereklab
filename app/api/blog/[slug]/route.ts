@@ -151,9 +151,14 @@ export async function GET(
     // Автоматически публикуем запланированные посты
     await Blog.publishScheduledPosts();
 
+    // Обратная совместимость: ищем посты где status='published' ИЛИ (isPublished=true и status не установлен)
     const blog = await Blog.findOne({
       slug: params.slug,
-      status: 'published'
+      $or: [
+        { status: 'published' },
+        { isPublished: true, status: { $exists: false } },
+        { isPublished: true, status: null }
+      ]
     });
 
     if (!blog) {
@@ -168,12 +173,21 @@ export async function GET(
       await blog.incrementViews();
     }
 
+    // Фильтр для опубликованных постов (с обратной совместимостью)
+    const publishedFilter = {
+      $or: [
+        { status: 'published' },
+        { isPublished: true, status: { $exists: false } },
+        { isPublished: true, status: null }
+      ]
+    };
+
     // Получаем связанные статьи
     let relatedPosts: unknown[] = [];
     if (blog.relatedPosts && blog.relatedPosts.length > 0) {
       relatedPosts = await Blog.find({
         _id: { $in: blog.relatedPosts },
-        status: 'published'
+        ...publishedFilter
       })
       .select('title slug excerpt previewImage publishedAt readingTime')
       .lean();
@@ -184,7 +198,7 @@ export async function GET(
       relatedPosts = await Blog.find({
         _id: { $ne: blog._id },
         tags: { $in: blog.tags },
-        status: 'published'
+        ...publishedFilter
       })
       .select('title slug excerpt previewImage publishedAt readingTime')
       .limit(3)

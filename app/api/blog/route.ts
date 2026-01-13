@@ -160,11 +160,16 @@ export async function GET(request: NextRequest) {
     // Build filter object
     const filter: FilterQuery<IBlog> = {};
 
-    // Фильтр по статусу публикации
+    // Фильтр по статусу публикации (с обратной совместимостью для старых постов)
     if (status) {
       filter.status = status;
     } else if (published) {
-      filter.status = 'published';
+      // Показываем посты где status='published' ИЛИ (isPublished=true и status не установлен)
+      filter.$or = [
+        { status: 'published' },
+        { isPublished: true, status: { $exists: false } },
+        { isPublished: true, status: null }
+      ];
     }
 
     // Фильтр по рекомендуемым

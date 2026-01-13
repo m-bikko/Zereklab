@@ -336,9 +336,18 @@ BlogSchema.methods.getPreview = function(locale: 'ru' | 'kk' | 'en' = 'ru', leng
     : plainText;
 };
 
+// Фильтр для опубликованных постов (с обратной совместимостью)
+const publishedFilter = {
+  $or: [
+    { status: 'published' },
+    { isPublished: true, status: { $exists: false } },
+    { isPublished: true, status: null }
+  ]
+};
+
 // Статический метод для получения популярных статей
 BlogSchema.statics.getPopular = function(limit: number = 10) {
-  return this.find({ status: 'published' })
+  return this.find(publishedFilter)
     .sort({ views: -1, likes: -1 })
     .limit(limit)
     .lean();
@@ -346,7 +355,7 @@ BlogSchema.statics.getPopular = function(limit: number = 10) {
 
 // Статический метод для получения рекомендуемых статей
 BlogSchema.statics.getFeatured = function(limit: number = 3) {
-  return this.find({ status: 'published', isFeatured: true })
+  return this.find({ ...publishedFilter, isFeatured: true })
     .sort({ publishedAt: -1 })
     .limit(limit)
     .lean();
@@ -354,7 +363,7 @@ BlogSchema.statics.getFeatured = function(limit: number = 3) {
 
 // Статический метод для получения последних статей
 BlogSchema.statics.getLatest = function(limit: number = 10) {
-  return this.find({ status: 'published' })
+  return this.find(publishedFilter)
     .sort({ publishedAt: -1 })
     .limit(limit)
     .lean();
