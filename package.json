@@ -16,6 +16,7 @@
     "seed": "node scripts/seed-data.js",
     "seed-quotes": "node scripts/seed-quotes.js",
     "import-quotes": "node scripts/import-quotes.js",
+    "migrate-blog-status": "node scripts/migrate-blog-status.js",
     "vercel-build": "next build"
   },
   "dependencies": {
