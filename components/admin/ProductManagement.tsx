@@ -181,15 +181,23 @@ export default function ProductManagement({
   // Get subcategories for selected category
   const selectedCategoryObj = categories.find(
     cat =>
-      (typeof cat.name === 'string' ? cat.name : (cat.name as MultilingualText).ru) ===
-      formData.category
+      (typeof cat.name === 'string'
+        ? cat.name
+        : (cat.name as MultilingualText).ru) === formData.category
   );
   const subcategories = selectedCategoryObj?.subcategories || [];
 
-  const getLocalizedValue = (value: string | MultilingualText | Record<string, string>, locale = 'ru'): string => {
+  const getLocalizedValue = (
+    value: string | MultilingualText | Record<string, string>,
+    locale = 'ru'
+  ): string => {
     if (typeof value === 'string') return value;
     if (typeof value === 'object' && value !== null) {
-      return (value as Record<string, string>)[locale] || (value as Record<string, string>).ru || '';
+      return (
+        (value as Record<string, string>)[locale] ||
+        (value as Record<string, string>).ru ||
+        ''
+      );
     }
     return '';
   };
@@ -207,7 +215,9 @@ export default function ProductManagement({
           ? checked
           : type === 'number'
             ? value === '' || value === '0'
-              ? name === 'salePrice' ? undefined : 0  // salePrice can be undefined, others default to 0
+              ? name === 'salePrice'
+                ? undefined
+                : 0 // salePrice can be undefined, others default to 0
               : Number(value)
             : value,
     }));
@@ -522,7 +532,10 @@ export default function ProductManagement({
       // Send full multilingual data to server
       const apiData = {
         ...formData,
-        salePrice: formData.salePrice && formData.salePrice > 0 ? formData.salePrice : null,
+        salePrice:
+          formData.salePrice && formData.salePrice > 0
+            ? formData.salePrice
+            : null,
         difficulty: formData.difficulty || 'Beginner',
       };
 
@@ -661,7 +674,7 @@ export default function ProductManagement({
                 <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-6">
                   Наличие
                 </th>
-                <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 md:table-cell sm:px-6">
+                <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-6 md:table-cell">
                   Возраст
                 </th>
                 <th className="relative px-3 py-3 sm:px-6">
@@ -739,7 +752,7 @@ export default function ProductManagement({
                       {product.inStock ? 'В наличии' : 'Нет в наличии'}
                     </span>
                   </td>
-                  <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-900 md:table-cell sm:px-6">
+                  <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-900 sm:px-6 md:table-cell">
                     {product.ageRange || 'Не указан'}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-medium sm:px-6">
@@ -753,7 +766,9 @@ export default function ProductManagement({
                       </button>
                       {product._id && (
                         <button
-                          onClick={() => product._id && handleDeleteProduct(product._id)}
+                          onClick={() =>
+                            product._id && handleDeleteProduct(product._id)
+                          }
                           className="text-red-600 hover:text-red-900"
                           title="Удалить"
                         >

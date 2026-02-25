@@ -1,6 +1,6 @@
 import { getDatabase } from '@/lib/mongodb';
-import Bonus from '@/models/Bonus';
 import { extractPhoneDigits } from '@/lib/phoneUtils';
+import Bonus from '@/models/Bonus';
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     await getDatabase();
-    
+
     const body = await request.json();
     const { phoneNumber, bonusesToDeduct } = body;
 
@@ -29,8 +29,10 @@ export async function POST(request: NextRequest) {
     // Find bonus by matching phone digits
     const searchDigits = extractPhoneDigits(phoneNumber);
     const allBonuses = await Bonus.find({}).lean();
-    const bonusRecord = allBonuses.find(b => extractPhoneDigits(b.phoneNumber) === searchDigits);
-    
+    const bonusRecord = allBonuses.find(
+      b => extractPhoneDigits(b.phoneNumber) === searchDigits
+    );
+
     if (!bonusRecord) {
       return NextResponse.json(
         { error: 'Customer not found in bonus system' },
@@ -39,7 +41,7 @@ export async function POST(request: NextRequest) {
     }
 
     const bonus = await Bonus.findById(bonusRecord._id);
-    
+
     if (!bonus) {
       return NextResponse.json(
         { error: 'Customer not found in bonus system' },
@@ -50,7 +52,9 @@ export async function POST(request: NextRequest) {
     // Check if customer has enough available bonuses
     if (bonus.availableBonuses < bonusesToDeduct) {
       return NextResponse.json(
-        { error: `Insufficient bonuses. Available: ${bonus.availableBonuses}, Requested: ${bonusesToDeduct}` },
+        {
+          error: `Insufficient bonuses. Available: ${bonus.availableBonuses}, Requested: ${bonusesToDeduct}`,
+        },
         { status: 400 }
       );
     }

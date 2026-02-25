@@ -55,6 +55,8 @@ const PendingBonusSchema = new Schema<IPendingBonus>(
 PendingBonusSchema.index({ phoneNumber: 1, availableDate: 1 });
 PendingBonusSchema.index({ availableDate: 1, isProcessed: 1 });
 
-const PendingBonus = mongoose.models.PendingBonus || mongoose.model<IPendingBonus>('PendingBonus', PendingBonusSchema);
+const PendingBonus =
+  mongoose.models.PendingBonus ||
+  mongoose.model<IPendingBonus>('PendingBonus', PendingBonusSchema);
 
 export default PendingBonus;

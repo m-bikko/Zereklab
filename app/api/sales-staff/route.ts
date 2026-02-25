@@ -9,7 +9,7 @@ import bcrypt from 'bcryptjs';
 export async function GET() {
   try {
     await getDatabase();
-    
+
     const staff = await SalesStaff.find({})
       .select('-password') // Don't return passwords
       .sort({ createdAt: -1 })
@@ -29,7 +29,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     await getDatabase();
-    
+
     const body = await request.json();
     const { username, password, fullName } = body;
 
@@ -56,8 +56,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if username already exists
-    const existingStaff = await SalesStaff.findOne({ 
-      username: username.toLowerCase() 
+    const existingStaff = await SalesStaff.findOne({
+      username: username.toLowerCase(),
     });
     if (existingStaff) {
       return NextResponse.json(

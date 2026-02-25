@@ -13,7 +13,7 @@ interface UploadResponse {
 
 interface DeleteResponse {
   success: boolean;
-  deleted: { url: string; publicId: string; deleted: boolean; }[];
+  deleted: { url: string; publicId: string; deleted: boolean }[];
   count: number;
   errors?: string[];
   message?: string;

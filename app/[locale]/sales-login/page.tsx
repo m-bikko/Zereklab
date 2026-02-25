@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 import { useRouter } from 'next/navigation';
 
-import { KeyRound, LogIn, User, ShoppingCart } from 'lucide-react';
+import { KeyRound, LogIn, ShoppingCart, User } from 'lucide-react';
 
 export default function SalesLoginPage() {
   const [username, setUsername] = useState('');
@@ -148,7 +148,7 @@ export default function SalesLoginPage() {
             </button>
           </div>
         </form>
-        
+
         <div className="mt-6 text-center">
           <p className="text-xs text-gray-500">
             Нет доступа? Обратитесь к администратору системы

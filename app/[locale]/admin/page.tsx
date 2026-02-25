@@ -10,10 +10,11 @@ import ProductManagement from '@/components/admin/ProductManagement';
 import QRAnalytics from '@/components/admin/QRAnalytics';
 import ReviewManagement from '@/components/admin/ReviewManagement';
 import SalesStaffManagement from '@/components/admin/SalesStaffManagement';
+import SocialProjectManagement from '@/components/admin/SocialProjectManagement';
 import { useAuth } from '@/hooks/useAuth';
-import { ICategory, IProduct } from '@/types';
 import { IContactDocument } from '@/models/Contact';
 import { IReview } from '@/models/Review';
+import { ICategory, IProduct } from '@/types';
 
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -25,6 +26,7 @@ import {
   Calendar,
   Clock,
   Gift,
+  Heart,
   LogOut,
   Mail,
   MessageSquare,
@@ -67,6 +69,7 @@ export default function AdminPage() {
     | 'bonus-processing'
     | 'users'
     | 'settings'
+    | 'social-projects'
   >('products');
   const [products, setProducts] = useState<IProduct[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -78,12 +81,13 @@ export default function AdminPage() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [productsRes, categoriesRes, contactsRes, reviewsRes] = await Promise.all([
-        fetch('/api/products?simple=true'),
-        fetch('/api/categories'),
-        fetch('/api/contact'),
-        fetch('/api/reviews/admin'),
-      ]);
+      const [productsRes, categoriesRes, contactsRes, reviewsRes] =
+        await Promise.all([
+          fetch('/api/products?simple=true'),
+          fetch('/api/categories'),
+          fetch('/api/contact'),
+          fetch('/api/reviews/admin'),
+        ]);
 
       if (productsRes.ok) {
         const productsData = await productsRes.json();
@@ -202,6 +206,13 @@ export default function AdminPage() {
                 >
                   <Newspaper className="h-5 w-5" />
                   <span>Блог</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab('social-projects')}
+                  className={tabClass('social-projects')}
+                >
+                  <Heart className="h-5 w-5" />
+                  <span>Соц. проекты</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('contacts')}
@@ -331,13 +342,21 @@ export default function AdminPage() {
                 </div>
               )}
 
+              {activeTab === 'social-projects' && (
+                <div className="rounded-lg bg-white p-6">
+                  <SocialProjectManagement locale="ru" />
+                </div>
+              )}
+
               {activeTab === 'daily-quotes' && <DailyQuotesManagement />}
 
               {activeTab === 'analytics' && (
                 <div className="space-y-8">
                   {/* Products Analytics */}
                   <div className="rounded-lg bg-white p-6">
-                    <h2 className="mb-6 text-xl font-semibold">Аналитика товаров</h2>
+                    <h2 className="mb-6 text-xl font-semibold">
+                      Аналитика товаров
+                    </h2>
 
                     <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                       <div className="rounded-lg bg-blue-50 p-6">

@@ -128,12 +128,20 @@ export default function DailyImageManagement() {
       if (storedImages) {
         const images = JSON.parse(storedImages);
         // Конвертируем старый формат в новый
-        const convertedImages = images.map((img: { id: string; name: string; data?: string; url?: string; uploadDate: string }) => ({
-          id: img.id,
-          name: img.name,
-          url: img.data || img.url, // data для старого формата, url для нового
-          uploadDate: img.uploadDate,
-        }));
+        const convertedImages = images.map(
+          (img: {
+            id: string;
+            name: string;
+            data?: string;
+            url?: string;
+            uploadDate: string;
+          }) => ({
+            id: img.id,
+            name: img.name,
+            url: img.data || img.url, // data для старого формата, url для нового
+            uploadDate: img.uploadDate,
+          })
+        );
         setDailyImages(convertedImages);
       }
     } catch (error) {

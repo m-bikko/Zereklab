@@ -5,7 +5,7 @@
 export function formatNumber(value: number | string): string {
   const num = typeof value === 'string' ? parseFloat(value) : value;
   if (isNaN(num)) return '0';
-  
+
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
@@ -22,11 +22,11 @@ export function formatPrice(value: number | string): string {
 export function formatBonus(value: number | string): string {
   const formatted = formatNumber(value);
   const num = typeof value === 'string' ? parseFloat(value) : value;
-  
+
   // Правильное склонение слова "бонус"
   const lastDigit = num % 10;
   const lastTwoDigits = num % 100;
-  
+
   if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
     return `${formatted} бонусов`;
   } else if (lastDigit === 1) {

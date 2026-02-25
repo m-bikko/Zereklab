@@ -12,7 +12,7 @@ export async function PUT(
 ) {
   try {
     await getDatabase();
-    
+
     const { id } = params;
     const body = await request.json();
     const { fullName, isActive, password } = body;
@@ -29,7 +29,7 @@ export async function PUT(
     if (fullName) {
       staff.fullName = fullName.trim();
     }
-    
+
     if (typeof isActive === 'boolean') {
       staff.isActive = isActive;
     }
@@ -69,9 +69,9 @@ export async function DELETE(
 ) {
   try {
     await getDatabase();
-    
+
     const { id } = params;
-    
+
     const staff = await SalesStaff.findById(id);
     if (!staff) {
       return NextResponse.json(
@@ -82,7 +82,9 @@ export async function DELETE(
 
     await SalesStaff.findByIdAndDelete(id);
 
-    return NextResponse.json({ message: 'Sales staff member deleted successfully' });
+    return NextResponse.json({
+      message: 'Sales staff member deleted successfully',
+    });
   } catch (error) {
     console.error('Failed to delete sales staff:', error);
     return NextResponse.json(

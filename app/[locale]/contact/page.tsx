@@ -42,13 +42,13 @@ export default function ContactPage() {
       toast.error(t('contact.form.validation', locale));
       return;
     }
-    
+
     setIsSubmitting(true);
     const toastId = toast.loading(t('contact.form.loading', locale));
 
     try {
       console.log('🚀 Sending contact form data:', formData);
-      
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -69,11 +69,16 @@ export default function ContactPage() {
         console.log('❌ Contact form submission failed:', result);
         // Handle validation errors
         if (result.details && Array.isArray(result.details)) {
-          result.details.forEach((detail: { field: string; message: string }) => {
-            toast.error(`${detail.field}: ${detail.message}`);
-          });
+          result.details.forEach(
+            (detail: { field: string; message: string }) => {
+              toast.error(`${detail.field}: ${detail.message}`);
+            }
+          );
         } else {
-          toast.error(result.error || 'Произошла ошибка при отправке сообщения', { id: toastId });
+          toast.error(
+            result.error || 'Произошла ошибка при отправке сообщения',
+            { id: toastId }
+          );
         }
       }
     } catch (error) {

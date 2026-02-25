@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
 import { type Locale, t } from '@/lib/i18n';
-import { MessageSquare, Send, ChevronDown, Loader2, Quote } from 'lucide-react';
+
+import { useCallback, useEffect, useState } from 'react';
+
+import { ChevronDown, Loader2, MessageSquare, Quote, Send } from 'lucide-react';
 
 interface Review {
   _id: string;
@@ -26,7 +28,10 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [submitMessage, setSubmitMessage] = useState<{
+    type: 'success' | 'error';
+    text: string;
+  } | null>(null);
 
   const fetchReviews = useCallback(async (pageNum: number, append = false) => {
     try {
@@ -42,7 +47,7 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
       const data = await response.json();
 
       if (append) {
-        setReviews((prev) => [...prev, ...data.reviews]);
+        setReviews(prev => [...prev, ...data.reviews]);
       } else {
         setReviews(data.reviews);
       }
@@ -74,7 +79,7 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
       const response = await fetch('/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, content })
+        body: JSON.stringify({ name, content }),
       });
 
       const data = await response.json();
@@ -85,14 +90,17 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
 
       setSubmitMessage({
         type: 'success',
-        text: t('reviews.submit.success', locale)
+        text: t('reviews.submit.success', locale),
       });
       setName('');
       setContent('');
     } catch (error) {
       setSubmitMessage({
         type: 'error',
-        text: error instanceof Error ? error.message : t('reviews.submit.error', locale)
+        text:
+          error instanceof Error
+            ? error.message
+            : t('reviews.submit.error', locale),
       });
     } finally {
       setIsSubmitting(false);
@@ -107,29 +115,32 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
-      <div className="max-w-6xl mx-auto px-4">
+    <section className="bg-gradient-to-b from-gray-50 to-white py-16">
+      <div className="mx-auto max-w-6xl px-4">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <div className="mb-12 text-center">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
             {t('reviews.title', locale)}
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg text-gray-600">
             {t('reviews.subtitle', locale)}
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid gap-12 lg:grid-cols-2">
           {/* Reviews List */}
           <div className="space-y-6">
             {isLoading ? (
               <div className="space-y-4">
                 {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="bg-white rounded-xl p-6 shadow-sm animate-pulse">
-                    <div className="h-4 bg-gray-200 rounded w-24 mb-4"></div>
+                  <div
+                    key={i}
+                    className="animate-pulse rounded-xl bg-white p-6 shadow-sm"
+                  >
+                    <div className="mb-4 h-4 w-24 rounded bg-gray-200"></div>
                     <div className="space-y-2">
-                      <div className="h-4 bg-gray-200 rounded"></div>
-                      <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                      <div className="h-4 rounded bg-gray-200"></div>
+                      <div className="h-4 w-5/6 rounded bg-gray-200"></div>
                     </div>
                   </div>
                 ))}
@@ -137,19 +148,21 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
             ) : reviews.length > 0 ? (
               <>
                 <div className="space-y-4">
-                  {reviews.map((review) => (
+                  {reviews.map(review => (
                     <div
                       key={review._id}
-                      className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+                      className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
                     >
                       <div className="flex items-start gap-3">
-                        <Quote className="w-8 h-8 text-primary-200 flex-shrink-0 mt-1" />
+                        <Quote className="mt-1 h-8 w-8 flex-shrink-0 text-primary-200" />
                         <div>
-                          <p className="text-gray-700 leading-relaxed mb-3">
+                          <p className="mb-3 leading-relaxed text-gray-700">
                             {review.content}
                           </p>
                           <div className="flex items-center gap-2 text-sm text-gray-500">
-                            <span className="font-medium text-gray-700">{review.name}</span>
+                            <span className="font-medium text-gray-700">
+                              {review.name}
+                            </span>
                             <span>•</span>
                             <span>{formatDate(review.createdAt)}</span>
                           </div>
@@ -160,16 +173,16 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
                 </div>
 
                 {hasMore && (
-                  <div className="text-center pt-4">
+                  <div className="pt-4 text-center">
                     <button
                       onClick={handleLoadMore}
                       disabled={isLoadingMore}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors disabled:opacity-50"
+                      className="inline-flex items-center gap-2 rounded-lg bg-gray-100 px-6 py-3 text-gray-700 transition-colors hover:bg-gray-200 disabled:opacity-50"
                     >
                       {isLoadingMore ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className="h-4 w-4 animate-spin" />
                       ) : (
-                        <ChevronDown className="w-4 h-4" />
+                        <ChevronDown className="h-4 w-4" />
                       )}
                       {t('reviews.loadMore', locale)}
                     </button>
@@ -177,64 +190,70 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
                 )}
               </>
             ) : (
-              <div className="bg-white rounded-xl p-12 shadow-sm border border-gray-100 text-center">
-                <MessageSquare className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <div className="rounded-xl border border-gray-100 bg-white p-12 text-center shadow-sm">
+                <MessageSquare className="mx-auto mb-4 h-12 w-12 text-gray-300" />
                 <p className="text-gray-500">{t('reviews.empty', locale)}</p>
               </div>
             )}
           </div>
 
           {/* Review Form */}
-          <div className="lg:sticky lg:top-24 h-fit">
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">
+          <div className="h-fit lg:sticky lg:top-24">
+            <div className="rounded-xl border border-gray-100 bg-white p-8 shadow-sm">
+              <h3 className="mb-6 text-xl font-semibold text-gray-900">
                 {t('reviews.form.title', locale)}
               </h3>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="name"
+                    className="mb-1 block text-sm font-medium text-gray-700"
+                  >
                     {t('reviews.form.name', locale)}
                   </label>
                   <input
                     type="text"
                     id="name"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={e => setName(e.target.value)}
                     placeholder={t('reviews.form.namePlaceholder', locale)}
                     required
                     minLength={2}
                     maxLength={50}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary-500"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="content"
+                    className="mb-1 block text-sm font-medium text-gray-700"
+                  >
                     {t('reviews.form.content', locale)}
                   </label>
                   <textarea
                     id="content"
                     value={content}
-                    onChange={(e) => setContent(e.target.value)}
+                    onChange={e => setContent(e.target.value)}
                     placeholder={t('reviews.form.contentPlaceholder', locale)}
                     required
                     minLength={10}
                     maxLength={1000}
                     rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all resize-none"
+                    className="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-primary-500"
                   />
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="mt-1 text-xs text-gray-500">
                     {content.length}/1000
                   </p>
                 </div>
 
                 {submitMessage && (
                   <div
-                    className={`p-4 rounded-lg ${
+                    className={`rounded-lg p-4 ${
                       submitMessage.type === 'success'
-                        ? 'bg-green-50 text-green-700 border border-green-200'
-                        : 'bg-red-50 text-red-700 border border-red-200'
+                        ? 'border border-green-200 bg-green-50 text-green-700'
+                        : 'border border-red-200 bg-red-50 text-red-700'
                     }`}
                   >
                     {submitMessage.text}
@@ -244,12 +263,12 @@ export default function ReviewSection({ locale }: ReviewSectionProps) {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-6 py-3 font-medium text-white transition-colors hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isSubmitting ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <Loader2 className="h-5 w-5 animate-spin" />
                   ) : (
-                    <Send className="w-5 h-5" />
+                    <Send className="h-5 w-5" />
                   )}
                   {t('reviews.form.submit', locale)}
                 </button>

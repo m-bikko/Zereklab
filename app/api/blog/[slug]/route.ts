@@ -157,8 +157,8 @@ export async function GET(
       $or: [
         { status: 'published' },
         { isPublished: true, status: { $exists: false } },
-        { isPublished: true, status: null }
-      ]
+        { isPublished: true, status: null },
+      ],
     });
 
     if (!blog) {
@@ -178,8 +178,8 @@ export async function GET(
       $or: [
         { status: 'published' },
         { isPublished: true, status: { $exists: false } },
-        { isPublished: true, status: null }
-      ]
+        { isPublished: true, status: null },
+      ],
     };
 
     // Получаем связанные статьи
@@ -187,10 +187,10 @@ export async function GET(
     if (blog.relatedPosts && blog.relatedPosts.length > 0) {
       relatedPosts = await Blog.find({
         _id: { $in: blog.relatedPosts },
-        ...publishedFilter
+        ...publishedFilter,
       })
-      .select('title slug excerpt previewImage publishedAt readingTime')
-      .lean();
+        .select('title slug excerpt previewImage publishedAt readingTime')
+        .lean();
     }
 
     // Если связанных статей нет, найдем похожие по тегам
@@ -198,16 +198,16 @@ export async function GET(
       relatedPosts = await Blog.find({
         _id: { $ne: blog._id },
         tags: { $in: blog.tags },
-        ...publishedFilter
+        ...publishedFilter,
       })
-      .select('title slug excerpt previewImage publishedAt readingTime')
-      .limit(3)
-      .lean();
+        .select('title slug excerpt previewImage publishedAt readingTime')
+        .limit(3)
+        .lean();
     }
 
     return NextResponse.json({
       ...blog.toObject(),
-      relatedPosts
+      relatedPosts,
     });
   } catch (error) {
     console.error('Failed to fetch blog post:', error);
@@ -270,7 +270,7 @@ export async function PUT(
     // Handle Mongoose validation errors
     if (error instanceof mongoose.Error.ValidationError) {
       const validationErrors = Object.values(error.errors).map(
-        (err) => err.message
+        err => err.message
       );
       return NextResponse.json(
         { error: 'Validation failed', details: validationErrors },

@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 // Connect to MongoDB
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/zereklab';
+const MONGODB_URI =
+  process.env.MONGODB_URI || 'mongodb://localhost:27017/zereklab';
 
 const QuoteSchema = new mongoose.Schema(
   {
@@ -88,21 +89,24 @@ async function seedQuotes() {
 
     // Check if quotes already exist
     const existingQuotes = await Quote.countDocuments();
-    
+
     if (existingQuotes > 0) {
-      console.log(`📝 Found ${existingQuotes} existing quotes. Skipping seeding.`);
+      console.log(
+        `📝 Found ${existingQuotes} existing quotes. Skipping seeding.`
+      );
       process.exit(0);
     }
 
     // Insert default quotes
     const result = await Quote.insertMany(defaultQuotes);
     console.log(`✅ Successfully seeded ${result.length} quotes to database`);
-    
+
     console.log('📋 Seeded quotes:');
     result.forEach((quote, index) => {
-      console.log(`${index + 1}. "${quote.text.substring(0, 50)}..." - ${quote.author}`);
+      console.log(
+        `${index + 1}. "${quote.text.substring(0, 50)}..." - ${quote.author}`
+      );
     });
-
   } catch (error) {
     console.error('❌ Error seeding quotes:', error);
     process.exit(1);

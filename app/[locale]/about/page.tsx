@@ -126,7 +126,7 @@ export default function AboutPage() {
               {/* EAC Certificate */}
               <div className="rounded-lg border-2 border-primary-100 bg-gradient-to-br from-primary-50 to-orange-50 p-6">
                 <div className="mb-4 flex items-center">
-                  <div className="rounded-full bg-primary-100 p-3 mr-3">
+                  <div className="mr-3 rounded-full bg-primary-100 p-3">
                     <ShieldCheck className="h-8 w-8 text-primary-600" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-800">
@@ -136,9 +136,11 @@ export default function AboutPage() {
                 <p className="mb-4 text-gray-600">
                   {t('about.certification.eac.description', locale)}
                 </p>
-                
+
                 <div className="mb-4">
-                  <h4 className="mb-2 font-semibold text-gray-700">{t('about.certification.eac.featuresTitle', locale)}</h4>
+                  <h4 className="mb-2 font-semibold text-gray-700">
+                    {t('about.certification.eac.featuresTitle', locale)}
+                  </h4>
                   <ul className="space-y-1 text-sm text-gray-600">
                     <li className="flex items-center">
                       <span className="mr-2 text-primary-500">✓</span>
@@ -166,7 +168,7 @@ export default function AboutPage() {
                     </li>
                   </ul>
                 </div>
-                
+
                 <div className="mt-4">
                   <span className="inline-flex items-center rounded-full bg-primary-100 px-4 py-2 text-sm font-semibold text-primary-800">
                     {t('about.certification.eac.badge', locale)}
@@ -177,7 +179,7 @@ export default function AboutPage() {
               {/* EN 71 Certificate */}
               <div className="rounded-lg border-2 border-secondary-100 bg-gradient-to-br from-secondary-50 to-blue-50 p-6">
                 <div className="mb-4 flex items-center">
-                  <div className="rounded-full bg-secondary-100 p-3 mr-3">
+                  <div className="mr-3 rounded-full bg-secondary-100 p-3">
                     <ShieldCheck className="h-8 w-8 text-secondary-600" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-800">
@@ -196,9 +198,9 @@ export default function AboutPage() {
             </div>
 
             {/* Advantage Section */}
-            <div className="mt-8 rounded-lg bg-gradient-to-r from-yellow-50 to-amber-50 border-2 border-yellow-200 p-6">
+            <div className="mt-8 rounded-lg border-2 border-yellow-200 bg-gradient-to-r from-yellow-50 to-amber-50 p-6">
               <div className="flex items-start">
-                <div className="rounded-full bg-yellow-100 p-3 mr-4 mt-1">
+                <div className="mr-4 mt-1 rounded-full bg-yellow-100 p-3">
                   <Target className="h-8 w-8 text-yellow-600" />
                 </div>
                 <div>

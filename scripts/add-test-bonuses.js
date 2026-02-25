@@ -2,43 +2,46 @@ const mongoose = require('mongoose');
 require('dotenv').config({ path: '.env.local' });
 
 // Define the Bonus schema (same as in your models)
-const bonusSchema = new mongoose.Schema({
-  phoneNumber: {
-    type: String,
-    required: true,
-    unique: true,
-    index: true,
+const bonusSchema = new mongoose.Schema(
+  {
+    phoneNumber: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+    },
+    fullName: {
+      type: String,
+      trim: true,
+      index: true,
+    },
+    totalBonuses: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    usedBonuses: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    availableBonuses: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    lastUpdated: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  fullName: {
-    type: String,
-    trim: true,
-    index: true,
-  },
-  totalBonuses: {
-    type: Number,
-    default: 0,
-    min: 0,
-  },
-  usedBonuses: {
-    type: Number,
-    default: 0,
-    min: 0,
-  },
-  availableBonuses: {
-    type: Number,
-    default: 0,
-    min: 0,
-  },
-  lastUpdated: {
-    type: Date,
-    default: Date.now,
+  {
+    timestamps: true,
   }
-}, {
-  timestamps: true,
-});
+);
 
 // Pre-save middleware to calculate available bonuses
-bonusSchema.pre('save', function(next) {
+bonusSchema.pre('save', function (next) {
   this.availableBonuses = this.totalBonuses - this.usedBonuses;
   this.lastUpdated = new Date();
   next();
@@ -56,11 +59,13 @@ async function addTestBonuses() {
     const bonusesToAdd = 2500; // Добавляем 2500 бонусов для тестирования
 
     console.log(`📋 Searching for existing bonus record for ${testPhone}...`);
-    
+
     let bonus = await Bonus.findOne({ phoneNumber: testPhone });
-    
+
     if (bonus) {
-      console.log(`📝 Found existing record: ${bonus.totalBonuses} total, ${bonus.availableBonuses} available`);
+      console.log(
+        `📝 Found existing record: ${bonus.totalBonuses} total, ${bonus.availableBonuses} available`
+      );
       // Добавляем бонусы к существующей записи
       bonus.totalBonuses += bonusesToAdd;
       await bonus.save();
@@ -83,12 +88,15 @@ async function addTestBonuses() {
     console.log(`   Name: ${bonus.fullName || 'Не указано'}`);
     console.log(`   Total Bonuses: ${bonus.totalBonuses.toLocaleString()}`);
     console.log(`   Used Bonuses: ${bonus.usedBonuses.toLocaleString()}`);
-    console.log(`   Available Bonuses: ${bonus.availableBonuses.toLocaleString()}`);
+    console.log(
+      `   Available Bonuses: ${bonus.availableBonuses.toLocaleString()}`
+    );
     console.log(`   Last Updated: ${bonus.lastUpdated}`);
 
     console.log('✅ Test bonuses added successfully!');
-    console.log('🧪 You can now test the bonus functionality with phone: +77777777777');
-
+    console.log(
+      '🧪 You can now test the bonus functionality with phone: +77777777777'
+    );
   } catch (error) {
     console.error('❌ Error adding test bonuses:', error);
   } finally {

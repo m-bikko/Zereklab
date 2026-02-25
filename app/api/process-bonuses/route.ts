@@ -1,7 +1,8 @@
 import { getDatabase } from '@/lib/mongodb';
-import PendingBonus from '@/models/PendingBonus';
 import Bonus from '@/models/Bonus';
+import PendingBonus from '@/models/PendingBonus';
 import Sale from '@/models/Sale';
+
 import { NextResponse } from 'next/server';
 
 // Process pending bonuses that are ready to be credited
@@ -10,7 +11,7 @@ export async function POST() {
     await getDatabase();
 
     const now = new Date();
-    
+
     // Find all pending bonuses that should be processed
     const readyBonuses = await PendingBonus.find({
       availableDate: { $lte: now },
@@ -29,8 +30,10 @@ export async function POST() {
     for (const pendingBonus of readyBonuses) {
       try {
         // Find or create bonus record for customer
-        let customerBonus = await Bonus.findOne({ phoneNumber: pendingBonus.phoneNumber });
-        
+        let customerBonus = await Bonus.findOne({
+          phoneNumber: pendingBonus.phoneNumber,
+        });
+
         if (!customerBonus) {
           customerBonus = new Bonus({
             phoneNumber: pendingBonus.phoneNumber,
@@ -45,16 +48,16 @@ export async function POST() {
             customerBonus.fullName = pendingBonus.fullName;
           }
           customerBonus.totalBonuses += pendingBonus.bonusAmount;
-          customerBonus.availableBonuses = customerBonus.totalBonuses - customerBonus.usedBonuses;
+          customerBonus.availableBonuses =
+            customerBonus.totalBonuses - customerBonus.usedBonuses;
         }
 
         await customerBonus.save();
 
         // Update sale status
-        await Sale.findByIdAndUpdate(
-          pendingBonus.saleId,
-          { bonusStatus: 'credited' }
-        );
+        await Sale.findByIdAndUpdate(pendingBonus.saleId, {
+          bonusStatus: 'credited',
+        });
 
         // Mark pending bonus as processed
         pendingBonus.isProcessed = true;
@@ -65,9 +68,11 @@ export async function POST() {
           bonusAmount: pendingBonus.bonusAmount,
           saleId: pendingBonus.saleId,
         });
-
       } catch (error) {
-        console.error(`Failed to process bonus for ${pendingBonus.phoneNumber}:`, error);
+        console.error(
+          `Failed to process bonus for ${pendingBonus.phoneNumber}:`,
+          error
+        );
         continue;
       }
     }
@@ -77,7 +82,6 @@ export async function POST() {
       processedCount: processedBonuses.length,
       processedBonuses,
     });
-
   } catch (error) {
     console.error('Failed to process bonuses:', error);
     return NextResponse.json(
@@ -93,20 +97,20 @@ export async function GET() {
     await getDatabase();
 
     const now = new Date();
-    
+
     const stats = await PendingBonus.aggregate([
       {
         $group: {
           _id: null,
           totalPending: {
             $sum: {
-              $cond: [{ $eq: ['$isProcessed', false] }, 1, 0]
-            }
+              $cond: [{ $eq: ['$isProcessed', false] }, 1, 0],
+            },
           },
           totalProcessed: {
             $sum: {
-              $cond: [{ $eq: ['$isProcessed', true] }, 1, 0]
-            }
+              $cond: [{ $eq: ['$isProcessed', true] }, 1, 0],
+            },
           },
           readyForProcessing: {
             $sum: {
@@ -114,22 +118,18 @@ export async function GET() {
                 {
                   $and: [
                     { $eq: ['$isProcessed', false] },
-                    { $lte: ['$availableDate', now] }
-                  ]
+                    { $lte: ['$availableDate', now] },
+                  ],
                 },
                 1,
-                0
-              ]
-            }
+                0,
+              ],
+            },
           },
           totalPendingAmount: {
             $sum: {
-              $cond: [
-                { $eq: ['$isProcessed', false] },
-                '$bonusAmount',
-                0
-              ]
-            }
+              $cond: [{ $eq: ['$isProcessed', false] }, '$bonusAmount', 0],
+            },
           },
           readyAmount: {
             $sum: {
@@ -137,22 +137,22 @@ export async function GET() {
                 {
                   $and: [
                     { $eq: ['$isProcessed', false] },
-                    { $lte: ['$availableDate', now] }
-                  ]
+                    { $lte: ['$availableDate', now] },
+                  ],
                 },
                 '$bonusAmount',
-                0
-              ]
-            }
+                0,
+              ],
+            },
           },
-        }
-      }
+        },
+      },
     ]);
 
     // Get pending customers grouped by phone number
     const pendingCustomers = await PendingBonus.aggregate([
       {
-        $match: { isProcessed: false }
+        $match: { isProcessed: false },
       },
       {
         $group: {
@@ -166,14 +166,14 @@ export async function GET() {
               saleId: '$saleId',
               bonusAmount: '$bonusAmount',
               availableDate: '$availableDate',
-              isReady: { $lte: ['$availableDate', now] }
-            }
-          }
-        }
+              isReady: { $lte: ['$availableDate', now] },
+            },
+          },
+        },
       },
       {
-        $sort: { totalBonuses: -1 }
-      }
+        $sort: { totalBonuses: -1 },
+      },
     ]);
 
     return NextResponse.json({
@@ -184,14 +184,10 @@ export async function GET() {
         totalPendingAmount: 0,
         readyAmount: 0,
       },
-      pendingCustomers
+      pendingCustomers,
     });
-
   } catch (error) {
     console.error('Failed to get bonus processing stats:', error);
-    return NextResponse.json(
-      { error: 'Failed to get stats' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to get stats' }, { status: 500 });
   }
 }

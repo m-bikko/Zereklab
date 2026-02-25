@@ -47,6 +47,8 @@ const SalesStaffSchema = new Schema<ISalesStaff>(
 // Create index for faster queries (username already unique, so no need for additional index)
 SalesStaffSchema.index({ isActive: 1 });
 
-const SalesStaff = mongoose.models.SalesStaff || mongoose.model<ISalesStaff>('SalesStaff', SalesStaffSchema);
+const SalesStaff =
+  mongoose.models.SalesStaff ||
+  mongoose.model<ISalesStaff>('SalesStaff', SalesStaffSchema);
 
 export default SalesStaff;

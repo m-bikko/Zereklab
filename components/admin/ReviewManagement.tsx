@@ -34,9 +34,14 @@ export default function ReviewManagement({
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
-  const handleStatusUpdate = async (reviewId: string, newStatus: 'approved' | 'rejected') => {
+  const handleStatusUpdate = async (
+    reviewId: string,
+    newStatus: 'approved' | 'rejected'
+  ) => {
     setUpdatingId(reviewId);
-    const toastId = toast.loading(newStatus === 'approved' ? 'Одобрение отзыва...' : 'Отклонение отзыва...');
+    const toastId = toast.loading(
+      newStatus === 'approved' ? 'Одобрение отзыва...' : 'Отклонение отзыва...'
+    );
 
     try {
       const response = await fetch(`/api/reviews/${reviewId}`, {
@@ -53,7 +58,9 @@ export default function ReviewManagement({
         toast.success(result.message, { id: toastId });
         onRefresh();
       } else {
-        toast.error(result.error || 'Ошибка при обновлении статуса', { id: toastId });
+        toast.error(result.error || 'Ошибка при обновлении статуса', {
+          id: toastId,
+        });
       }
     } catch (error) {
       console.error('Error updating review status:', error);
@@ -81,7 +88,9 @@ export default function ReviewManagement({
         setSelectedReview(null);
         onRefresh();
       } else {
-        toast.error(result.error || 'Ошибка при удалении отзыва', { id: toastId });
+        toast.error(result.error || 'Ошибка при удалении отзыва', {
+          id: toastId,
+        });
       }
     } catch (error) {
       console.error('Error deleting review:', error);
@@ -105,7 +114,8 @@ export default function ReviewManagement({
   };
 
   const getStatusBadge = (status: string) => {
-    const baseClasses = 'inline-flex rounded-full px-2 text-xs font-semibold leading-5';
+    const baseClasses =
+      'inline-flex rounded-full px-2 text-xs font-semibold leading-5';
     switch (status) {
       case 'pending':
         return `${baseClasses} bg-yellow-100 text-yellow-800`;
@@ -132,7 +142,8 @@ export default function ReviewManagement({
   };
 
   const formatDate = (dateInput: string | Date) => {
-    const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+    const date =
+      typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
     return date.toLocaleString('ru-RU', {
       year: 'numeric',
       month: 'short',
@@ -166,7 +177,7 @@ export default function ReviewManagement({
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={e => setStatusFilter(e.target.value)}
             className="rounded-md border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500"
           >
             <option value="all">Все статусы</option>
@@ -179,7 +190,9 @@ export default function ReviewManagement({
             disabled={loading}
             className="inline-flex items-center rounded-md bg-primary-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50"
           >
-            <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`}
+            />
             Обновить
           </button>
         </div>
@@ -203,7 +216,7 @@ export default function ReviewManagement({
                 <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-6">
                   Статус
                 </th>
-                <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 md:table-cell sm:px-6">
+                <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-6 md:table-cell">
                   Дата
                 </th>
                 <th className="relative px-3 py-3 sm:px-6">
@@ -212,7 +225,7 @@ export default function ReviewManagement({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              {filteredReviews.map((review) => (
+              {filteredReviews.map(review => (
                 <tr key={review._id} className="hover:bg-gray-50">
                   <td className="px-3 py-4 sm:px-6">
                     <div className="flex items-center">
@@ -228,7 +241,9 @@ export default function ReviewManagement({
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-900 sm:px-6">
                     <div className="max-w-xs truncate" title={review.content}>
-                      {review.content.length > 60 ? `${review.content.slice(0, 60)}...` : review.content}
+                      {review.content.length > 60
+                        ? `${review.content.slice(0, 60)}...`
+                        : review.content}
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 sm:px-6">
@@ -236,7 +251,7 @@ export default function ReviewManagement({
                       {getStatusText(review.status)}
                     </span>
                   </td>
-                  <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-900 md:table-cell sm:px-6">
+                  <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-900 sm:px-6 md:table-cell">
                     {review.createdAt ? formatDate(review.createdAt) : 'N/A'}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-medium sm:px-6">
@@ -251,7 +266,9 @@ export default function ReviewManagement({
                       {review.status === 'pending' && (
                         <>
                           <button
-                            onClick={() => handleStatusUpdate(review._id, 'approved')}
+                            onClick={() =>
+                              handleStatusUpdate(review._id, 'approved')
+                            }
                             disabled={updatingId === review._id}
                             className="text-green-600 hover:text-green-900 disabled:opacity-50"
                             title="Одобрить"
@@ -263,7 +280,9 @@ export default function ReviewManagement({
                             )}
                           </button>
                           <button
-                            onClick={() => handleStatusUpdate(review._id, 'rejected')}
+                            onClick={() =>
+                              handleStatusUpdate(review._id, 'rejected')
+                            }
                             disabled={updatingId === review._id}
                             className="text-red-600 hover:text-red-900 disabled:opacity-50"
                             title="Отклонить"
@@ -357,7 +376,12 @@ export default function ReviewManagement({
                   </div>
 
                   <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>Дата отправки: {selectedReview.createdAt ? formatDate(selectedReview.createdAt) : 'N/A'}</span>
+                    <span>
+                      Дата отправки:{' '}
+                      {selectedReview.createdAt
+                        ? formatDate(selectedReview.createdAt)
+                        : 'N/A'}
+                    </span>
                     <span className={getStatusBadge(selectedReview.status)}>
                       {getStatusText(selectedReview.status)}
                     </span>

@@ -8,11 +8,11 @@ export async function GET() {
     console.log('🧪 Testing database connection...');
     await getDatabase();
     console.log('✅ Database connected');
-    
+
     // Try to count contacts
     const count = await Contact.countDocuments();
     console.log('📊 Total contacts in database:', count);
-    
+
     return NextResponse.json({
       success: true,
       message: 'Database connection successful',
@@ -21,11 +21,14 @@ export async function GET() {
     });
   } catch (error) {
     console.error('❌ Test failed:', error);
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      timestamp: new Date().toISOString(),
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString(),
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -33,7 +36,7 @@ export async function POST() {
   try {
     console.log('🧪 Testing contact creation...');
     await getDatabase();
-    
+
     const testContact = new Contact({
       name: 'Test User',
       whatsapp: '+77753084648',
@@ -41,14 +44,14 @@ export async function POST() {
       message: 'This is a test message',
       status: 'new',
     });
-    
+
     const saved = await testContact.save();
     console.log('✅ Test contact created:', saved._id);
-    
+
     // Clean up - delete the test contact
     await Contact.findByIdAndDelete(saved._id);
     console.log('🗑️ Test contact deleted');
-    
+
     return NextResponse.json({
       success: true,
       message: 'Contact creation test successful',
@@ -57,10 +60,13 @@ export async function POST() {
     });
   } catch (error) {
     console.error('❌ Contact creation test failed:', error);
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      timestamp: new Date().toISOString(),
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString(),
+      },
+      { status: 500 }
+    );
   }
-} 
+}

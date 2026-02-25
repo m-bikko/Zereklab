@@ -1,6 +1,6 @@
 import { getDatabase } from '@/lib/mongodb';
-import Bonus from '@/models/Bonus';
 import { extractPhoneDigits } from '@/lib/phoneUtils';
+import Bonus from '@/models/Bonus';
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -132,7 +132,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   try {
     await getDatabase();
-    
+
     const { searchParams } = new URL(request.url);
     const phoneNumber = searchParams.get('phone');
     const fullName = searchParams.get('name');
@@ -149,16 +149,18 @@ export async function GET(request: NextRequest) {
     if (phoneNumber) {
       // Extract digits from the search phone number
       const searchDigits = extractPhoneDigits(phoneNumber);
-      
+
       // Find bonus by matching phone digits
       const allBonuses = await Bonus.find({}).lean();
-      bonus = allBonuses.find(b => extractPhoneDigits(b.phoneNumber) === searchDigits);
-      
+      bonus = allBonuses.find(
+        b => extractPhoneDigits(b.phoneNumber) === searchDigits
+      );
+
       if (bonus) {
         // Convert back to mongoose document
         bonus = await Bonus.findById(bonus._id);
       }
-      
+
       if (!bonus) {
         // Create new bonus record if doesn't exist
         // Use the original formatted phone number from the request
@@ -172,10 +174,10 @@ export async function GET(request: NextRequest) {
       }
     } else if (fullName) {
       // Search by full name (case insensitive)
-      bonus = await Bonus.findOne({ 
-        fullName: { $regex: fullName.trim(), $options: 'i' } 
+      bonus = await Bonus.findOne({
+        fullName: { $regex: fullName.trim(), $options: 'i' },
       });
-      
+
       if (!bonus) {
         return NextResponse.json(
           { error: 'Customer not found with this name' },
@@ -205,7 +207,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     await getDatabase();
-    
+
     const body = await request.json();
     const { phoneNumber, bonusesToAdd } = body;
 
@@ -233,7 +235,7 @@ export async function POST(request: NextRequest) {
     }
 
     let bonus = await Bonus.findOne({ phoneNumber });
-    
+
     if (!bonus) {
       bonus = new Bonus({
         phoneNumber,

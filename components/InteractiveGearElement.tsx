@@ -1,8 +1,10 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { StaticGear } from './FloatingGears';
 import { useState } from 'react';
+
+import { motion } from 'framer-motion';
+
+import { StaticGear } from './FloatingGears';
 
 interface InteractiveGearElementProps {
   children: React.ReactNode;
@@ -17,7 +19,7 @@ export default function InteractiveGearElement({
   className = '',
   gearSize = 24,
   gearColor = '#f97316',
-  gearPosition = 'top-right'
+  gearPosition = 'top-right',
 }: InteractiveGearElementProps) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -38,14 +40,14 @@ export default function InteractiveGearElement({
 
   return (
     <motion.div
-      className={`relative group ${className}`}
+      className={`group relative ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.2 }}
     >
       {children}
-      
+
       {/* Interactive gear that appears on hover */}
       <motion.div
         className={`absolute ${getGearPositionClasses()} pointer-events-none`}
@@ -54,15 +56,15 @@ export default function InteractiveGearElement({
           opacity: isHovered ? 0.6 : 0,
           scale: isHovered ? 1 : 0,
         }}
-        transition={{ 
-          duration: 0.3, 
-          ease: 'easeOut' 
+        transition={{
+          duration: 0.3,
+          ease: 'easeOut',
         }}
       >
-        <StaticGear 
-          size={gearSize} 
-          color={gearColor} 
-          duration={8} 
+        <StaticGear
+          size={gearSize}
+          color={gearColor}
+          duration={8}
           direction="clockwise"
         />
       </motion.div>

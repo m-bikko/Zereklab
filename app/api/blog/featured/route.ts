@@ -52,8 +52,8 @@ export async function GET(request: NextRequest) {
       $or: [
         { status: 'published', isFeatured: true },
         { isPublished: true, status: { $exists: false }, isFeatured: true },
-        { isPublished: true, status: null, isFeatured: true }
-      ]
+        { isPublished: true, status: null, isFeatured: true },
+      ],
     })
       .sort({ publishedAt: -1 })
       .limit(limit)

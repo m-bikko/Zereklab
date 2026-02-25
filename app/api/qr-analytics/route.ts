@@ -6,13 +6,14 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     await getDatabase();
-    
+
     const body = await request.json();
     const { qrCode, redirectUrl, userAgent, timestamp } = body;
 
     // Get IP address from headers
     const forwarded = request.headers.get('x-forwarded-for');
-    const ipAddress = forwarded?.split(',')[0] || request.headers.get('x-real-ip') || 'unknown';
+    const ipAddress =
+      forwarded?.split(',')[0] || request.headers.get('x-real-ip') || 'unknown';
 
     const analytics = new QRAnalytics({
       qrCode,
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     await getDatabase();
-    
+
     const { searchParams } = new URL(request.url);
     const days = parseInt(searchParams.get('days') || '30');
     const qrCode = searchParams.get('qrCode');
@@ -61,7 +62,9 @@ export async function GET(request: NextRequest) {
     }
 
     // Get total count
-    const totalCount = await QRAnalytics.countDocuments(qrCode ? { qrCode } : {});
+    const totalCount = await QRAnalytics.countDocuments(
+      qrCode ? { qrCode } : {}
+    );
 
     // Get daily counts for the specified period
     const dailyCounts = await QRAnalytics.aggregate([
@@ -95,18 +98,18 @@ export async function GET(request: NextRequest) {
     // Fill in missing dates with 0 counts
     const result = [];
     let currentDate = new Date(startDate);
-    
+
     while (currentDate <= endDate) {
       const dateStr = currentDate.toISOString().split('T')[0];
       const existingEntry = dailyCounts.find(
         entry => entry.date.toISOString().split('T')[0] === dateStr
       );
-      
+
       result.push({
         date: dateStr,
         count: existingEntry ? Number(existingEntry.count) : 0,
       });
-      
+
       const nextDate = new Date(currentDate);
       nextDate.setDate(nextDate.getDate() + 1);
       currentDate = nextDate;
@@ -114,8 +117,10 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       totalCount,
-      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-      periodCount: dailyCounts.reduce((sum, entry) => sum + Number(entry.count), 0),
+      periodCount: dailyCounts.reduce(
+        (sum: number, entry: { count: string | number }) => sum + Number(entry.count),
+        0
+      ),
       dailyCounts: result,
       period: { days, startDate, endDate },
     });

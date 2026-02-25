@@ -20,6 +20,7 @@
     "home": "Home",
     "products": "Products",
     "blog": "Blog",
+    "social": "Social Projects",
     "about": "About",
     "contact": "Contact",
     "admin": "Admin",
@@ -468,5 +469,13 @@
       "hiddenPlaceholder": "Scan barcode...",
       "submit": "Submit"
     }
+  },
+  "social": {
+    "title": "Our Social Projects",
+    "subtitle": "Transforming spaces for comfortable learning and work",
+    "empty": "No projects added yet",
+    "before": "Before",
+    "after": "After",
+    "source": "Project Reference"
   }
 }

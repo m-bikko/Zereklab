@@ -168,7 +168,7 @@ export async function GET(request: NextRequest) {
       filter.$or = [
         { status: 'published' },
         { isPublished: true, status: { $exists: false } },
-        { isPublished: true, status: null }
+        { isPublished: true, status: null },
       ];
     }
 
@@ -213,11 +213,7 @@ export async function GET(request: NextRequest) {
 
     // Выполнение запроса
     const [blogs, total] = await Promise.all([
-      Blog.find(filter)
-        .sort(sort)
-        .skip(skip)
-        .limit(limit)
-        .lean(),
+      Blog.find(filter).sort(sort).skip(skip).limit(limit).lean(),
       Blog.countDocuments(filter),
     ]);
 
@@ -259,10 +255,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (!body.slug) {
-      return NextResponse.json(
-        { error: 'Slug обязателен' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Slug обязателен' }, { status: 400 });
     }
 
     if (!body.excerpt?.ru || !body.excerpt?.kk || !body.excerpt?.en) {
@@ -310,7 +303,7 @@ export async function POST(request: NextRequest) {
     // Handle Mongoose validation errors
     if (error instanceof mongoose.Error.ValidationError) {
       const validationErrors = Object.values(error.errors).map(
-        (err) => err.message
+        err => err.message
       );
       return NextResponse.json(
         { error: 'Validation failed', details: validationErrors },

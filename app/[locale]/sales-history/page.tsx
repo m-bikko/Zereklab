@@ -6,19 +6,19 @@ import { cleanPhoneInput } from '@/lib/phoneUtils';
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { 
+import {
   Calendar,
-  Phone,
-  Package,
-  DollarSign,
-  Gift,
-  Search,
-  Filter,
   ChevronLeft,
   ChevronRight,
-  RefreshCw,
+  DollarSign,
+  Filter,
+  Gift,
   LogOut,
-  User
+  Package,
+  Phone,
+  RefreshCw,
+  Search,
+  User,
 } from 'lucide-react';
 
 interface SaleItem {
@@ -53,7 +53,9 @@ interface SalesResponse {
 export default function SalesHistoryPage() {
   const { isAuthenticated, isLoading, user, logout } = useSalesAuth();
   const [sales, setSales] = useState<Sale[]>([]);
-  const [pagination, setPagination] = useState<SalesResponse['pagination'] | null>(null);
+  const [pagination, setPagination] = useState<
+    SalesResponse['pagination'] | null
+  >(null);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [phoneFilter, setPhoneFilter] = useState('');
@@ -70,18 +72,18 @@ export default function SalesHistoryPage() {
   const fetchSales = useCallback(async () => {
     try {
       setLoading(true);
-      
+
       const params = new URLSearchParams({
         page: currentPage.toString(),
         limit: '10',
       });
-      
+
       if (phoneFilter.trim()) {
         params.append('phone', phoneFilter);
       }
-      
+
       const response = await fetch(`/api/sales?${params}`);
-      
+
       if (response.ok) {
         const data: SalesResponse = await response.json();
         setSales(data.sales);
@@ -156,9 +158,13 @@ export default function SalesHistoryPage() {
         <div className="mb-6 rounded-lg bg-white p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="mb-2 text-2xl font-bold text-gray-900">История продаж</h1>
+              <h1 className="mb-2 text-2xl font-bold text-gray-900">
+                История продаж
+              </h1>
               <p className="text-gray-600">
-                {pagination ? `Всего продаж: ${pagination.totalSales}` : 'Загрузка...'}
+                {pagination
+                  ? `Всего продаж: ${pagination.totalSales}`
+                  : 'Загрузка...'}
               </p>
             </div>
             <div className="flex items-center space-x-4">
@@ -178,7 +184,9 @@ export default function SalesHistoryPage() {
                 disabled={loading}
                 className="flex items-center space-x-2 rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+                <RefreshCw
+                  className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`}
+                />
                 <span>Обновить</span>
               </button>
               <button
@@ -204,8 +212,8 @@ export default function SalesHistoryPage() {
                     <input
                       type="tel"
                       value={phoneInput}
-                      onChange={(e) => handlePhoneInputChange(e.target.value)}
-                      onKeyDown={(e) => {
+                      onChange={e => handlePhoneInputChange(e.target.value)}
+                      onKeyDown={e => {
                         if (e.key === 'Enter') {
                           handleSearch();
                         }
@@ -260,15 +268,14 @@ export default function SalesHistoryPage() {
               Продажи не найдены
             </h3>
             <p className="text-gray-500">
-              {phoneFilter 
+              {phoneFilter
                 ? 'Продажи для указанного номера не найдены'
-                : 'История продаж пуста'
-              }
+                : 'История продаж пуста'}
             </p>
           </div>
         ) : (
           <div className="space-y-4">
-            {sales.map((sale) => (
+            {sales.map(sale => (
               <div key={sale._id} className="rounded-lg bg-white p-6 shadow-sm">
                 <div className="flex flex-col space-y-4 lg:flex-row lg:items-start lg:justify-between lg:space-y-0">
                   {/* Sale Info */}
@@ -276,11 +283,15 @@ export default function SalesHistoryPage() {
                     <div className="mb-4 flex flex-wrap items-center gap-4">
                       <div className="flex items-center space-x-2">
                         <Phone className="h-4 w-4 text-gray-400" />
-                        <span className="font-medium text-gray-900">{sale.customerPhone}</span>
+                        <span className="font-medium text-gray-900">
+                          {sale.customerPhone}
+                        </span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Calendar className="h-4 w-4 text-gray-400" />
-                        <span className="text-gray-600">{formatDate(sale.saleDate)}</span>
+                        <span className="text-gray-600">
+                          {formatDate(sale.saleDate)}
+                        </span>
                       </div>
                     </div>
 
@@ -288,13 +299,21 @@ export default function SalesHistoryPage() {
                     <div className="space-y-2">
                       <h4 className="font-medium text-gray-900">Товары:</h4>
                       {sale.items.map((item, index) => (
-                        <div key={index} className="flex items-center justify-between rounded bg-gray-50 p-3">
+                        <div
+                          key={index}
+                          className="flex items-center justify-between rounded bg-gray-50 p-3"
+                        >
                           <div>
-                            <p className="font-medium text-gray-900">{item.productName}</p>
+                            <p className="font-medium text-gray-900">
+                              {item.productName}
+                            </p>
                             <p className="text-sm text-gray-600">
-                              {formatPrice(item.salePrice || item.price)} × {item.quantity}
+                              {formatPrice(item.salePrice || item.price)} ×{' '}
+                              {item.quantity}
                               {item.salePrice && (
-                                <span className="ml-2 text-xs text-green-600">Скидка</span>
+                                <span className="ml-2 text-xs text-green-600">
+                                  Скидка
+                                </span>
                               )}
                             </p>
                           </div>
@@ -348,11 +367,11 @@ export default function SalesHistoryPage() {
               <ChevronLeft className="h-4 w-4" />
               <span>Предыдущая</span>
             </button>
-            
+
             <span className="text-gray-600">
               Страница {pagination.currentPage} из {pagination.totalPages}
             </span>
-            
+
             <button
               onClick={() => setCurrentPage(currentPage + 1)}
               disabled={!pagination.hasNextPage}

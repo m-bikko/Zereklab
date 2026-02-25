@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Review from '@/models/Review';
+
+import { NextRequest, NextResponse } from 'next/server';
 
 // PUT - Update review status (approve/reject)
 export async function PUT(
@@ -25,21 +26,18 @@ export async function PUT(
       id,
       {
         status,
-        reviewedAt: new Date()
+        reviewedAt: new Date(),
       },
       { new: true }
     );
 
     if (!review) {
-      return NextResponse.json(
-        { error: 'Отзыв не найден' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Отзыв не найден' }, { status: 404 });
     }
 
     return NextResponse.json({
       message: status === 'approved' ? 'Отзыв одобрен' : 'Отзыв отклонён',
-      review
+      review,
     });
   } catch (error) {
     console.error('Error updating review:', error);
@@ -63,14 +61,11 @@ export async function DELETE(
     const review = await Review.findByIdAndDelete(id);
 
     if (!review) {
-      return NextResponse.json(
-        { error: 'Отзыв не найден' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Отзыв не найден' }, { status: 404 });
     }
 
     return NextResponse.json({
-      message: 'Отзыв удалён'
+      message: 'Отзыв удалён',
     });
   } catch (error) {
     console.error('Error deleting review:', error);

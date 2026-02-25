@@ -5,7 +5,8 @@ const swaggerDefinition = {
   info: {
     title: 'ZerekLab API',
     version: '1.0.0',
-    description: 'API документация для интернет-магазина образовательных наборов ZerekLab',
+    description:
+      'API документация для интернет-магазина образовательных наборов ZerekLab',
     contact: {
       name: 'ZerekLab Team',
       email: 'support@zereklab.com',
@@ -26,7 +27,7 @@ const swaggerDefinition = {
       },
       SalesAuth: {
         type: 'http',
-        scheme: 'basic', 
+        scheme: 'basic',
         description: 'Базовая аутентификация для продавцов',
       },
     },
@@ -763,9 +764,7 @@ const swaggerDefinition = {
 
 const options = {
   definition: swaggerDefinition,
-  apis: [
-    './app/api/**/*.ts',
-  ],
+  apis: ['./app/api/**/*.ts'],
 };
 
 const specs = swaggerJSDoc(options);

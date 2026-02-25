@@ -3,7 +3,13 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { BarChart3, Calendar, QrCode, RefreshCw, TrendingUp } from 'lucide-react';
+import {
+  BarChart3,
+  Calendar,
+  QrCode,
+  RefreshCw,
+  TrendingUp,
+} from 'lucide-react';
 
 interface QRAnalyticsData {
   totalCount: number;
@@ -58,7 +64,7 @@ export default function QRAnalytics() {
         <div className="flex items-center space-x-4">
           <select
             value={period}
-            onChange={(e) => setPeriod(Number(e.target.value))}
+            onChange={e => setPeriod(Number(e.target.value))}
             className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           >
             <option value={7}>Последние 7 дней</option>
@@ -122,8 +128,8 @@ export default function QRAnalytics() {
                     Среднее в день
                   </p>
                   <p className="text-3xl font-bold text-purple-900">
-                    {data?.periodCount && period 
-                      ? Math.round((data.periodCount / period) * 10) / 10 
+                    {data?.periodCount && period
+                      ? Math.round((data.periodCount / period) * 10) / 10
                       : 0}
                   </p>
                 </div>
@@ -146,19 +152,18 @@ export default function QRAnalytics() {
 
             <div className="space-y-2">
               {data?.dailyCounts.map((item, index) => {
-                const percentage = maxCount > 0 ? (item.count / maxCount) * 100 : 0;
+                const percentage =
+                  maxCount > 0 ? (item.count / maxCount) * 100 : 0;
                 const date = new Date(item.date);
-                const dayName = date.toLocaleDateString('ru-RU', { 
+                const dayName = date.toLocaleDateString('ru-RU', {
                   weekday: 'short',
                   day: 'numeric',
-                  month: 'short'
+                  month: 'short',
                 });
 
                 return (
                   <div key={index} className="flex items-center space-x-4">
-                    <div className="w-20 text-xs text-gray-500">
-                      {dayName}
-                    </div>
+                    <div className="w-20 text-xs text-gray-500">{dayName}</div>
                     <div className="flex-1">
                       <div className="flex items-center space-x-2">
                         <div className="relative h-6 flex-1 rounded-full bg-gray-100">

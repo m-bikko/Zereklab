@@ -3,24 +3,24 @@ const path = require('path');
 
 // Simple function to read env files
 function loadEnv() {
-  const envFiles = ['.env'];  // Only load from .env for test environment
+  const envFiles = ['.env']; // Only load from .env for test environment
   const env = {};
-  
+
   for (const file of envFiles) {
     try {
       const content = fs.readFileSync(file, 'utf8');
       const lines = content.split('\n');
-      
+
       for (const line of lines) {
         const trimmedLine = line.trim();
         if (!trimmedLine || trimmedLine.startsWith('#')) continue;
-        
+
         const equalIndex = trimmedLine.indexOf('=');
         if (equalIndex === -1) continue;
-        
+
         const key = trimmedLine.substring(0, equalIndex).trim();
         const value = trimmedLine.substring(equalIndex + 1).trim();
-        
+
         // Remove surrounding quotes if present
         const cleanValue = value.replace(/^["'](.*)["']$/, '$1');
         env[key] = cleanValue;
@@ -29,7 +29,7 @@ function loadEnv() {
       // File doesn't exist, continue
     }
   }
-  
+
   // Set environment variables
   for (const [key, value] of Object.entries(env)) {
     if (!process.env[key]) {
@@ -78,39 +78,41 @@ const Quote = mongoose.model('Quote', QuoteSchema);
 function loadQuotes(filePath) {
   const content = fs.readFileSync(filePath, 'utf-8');
   const quotes = JSON.parse(content);
-  
+
   // Add isActive property to all quotes
   return quotes.map(quote => ({
     ...quote,
-    isActive: true
+    isActive: true,
   }));
 }
 
 async function importQuotes() {
   try {
     console.log('📚 Starting quotes import for TEST environment...');
-    
+
     // Connect to MongoDB (will use default "test" database)
     const mongoUri = process.env.MONGODB_URI;
     if (!mongoUri) {
       throw new Error('MONGODB_URI not found in environment variables');
     }
-    
+
     await mongoose.connect(mongoUri, {
-      dbName: 'test'  // Explicitly use test database
+      dbName: 'test', // Explicitly use test database
     });
     console.log('✅ Connected to MongoDB (test database)');
-    
+
     // Clear existing quotes
     const deletedCount = await Quote.deleteMany({});
-    console.log(`🗑️  Removed ${deletedCount.deletedCount} existing quotes from test database`);
-    
+    console.log(
+      `🗑️  Removed ${deletedCount.deletedCount} existing quotes from test database`
+    );
+
     // Load quotes from JSON file
     const quotesFilePath = path.join(__dirname, '..', 'quotes.json');
     const quotes = loadQuotes(quotesFilePath);
-    
+
     console.log(`📖 Loaded ${quotes.length} quotes from JSON file`);
-    
+
     // Show first few quotes for verification
     if (quotes.length > 0) {
       console.log('\n📝 First 3 quotes:');
@@ -119,19 +121,20 @@ async function importQuotes() {
       }
       console.log('');
     }
-    
+
     // Import quotes to database
     if (quotes.length > 0) {
       const insertedQuotes = await Quote.insertMany(quotes);
-      console.log(`✅ Successfully imported ${insertedQuotes.length} quotes to TEST database`);
-      
+      console.log(
+        `✅ Successfully imported ${insertedQuotes.length} quotes to TEST database`
+      );
+
       // Verify import
       const totalQuotes = await Quote.countDocuments();
       console.log(`📊 Total quotes in TEST database: ${totalQuotes}`);
     } else {
       console.log('❌ No quotes were parsed from the file');
     }
-    
   } catch (error) {
     console.error('❌ Error importing quotes to test database:', error);
     process.exit(1);

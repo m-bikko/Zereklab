@@ -22,13 +22,13 @@ interface ContactManagementProps {
   onRefresh: () => void;
 }
 
-
 export default function ContactManagement({
   contacts,
   loading,
   onRefresh,
 }: ContactManagementProps) {
-  const [selectedContact, setSelectedContact] = useState<IContactDocument | null>(null);
+  const [selectedContact, setSelectedContact] =
+    useState<IContactDocument | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
 
@@ -80,7 +80,8 @@ export default function ContactManagement({
   };
 
   const getStatusBadge = (status: string) => {
-    const baseClasses = 'inline-flex rounded-full px-2 text-xs font-semibold leading-5';
+    const baseClasses =
+      'inline-flex rounded-full px-2 text-xs font-semibold leading-5';
     switch (status) {
       case 'new':
         return `${baseClasses} bg-blue-100 text-blue-800`;
@@ -107,7 +108,8 @@ export default function ContactManagement({
   };
 
   const formatDate = (dateInput: string | Date) => {
-    const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+    const date =
+      typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
     return date.toLocaleString('ru-RU', {
       year: 'numeric',
       month: 'short',
@@ -143,7 +145,7 @@ export default function ContactManagement({
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={e => setStatusFilter(e.target.value)}
             className="rounded-md border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500"
           >
             <option value="all">Все статусы</option>
@@ -156,7 +158,9 @@ export default function ContactManagement({
             disabled={loading}
             className="inline-flex items-center rounded-md bg-primary-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50"
           >
-            <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`}
+            />
             Обновить
           </button>
         </div>
@@ -180,7 +184,7 @@ export default function ContactManagement({
                 <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-6">
                   Статус
                 </th>
-                <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 md:table-cell sm:px-6">
+                <th className="hidden px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-6 md:table-cell">
                   Дата
                 </th>
                 <th className="relative px-3 py-3 sm:px-6">
@@ -189,7 +193,7 @@ export default function ContactManagement({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              {filteredContacts.map((contact) => (
+              {filteredContacts.map(contact => (
                 <tr key={contact._id as string} className="hover:bg-gray-50">
                   <td className="px-3 py-4 sm:px-6">
                     <div className="flex items-center">
@@ -219,7 +223,7 @@ export default function ContactManagement({
                       {getStatusText(contact.status)}
                     </span>
                   </td>
-                  <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-900 md:table-cell sm:px-6">
+                  <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-900 sm:px-6 md:table-cell">
                     {contact.createdAt ? formatDate(contact.createdAt) : 'N/A'}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-medium sm:px-6">
@@ -233,7 +237,10 @@ export default function ContactManagement({
                       </button>
                       {contact.status === 'new' && (contact._id as string) && (
                         <button
-                          onClick={() => contact._id && handleStatusUpdate(contact._id as string, 'read')}
+                          onClick={() =>
+                            contact._id &&
+                            handleStatusUpdate(contact._id as string, 'read')
+                          }
                           disabled={updatingStatus === (contact._id as string)}
                           className="text-yellow-600 hover:text-yellow-900 disabled:opacity-50"
                           title="Отметить как прочитанное"
@@ -245,20 +252,30 @@ export default function ContactManagement({
                           )}
                         </button>
                       )}
-                      {(contact.status === 'new' || contact.status === 'read') && (contact._id as string) && (
-                        <button
-                          onClick={() => contact._id && handleStatusUpdate(contact._id as string, 'replied')}
-                          disabled={updatingStatus === (contact._id as string)}
-                          className="text-green-600 hover:text-green-900 disabled:opacity-50"
-                          title="Отметить как отвеченное"
-                        >
-                          {updatingStatus === (contact._id as string) ? (
-                            <RefreshCw className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <Reply className="h-4 w-4" />
-                          )}
-                        </button>
-                      )}
+                      {(contact.status === 'new' ||
+                        contact.status === 'read') &&
+                        (contact._id as string) && (
+                          <button
+                            onClick={() =>
+                              contact._id &&
+                              handleStatusUpdate(
+                                contact._id as string,
+                                'replied'
+                              )
+                            }
+                            disabled={
+                              updatingStatus === (contact._id as string)
+                            }
+                            className="text-green-600 hover:text-green-900 disabled:opacity-50"
+                            title="Отметить как отвеченное"
+                          >
+                            {updatingStatus === (contact._id as string) ? (
+                              <RefreshCw className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <Reply className="h-4 w-4" />
+                            )}
+                          </button>
+                        )}
                     </div>
                   </td>
                 </tr>
@@ -306,8 +323,18 @@ export default function ContactManagement({
                     className="text-gray-400 hover:text-gray-600"
                   >
                     <span className="sr-only">Закрыть</span>
-                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   </button>
                 </div>
@@ -318,7 +345,7 @@ export default function ContactManagement({
                       WhatsApp
                     </label>
                     <p className="mt-1 text-sm text-gray-900">
-                      <a 
+                      <a
                         href={`https://wa.me/${selectedContact.whatsapp.replace(/[^0-9]/g, '')}`}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -333,7 +360,9 @@ export default function ContactManagement({
                     <label className="block text-sm font-medium text-gray-700">
                       Тема
                     </label>
-                    <p className="mt-1 text-sm text-gray-900">{selectedContact.subject}</p>
+                    <p className="mt-1 text-sm text-gray-900">
+                      {selectedContact.subject}
+                    </p>
                   </div>
 
                   <div>
@@ -348,7 +377,12 @@ export default function ContactManagement({
                   </div>
 
                   <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>Дата отправки: {selectedContact.createdAt ? formatDate(selectedContact.createdAt) : 'N/A'}</span>
+                    <span>
+                      Дата отправки:{' '}
+                      {selectedContact.createdAt
+                        ? formatDate(selectedContact.createdAt)
+                        : 'N/A'}
+                    </span>
                     <span className={getStatusBadge(selectedContact.status)}>
                       {getStatusText(selectedContact.status)}
                     </span>
@@ -358,30 +392,45 @@ export default function ContactManagement({
 
               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                 <div className="flex space-x-2">
-                  {selectedContact.status === 'new' && (selectedContact._id as string) && (
-                    <button
-                      onClick={() => {
-                        selectedContact._id && handleStatusUpdate(selectedContact._id as string, 'read');
-                        setSelectedContact(null);
-                      }}
-                      disabled={updatingStatus === (selectedContact._id as string)}
-                      className="inline-flex justify-center rounded-md border border-transparent bg-yellow-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 disabled:opacity-50 sm:text-sm"
-                    >
-                      Отметить как прочитанное
-                    </button>
-                  )}
-                  {(selectedContact.status === 'new' || selectedContact.status === 'read') && (selectedContact._id as string) && (
-                    <button
-                      onClick={() => {
-                        selectedContact._id && handleStatusUpdate(selectedContact._id as string, 'replied');
-                        setSelectedContact(null);
-                      }}
-                      disabled={updatingStatus === (selectedContact._id as string)}
-                      className="inline-flex justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 sm:text-sm"
-                    >
-                      Отметить как отвеченное
-                    </button>
-                  )}
+                  {selectedContact.status === 'new' &&
+                    (selectedContact._id as string) && (
+                      <button
+                        onClick={() => {
+                          selectedContact._id &&
+                            handleStatusUpdate(
+                              selectedContact._id as string,
+                              'read'
+                            );
+                          setSelectedContact(null);
+                        }}
+                        disabled={
+                          updatingStatus === (selectedContact._id as string)
+                        }
+                        className="inline-flex justify-center rounded-md border border-transparent bg-yellow-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 disabled:opacity-50 sm:text-sm"
+                      >
+                        Отметить как прочитанное
+                      </button>
+                    )}
+                  {(selectedContact.status === 'new' ||
+                    selectedContact.status === 'read') &&
+                    (selectedContact._id as string) && (
+                      <button
+                        onClick={() => {
+                          selectedContact._id &&
+                            handleStatusUpdate(
+                              selectedContact._id as string,
+                              'replied'
+                            );
+                          setSelectedContact(null);
+                        }}
+                        disabled={
+                          updatingStatus === (selectedContact._id as string)
+                        }
+                        className="inline-flex justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 sm:text-sm"
+                      >
+                        Отметить как отвеченное
+                      </button>
+                    )}
                   <button
                     onClick={() => setSelectedContact(null)}
                     className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
@@ -396,4 +445,4 @@ export default function ContactManagement({
       )}
     </div>
   );
-} 
+}

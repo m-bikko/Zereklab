@@ -18,7 +18,10 @@ interface CategoryData {
 }
 
 // Валидация мультиязычного текста
-const validateMultilingualText = (text: unknown, fieldName: string): string[] => {
+const validateMultilingualText = (
+  text: unknown,
+  fieldName: string
+): string[] => {
   const errors: string[] = [];
   if (!text || typeof text !== 'object') {
     errors.push(`${fieldName} должно быть объектом с переводами`);

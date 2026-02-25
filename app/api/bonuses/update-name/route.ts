@@ -1,13 +1,14 @@
 import { getDatabase } from '@/lib/mongodb';
-import Bonus from '@/models/Bonus';
 import { extractPhoneDigits } from '@/lib/phoneUtils';
+import Bonus from '@/models/Bonus';
+
 import { NextRequest, NextResponse } from 'next/server';
 
 // Update customer's full name
 export async function POST(request: NextRequest) {
   try {
     await getDatabase();
-    
+
     const body = await request.json();
     const { phoneNumber, fullName } = body;
 
@@ -21,8 +22,10 @@ export async function POST(request: NextRequest) {
     // Find bonus by matching phone digits
     const searchDigits = extractPhoneDigits(phoneNumber);
     const allBonuses = await Bonus.find({}).lean();
-    const bonusRecord = allBonuses.find(b => extractPhoneDigits(b.phoneNumber) === searchDigits);
-    
+    const bonusRecord = allBonuses.find(
+      b => extractPhoneDigits(b.phoneNumber) === searchDigits
+    );
+
     if (!bonusRecord) {
       return NextResponse.json(
         { error: 'Customer not found' },

@@ -30,14 +30,16 @@ async function migrateBlogStatus() {
     const blogsCollection = db.collection('blogs');
 
     // Найти все блоги где isPublished=true, но status не равен 'published'
-    const blogsToUpdate = await blogsCollection.find({
-      isPublished: true,
-      $or: [
-        { status: { $exists: false } },
-        { status: null },
-        { status: { $ne: 'published' } }
-      ]
-    }).toArray();
+    const blogsToUpdate = await blogsCollection
+      .find({
+        isPublished: true,
+        $or: [
+          { status: { $exists: false } },
+          { status: null },
+          { status: { $ne: 'published' } },
+        ],
+      })
+      .toArray();
 
     console.log(`Найдено ${blogsToUpdate.length} блогов для обновления\n`);
 
@@ -50,7 +52,9 @@ async function migrateBlogStatus() {
     // Показать какие блоги будут обновлены
     console.log('Блоги для обновления:');
     blogsToUpdate.forEach((blog, i) => {
-      console.log(`  ${i + 1}. ${blog.slug} (status: ${blog.status || 'undefined'}, isPublished: ${blog.isPublished})`);
+      console.log(
+        `  ${i + 1}. ${blog.slug} (status: ${blog.status || 'undefined'}, isPublished: ${blog.isPublished})`
+      );
     });
     console.log('');
 
@@ -61,11 +65,11 @@ async function migrateBlogStatus() {
         $or: [
           { status: { $exists: false } },
           { status: null },
-          { status: { $ne: 'published' } }
-        ]
+          { status: { $ne: 'published' } },
+        ],
       },
       {
-        $set: { status: 'published' }
+        $set: { status: 'published' },
       }
     );
 
@@ -75,7 +79,7 @@ async function migrateBlogStatus() {
     console.log('=== Проверка результата ===\n');
     const updatedBlogs = await blogsCollection.find({}).toArray();
 
-    updatedBlogs.forEach((blog) => {
+    updatedBlogs.forEach(blog => {
       console.log(`${blog.slug}:`);
       console.log(`  status: ${blog.status}`);
       console.log(`  isPublished: ${blog.isPublished}`);

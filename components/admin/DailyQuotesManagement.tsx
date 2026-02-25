@@ -6,14 +6,14 @@ import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import {
   AlertTriangle,
-  Shuffle,
-  Quote,
-  Plus,
-  Trash2,
   Edit3,
-  Save,
-  X,
+  Plus,
+  Quote,
   RefreshCw,
+  Save,
+  Shuffle,
+  Trash2,
+  X,
 } from 'lucide-react';
 
 interface DailyQuote {
@@ -194,11 +194,16 @@ export default function DailyQuotesManagement() {
         </h3>
         <div className="text-sm text-blue-800">
           <ul className="list-disc space-y-1 pl-5">
-            <li>Цитаты выбираются случайным образом при каждом обновлении страницы</li>
+            <li>
+              Цитаты выбираются случайным образом при каждом обновлении страницы
+            </li>
             <li>Цитаты хранятся в базе данных (больше не в localStorage)</li>
             <li>Всегда есть резервные цитаты, если база данных пуста</li>
             <li>Работает стабильно на всех устройствах, включая мобильные</li>
-            <li>На главной странице показывается как &ldquo;Случайная цитата&rdquo;</li>
+            <li>
+              На главной странице показывается как &ldquo;Случайная
+              цитата&rdquo;
+            </li>
           </ul>
         </div>
       </div>
@@ -228,7 +233,7 @@ export default function DailyQuotesManagement() {
             </cite>
           </div>
         ) : (
-          <div className="rounded-lg bg-white p-4 shadow-sm text-center text-gray-500">
+          <div className="rounded-lg bg-white p-4 text-center text-gray-500 shadow-sm">
             Нажмите кнопку выше, чтобы загрузить случайную цитату
           </div>
         )}
@@ -236,7 +241,7 @@ export default function DailyQuotesManagement() {
 
       {/* Добавление новой цитаты */}
       <div className="rounded-xl border border-gray-200 bg-white p-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-semibold text-gray-900">
             Добавить новую цитату
           </h3>
@@ -254,25 +259,29 @@ export default function DailyQuotesManagement() {
         {isAddingQuote && (
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="mb-2 block text-sm font-medium text-gray-700">
                 Текст цитаты
               </label>
               <textarea
                 value={newQuote.text}
-                onChange={(e) => setNewQuote(prev => ({ ...prev, text: e.target.value }))}
+                onChange={e =>
+                  setNewQuote(prev => ({ ...prev, text: e.target.value }))
+                }
                 placeholder="Введите текст цитаты..."
                 className="w-full rounded-lg border border-gray-300 p-3 text-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
                 rows={3}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="mb-2 block text-sm font-medium text-gray-700">
                 Автор
               </label>
               <input
                 type="text"
                 value={newQuote.author}
-                onChange={(e) => setNewQuote(prev => ({ ...prev, author: e.target.value }))}
+                onChange={e =>
+                  setNewQuote(prev => ({ ...prev, author: e.target.value }))
+                }
                 placeholder="Введите имя автора..."
                 className="w-full rounded-lg border border-gray-300 p-3 text-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
               />
@@ -303,9 +312,7 @@ export default function DailyQuotesManagement() {
       {/* Список цитат */}
       {dailyQuotes.length > 0 ? (
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Все цитаты
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-900">Все цитаты</h3>
           <div className="space-y-3">
             {dailyQuotes.map((quote, index) => (
               <motion.div
@@ -319,14 +326,21 @@ export default function DailyQuotesManagement() {
                   <div className="space-y-4">
                     <textarea
                       value={newQuote.text}
-                      onChange={(e) => setNewQuote(prev => ({ ...prev, text: e.target.value }))}
+                      onChange={e =>
+                        setNewQuote(prev => ({ ...prev, text: e.target.value }))
+                      }
                       className="w-full rounded-lg border border-gray-300 p-3 text-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
                       rows={3}
                     />
                     <input
                       type="text"
                       value={newQuote.author}
-                      onChange={(e) => setNewQuote(prev => ({ ...prev, author: e.target.value }))}
+                      onChange={e =>
+                        setNewQuote(prev => ({
+                          ...prev,
+                          author: e.target.value,
+                        }))
+                      }
                       className="w-full rounded-lg border border-gray-300 p-3 text-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
                     />
                     <div className="flex space-x-2">
@@ -358,9 +372,14 @@ export default function DailyQuotesManagement() {
                       <div className="mt-2 flex items-center space-x-4 text-xs text-gray-500">
                         <span>ID: {quote._id.slice(-6)}</span>
                         <span>
-                          Добавлено: {new Date(quote.createdAt).toLocaleDateString('ru-RU')}
+                          Добавлено:{' '}
+                          {new Date(quote.createdAt).toLocaleDateString(
+                            'ru-RU'
+                          )}
                         </span>
-                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${quote.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                        <span
+                          className={`inline-flex items-center rounded-full px-2 py-1 text-xs ${quote.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
+                        >
                           {quote.isActive ? 'Активна' : 'Неактивна'}
                         </span>
                       </div>
@@ -398,4 +417,4 @@ export default function DailyQuotesManagement() {
       )}
     </div>
   );
-} 
+}

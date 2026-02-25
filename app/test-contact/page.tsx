@@ -20,7 +20,7 @@ export default function TestContactPage() {
       const response = await fetch('/api/test-contact');
       const data = await response.json();
       setResult(data);
-      
+
       if (data.success) {
         toast.success('Database connection successful!');
       } else {
@@ -29,7 +29,10 @@ export default function TestContactPage() {
     } catch (error) {
       console.error('Test error:', error);
       toast.error('Network error');
-      setResult({ error: 'Network error', details: error instanceof Error ? error.message : 'Unknown error' });
+      setResult({
+        error: 'Network error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      });
     } finally {
       setLoading(false);
     }
@@ -41,7 +44,7 @@ export default function TestContactPage() {
       const response = await fetch('/api/test-contact', { method: 'POST' });
       const data = await response.json();
       setResult(data);
-      
+
       if (data.success) {
         toast.success('Contact creation test successful!');
       } else {
@@ -50,7 +53,10 @@ export default function TestContactPage() {
     } catch (error) {
       console.error('Test error:', error);
       toast.error('Network error');
-      setResult({ error: 'Network error', details: error instanceof Error ? error.message : 'Unknown error' });
+      setResult({
+        error: 'Network error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      });
     } finally {
       setLoading(false);
     }
@@ -76,7 +82,7 @@ export default function TestContactPage() {
 
       const data = await response.json();
       setResult(data);
-      
+
       if (response.ok) {
         toast.success('Real contact form test successful!');
       } else {
@@ -85,7 +91,10 @@ export default function TestContactPage() {
     } catch (error) {
       console.error('Test error:', error);
       toast.error('Network error');
-      setResult({ error: 'Network error', details: error instanceof Error ? error.message : 'Unknown error' });
+      setResult({
+        error: 'Network error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      });
     } finally {
       setLoading(false);
     }
@@ -97,7 +106,7 @@ export default function TestContactPage() {
         <h1 className="mb-8 text-3xl font-bold text-gray-900">
           Contact Form Debug Page
         </h1>
-        
+
         <div className="mb-8 space-y-4">
           <button
             onClick={testDatabaseConnection}
@@ -106,7 +115,7 @@ export default function TestContactPage() {
           >
             {loading ? 'Testing...' : 'Test Database Connection'}
           </button>
-          
+
           <button
             onClick={testContactCreation}
             disabled={loading}
@@ -114,7 +123,7 @@ export default function TestContactPage() {
           >
             {loading ? 'Testing...' : 'Test Contact Creation'}
           </button>
-          
+
           <button
             onClick={testRealContactForm}
             disabled={loading}
@@ -139,10 +148,12 @@ export default function TestContactPage() {
             <li>First, test the database connection</li>
             <li>Then test contact creation</li>
             <li>Finally, test the real contact form</li>
-            <li>Check the browser console and server logs for detailed information</li>
+            <li>
+              Check the browser console and server logs for detailed information
+            </li>
           </ol>
         </div>
       </div>
     </div>
   );
-} 
+}

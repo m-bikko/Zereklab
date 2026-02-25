@@ -69,7 +69,7 @@ const SaleSchema = new Schema<ISale>(
       type: [SaleItemSchema],
       required: true,
       validate: {
-        validator: function(items: ISaleItem[]) {
+        validator: function (items: ISaleItem[]) {
           return items.length > 0;
         },
         message: 'Sale must have at least one item',
@@ -107,16 +107,16 @@ const SaleSchema = new Schema<ISale>(
 );
 
 // Calculate total amount and bonuses before saving
-SaleSchema.pre('save', function(next) {
+SaleSchema.pre('save', function (next) {
   this.totalAmount = this.items.reduce((sum, item) => sum + item.totalPrice, 0);
   this.bonusesEarned = Math.floor(this.totalAmount * 0.03); // 3% bonus
-  
+
   // Set bonus available date to 10 days from sale date
   const saleDate = this.saleDate || new Date();
   const availableDate = new Date(saleDate);
   availableDate.setDate(availableDate.getDate() + 10);
   this.bonusAvailableDate = availableDate;
-  
+
   next();
 });
 

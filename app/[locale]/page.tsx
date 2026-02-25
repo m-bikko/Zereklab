@@ -2,10 +2,10 @@
 
 import BlogSection from '@/components/BlogSection';
 import BonusLookup from '@/components/BonusLookup';
-import ReviewSection from '@/components/ReviewSection';
 import ClientOnly from '@/components/ClientOnly';
 import DailyImageRotation from '@/components/DailyImageRotation';
 import { StaticGear } from '@/components/FloatingGears';
+import ReviewSection from '@/components/ReviewSection';
 import SectionGears from '@/components/SectionGears';
 import { type Locale, t } from '@/lib/i18n';
 
@@ -103,7 +103,6 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
     },
   ];
 
-
   const stats = [
     { number: '10,000+', label: t('home.stats.children', currentLocale) },
     { number: '500+', label: t('home.stats.schools', currentLocale) },
@@ -181,9 +180,9 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
       >
         <section className="relative overflow-hidden bg-gradient-to-br from-secondary-600 via-secondary-700 to-secondary-800 text-white">
           <div className="absolute inset-0 bg-black/10"></div>
-          
+
           {/* Hero section floating gears */}
-          <SectionGears 
+          <SectionGears
             gearCount={10}
             colors={[
               'rgba(249, 115, 22, 0.7)', // Orange with more visibility
@@ -196,19 +195,32 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
             minOpacity={0.4}
             maxOpacity={0.7}
           />
-          
+
           {/* Hero section decorative gears */}
-          <div className="absolute top-20 left-5 opacity-30 hidden md:block">
-            <StaticGear size={70} color="rgba(249, 115, 22, 0.6)" duration={28} />
+          <div className="absolute left-5 top-20 hidden opacity-30 md:block">
+            <StaticGear
+              size={70}
+              color="rgba(249, 115, 22, 0.6)"
+              duration={28}
+            />
           </div>
-          <div className="absolute bottom-20 right-8 opacity-35 hidden lg:block">
-            <StaticGear size={50} color="rgba(255, 255, 255, 0.5)" duration={22} direction="counterclockwise" />
+          <div className="absolute bottom-20 right-8 hidden opacity-35 lg:block">
+            <StaticGear
+              size={50}
+              color="rgba(255, 255, 255, 0.5)"
+              duration={22}
+              direction="counterclockwise"
+            />
           </div>
-          <div className="absolute top-1/3 right-1/4 opacity-25 hidden xl:block">
-            <StaticGear size={40} color="rgba(59, 130, 246, 0.4)" duration={35} />
+          <div className="absolute right-1/4 top-1/3 hidden opacity-25 xl:block">
+            <StaticGear
+              size={40}
+              color="rgba(59, 130, 246, 0.4)"
+              duration={35}
+            />
           </div>
-          
-          <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32 z-10">
+
+          <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
             <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
               <motion.div
                 className="text-center lg:text-left"
@@ -325,9 +337,9 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
 
         {/* Benefits Section */}
         <AnimatedSection>
-          <section className="bg-white py-16 sm:py-20 relative">
+          <section className="relative bg-white py-16 sm:py-20">
             {/* Benefits section floating gears */}
-            <SectionGears 
+            <SectionGears
               gearCount={9}
               colors={[
                 'rgba(249, 115, 22, 0.5)', // More visible orange
@@ -340,26 +352,31 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
               minOpacity={0.3}
               maxOpacity={0.6}
             />
-            
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+
+            <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <motion.div
-                className="mb-12 text-center sm:mb-16 relative"
+                className="relative mb-12 text-center sm:mb-16"
                 variants={fadeInUp}
                 initial="initial"
                 whileInView="animate"
                 viewport={{ once: true }}
               >
                 {/* Decorative gears around title */}
-                <div className="absolute -top-8 -left-8 opacity-40 hidden md:block">
-                  <StaticGear size={45} color="#f97316" duration={25} direction="counterclockwise" />
+                <div className="absolute -left-8 -top-8 hidden opacity-40 md:block">
+                  <StaticGear
+                    size={45}
+                    color="#f97316"
+                    duration={25}
+                    direction="counterclockwise"
+                  />
                 </div>
-                <div className="absolute -top-4 -right-12 opacity-45 hidden lg:block">
+                <div className="absolute -right-12 -top-4 hidden opacity-45 lg:block">
                   <StaticGear size={40} color="#3b82f6" duration={20} />
                 </div>
-                <div className="absolute -bottom-6 right-1/3 opacity-35 hidden lg:block">
+                <div className="absolute -bottom-6 right-1/3 hidden opacity-35 lg:block">
                   <StaticGear size={35} color="#9ca3af" duration={30} />
                 </div>
-                
+
                 <h2 className="mb-3 font-fredoka text-3xl font-bold text-gray-900 sm:mb-4 lg:text-4xl">
                   {t('home.benefits.title', currentLocale)}
                 </h2>
@@ -407,9 +424,9 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
 
         {/* Featured Categories Section */}
         <AnimatedSection>
-          <section className="bg-gradient-to-br from-gray-100 to-gray-200 py-16 sm:py-20 relative">
+          <section className="relative bg-gradient-to-br from-gray-100 to-gray-200 py-16 sm:py-20">
             {/* Categories section floating gears */}
-            <SectionGears 
+            <SectionGears
               gearCount={8}
               colors={[
                 'rgba(249, 115, 22, 0.6)', // More visible orange
@@ -422,8 +439,8 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
               minOpacity={0.4}
               maxOpacity={0.7}
             />
-            
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+
+            <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <motion.div
                 className="mb-12 text-center sm:mb-16"
                 variants={fadeInUp}
@@ -497,12 +514,11 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
           </section>
         </AnimatedSection>
 
-
         {/* Call to Action Section */}
         <AnimatedSection>
-          <section className="bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-600 py-16 text-white sm:py-24 relative overflow-hidden">
+          <section className="relative overflow-hidden bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-600 py-16 text-white sm:py-24">
             {/* CTA section floating gears */}
-            <SectionGears 
+            <SectionGears
               gearCount={7}
               colors={[
                 'rgba(255, 255, 255, 0.6)', // More visible white
@@ -514,22 +530,40 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
               minOpacity={0.3}
               maxOpacity={0.6}
             />
-            
+
             {/* Background decorative gears */}
-            <div className="absolute top-10 left-10 opacity-25">
-              <StaticGear size={100} color="rgba(255, 255, 255, 0.5)" duration={30} />
+            <div className="absolute left-10 top-10 opacity-25">
+              <StaticGear
+                size={100}
+                color="rgba(255, 255, 255, 0.5)"
+                duration={30}
+              />
             </div>
             <div className="absolute bottom-10 right-10 opacity-30">
-              <StaticGear size={80} color="rgba(255, 255, 255, 0.6)" duration={25} direction="counterclockwise" />
+              <StaticGear
+                size={80}
+                color="rgba(255, 255, 255, 0.6)"
+                duration={25}
+                direction="counterclockwise"
+              />
             </div>
-            <div className="absolute top-1/2 left-1/4 opacity-20 hidden lg:block">
-              <StaticGear size={60} color="rgba(255, 255, 255, 0.4)" duration={35} />
+            <div className="absolute left-1/4 top-1/2 hidden opacity-20 lg:block">
+              <StaticGear
+                size={60}
+                color="rgba(255, 255, 255, 0.4)"
+                duration={35}
+              />
             </div>
-            <div className="absolute top-1/4 right-1/3 opacity-18 hidden xl:block">
-              <StaticGear size={45} color="rgba(249, 115, 22, 0.4)" duration={40} direction="counterclockwise" />
+            <div className="opacity-18 absolute right-1/3 top-1/4 hidden xl:block">
+              <StaticGear
+                size={45}
+                color="rgba(249, 115, 22, 0.4)"
+                duration={40}
+                direction="counterclockwise"
+              />
             </div>
-            
-            <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8 relative z-10">
+
+            <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
               <motion.h2
                 className="mb-6 font-fredoka text-3xl font-bold sm:text-4xl lg:text-5xl"
                 variants={fadeInUp}
@@ -572,9 +606,9 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
         </AnimatedSection>
 
         {/* Latest Blog Posts Section */}
-        <AnimatedSection className="py-16 bg-white">
+        <AnimatedSection className="bg-white py-16">
           <section className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
+            <div className="mb-12 text-center">
               <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
                 {t('blog.latest', currentLocale)}
               </h2>
@@ -582,13 +616,13 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
                 Новости и полезная информация о образовательных технологиях
               </p>
             </div>
-            
+
             <BlogSection locale={currentLocale} />
-            
-            <div className="text-center mt-8">
+
+            <div className="mt-8 text-center">
               <Link
                 href={`/${currentLocale}/blog`}
-                className="inline-flex items-center px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors font-medium"
+                className="inline-flex items-center rounded-lg bg-primary-500 px-6 py-3 font-medium text-white transition-colors hover:bg-primary-600"
               >
                 {t('blog.allPosts', currentLocale)}
                 <ChevronRight className="ml-2 h-5 w-5" />
@@ -603,9 +637,9 @@ export default function HomePage({ params: { locale } }: HomePageProps) {
         </AnimatedSection>
 
         {/* Bonus Lookup Section */}
-        <AnimatedSection className="py-16 bg-gray-50">
+        <AnimatedSection className="bg-gray-50 py-16">
           <section className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
+            <div className="mb-12 text-center">
               <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
                 Система бонусов
               </h2>

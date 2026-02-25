@@ -7,11 +7,9 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     await getDatabase();
-    
+
     // Fetch all bonus records sorted by creation date (newest first)
-    const bonuses = await Bonus.find({})
-      .sort({ createdAt: -1 })
-      .lean();
+    const bonuses = await Bonus.find({}).sort({ createdAt: -1 }).lean();
 
     return NextResponse.json(bonuses);
   } catch (error) {

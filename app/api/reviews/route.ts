@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Review from '@/models/Review';
+
+import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,7 +22,7 @@ export async function GET(request: NextRequest) {
         .skip(skip)
         .limit(limit)
         .lean(),
-      Review.countDocuments({ status: 'approved' })
+      Review.countDocuments({ status: 'approved' }),
     ]);
 
     return NextResponse.json({
@@ -31,8 +32,8 @@ export async function GET(request: NextRequest) {
         limit,
         total,
         totalPages: Math.ceil(total / limit),
-        hasMore: skip + reviews.length < total
-      }
+        hasMore: skip + reviews.length < total,
+      },
     });
   } catch (error) {
     console.error('Error fetching reviews:', error);
@@ -82,13 +83,16 @@ export async function POST(request: NextRequest) {
     const review = await Review.create({
       name: name.trim(),
       content: content.trim(),
-      status: 'pending'
+      status: 'pending',
     });
 
-    return NextResponse.json({
-      message: 'Отзыв успешно отправлен и ожидает модерации',
-      reviewId: review._id
-    }, { status: 201 });
+    return NextResponse.json(
+      {
+        message: 'Отзыв успешно отправлен и ожидает модерации',
+        reviewId: review._id,
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.error('Error creating review:', error);
     return NextResponse.json(

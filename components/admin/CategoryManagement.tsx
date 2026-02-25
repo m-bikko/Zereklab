@@ -228,7 +228,10 @@ export default function CategoryManagement({
     }
   };
 
-  const handleDelete = async (categoryId: string, categoryName: string | MultilingualText) => {
+  const handleDelete = async (
+    categoryId: string,
+    categoryName: string | MultilingualText
+  ) => {
     const displayName =
       typeof categoryName === 'string'
         ? categoryName
@@ -300,7 +303,8 @@ export default function CategoryManagement({
                 const categoryDescription =
                   typeof category.description === 'string'
                     ? category.description
-                    : (category.description as unknown as MultilingualText)?.ru || '';
+                    : (category.description as unknown as MultilingualText)
+                        ?.ru || '';
 
                 return (
                   <div key={category._id} className="rounded-lg border">
@@ -357,7 +361,8 @@ export default function CategoryManagement({
                             const subName =
                               typeof subcategory === 'string'
                                 ? subcategory
-                                : (subcategory as MultilingualText)?.ru || 'Без названия';
+                                : (subcategory as MultilingualText)?.ru ||
+                                  'Без названия';
                             return (
                               <div
                                 key={index}

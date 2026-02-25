@@ -64,7 +64,7 @@ export default function ProductDetailsModal({
 
   const handleAddToCart = () => {
     if (!product || !product._id) return;
-    
+
     const cartItem = {
       id: product._id,
       name: product.name,
@@ -81,7 +81,7 @@ export default function ProductDetailsModal({
 
   const handleWhatsAppOrder = () => {
     if (!product || !product._id) return;
-    
+
     // Create a cart item for single product order
     const singleProductItem = {
       id: product._id,
@@ -147,16 +147,16 @@ export default function ProductDetailsModal({
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           className="relative mx-2 w-full max-w-4xl"
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           {/* Modal Content */}
           <div className="relative flex h-[90vh] max-h-[600px] overflow-hidden rounded-xl bg-white shadow-2xl">
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute right-2 top-2 z-20 rounded-full bg-white/80 p-1.5 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:scale-110"
+              className="absolute right-2 top-2 z-20 rounded-full bg-white/80 p-1.5 shadow-lg backdrop-blur-sm transition-all hover:scale-110 hover:bg-white"
             >
               <X className="h-4 w-4 text-gray-700" />
             </button>
@@ -189,13 +189,13 @@ export default function ProductDetailsModal({
                     <>
                       <button
                         onClick={prevImage}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 shadow-md backdrop-blur-sm transition-all hover:bg-white hover:scale-110"
+                        className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 shadow-md backdrop-blur-sm transition-all hover:scale-110 hover:bg-white"
                       >
                         <ArrowLeft className="h-3 w-3 text-gray-700" />
                       </button>
                       <button
                         onClick={nextImage}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 shadow-md backdrop-blur-sm transition-all hover:bg-white hover:scale-110"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 shadow-md backdrop-blur-sm transition-all hover:scale-110 hover:bg-white"
                       >
                         <ArrowRight className="h-3 w-3 text-gray-700" />
                       </button>
@@ -206,7 +206,7 @@ export default function ProductDetailsModal({
                   {currentImage && (
                     <button
                       onClick={() => setIsImageModalOpen(true)}
-                      className="absolute bottom-2 right-2 rounded-full bg-black/50 p-1.5 text-white transition-all hover:bg-black/70 hover:scale-110"
+                      className="absolute bottom-2 right-2 rounded-full bg-black/50 p-1.5 text-white transition-all hover:scale-110 hover:bg-black/70"
                     >
                       <ExternalLink className="h-3 w-3" />
                     </button>
@@ -216,7 +216,13 @@ export default function ProductDetailsModal({
                   {product.salePrice && (
                     <div className="absolute left-2 top-2">
                       <span className="rounded-full bg-red-500 px-2 py-1 text-xs font-bold text-white shadow-md">
-                        -{Math.round(((product.price - product.salePrice) / product.price) * 100)}%
+                        -
+                        {Math.round(
+                          ((product.price - product.salePrice) /
+                            product.price) *
+                            100
+                        )}
+                        %
                       </span>
                     </div>
                   )}
@@ -231,7 +237,7 @@ export default function ProductDetailsModal({
                         onClick={() => setSelectedImageIndex(index)}
                         className={`relative h-10 w-10 flex-shrink-0 overflow-hidden rounded border-2 transition-all ${
                           index === selectedImageIndex
-                            ? 'border-primary-500 scale-110'
+                            ? 'scale-110 border-primary-500'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
@@ -242,7 +248,8 @@ export default function ProductDetailsModal({
                           className="object-cover"
                           sizes="40px"
                           onError={e => {
-                            (e.target as HTMLImageElement).src = '/images/placeholder-product.svg';
+                            (e.target as HTMLImageElement).src =
+                              '/images/placeholder-product.svg';
                           }}
                         />
                       </button>
@@ -364,21 +371,31 @@ export default function ProductDetailsModal({
                   )}
 
                   {/* Specifications */}
-                  {product.specifications && Object.keys(product.specifications).length > 0 && (
-                    <div>
-                      <h3 className="mb-2 text-sm font-semibold text-gray-900">
-                        {t('products.specifications', locale)}
-                      </h3>
-                      <div className="space-y-1">
-                        {Object.entries(product.specifications).map(([key, value]) => (
-                          <div key={key} className="flex justify-between border-b border-gray-100 pb-1">
-                            <span className="text-sm text-gray-600">{key}:</span>
-                            <span className="text-sm font-medium text-gray-900">{value}</span>
-                          </div>
-                        ))}
+                  {product.specifications &&
+                    Object.keys(product.specifications).length > 0 && (
+                      <div>
+                        <h3 className="mb-2 text-sm font-semibold text-gray-900">
+                          {t('products.specifications', locale)}
+                        </h3>
+                        <div className="space-y-1">
+                          {Object.entries(product.specifications).map(
+                            ([key, value]) => (
+                              <div
+                                key={key}
+                                className="flex justify-between border-b border-gray-100 pb-1"
+                              >
+                                <span className="text-sm text-gray-600">
+                                  {key}:
+                                </span>
+                                <span className="text-sm font-medium text-gray-900">
+                                  {value}
+                                </span>
+                              </div>
+                            )
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
                   {/* Tags */}
                   {product.tags && product.tags.length > 0 && (
@@ -400,16 +417,18 @@ export default function ProductDetailsModal({
                   )}
 
                   {/* Video Embed */}
-                  {showVideo && product.videoUrl && getYouTubeEmbedUrl(product.videoUrl) && (
-                    <div className="aspect-video overflow-hidden rounded-lg">
-                      <iframe
-                        src={getYouTubeEmbedUrl(product.videoUrl) || ''}
-                        title="Product Video"
-                        className="h-full w-full"
-                        allowFullScreen
-                      />
-                    </div>
-                  )}
+                  {showVideo &&
+                    product.videoUrl &&
+                    getYouTubeEmbedUrl(product.videoUrl) && (
+                      <div className="aspect-video overflow-hidden rounded-lg">
+                        <iframe
+                          src={getYouTubeEmbedUrl(product.videoUrl) || ''}
+                          title="Product Video"
+                          className="h-full w-full"
+                          allowFullScreen
+                        />
+                      </div>
+                    )}
                 </div>
               </div>
 

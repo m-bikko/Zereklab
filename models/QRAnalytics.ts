@@ -44,6 +44,8 @@ const QRAnalyticsSchema = new Schema<IQRAnalytics>(
 // Compound index for efficient queries
 QRAnalyticsSchema.index({ qrCode: 1, timestamp: -1 });
 
-const QRAnalytics = mongoose.models.QRAnalytics || mongoose.model<IQRAnalytics>('QRAnalytics', QRAnalyticsSchema);
+const QRAnalytics =
+  mongoose.models.QRAnalytics ||
+  mongoose.model<IQRAnalytics>('QRAnalytics', QRAnalyticsSchema);
 
 export default QRAnalytics;

@@ -9,7 +9,7 @@ async function processBonuses() {
     console.log('Starting bonus processing...');
 
     const now = new Date();
-    
+
     // Find all pending bonuses that should be processed
     const readyBonuses = await PendingBonus.find({
       availableDate: { $lte: now },
@@ -27,8 +27,10 @@ async function processBonuses() {
     for (const pendingBonus of readyBonuses) {
       try {
         // Find or create bonus record for customer
-        let customerBonus = await Bonus.findOne({ phoneNumber: pendingBonus.phoneNumber });
-        
+        let customerBonus = await Bonus.findOne({
+          phoneNumber: pendingBonus.phoneNumber,
+        });
+
         if (!customerBonus) {
           customerBonus = new Bonus({
             phoneNumber: pendingBonus.phoneNumber,
@@ -38,22 +40,21 @@ async function processBonuses() {
           });
         } else {
           customerBonus.totalBonuses += pendingBonus.bonusAmount;
-          customerBonus.availableBonuses = customerBonus.totalBonuses - customerBonus.usedBonuses;
+          customerBonus.availableBonuses =
+            customerBonus.totalBonuses - customerBonus.usedBonuses;
         }
 
         await customerBonus.save();
 
         // Update sale status
-        await Sale.findByIdAndUpdate(
-          pendingBonus.saleId,
-          { bonusStatus: 'credited' }
-        );
+        await Sale.findByIdAndUpdate(pendingBonus.saleId, {
+          bonusStatus: 'credited',
+        });
 
         // Mark pending bonus as processed
-        await PendingBonus.findByIdAndUpdate(
-          pendingBonus._id,
-          { isProcessed: true }
-        );
+        await PendingBonus.findByIdAndUpdate(pendingBonus._id, {
+          isProcessed: true,
+        });
 
         processedBonuses.push({
           phoneNumber: pendingBonus.phoneNumber,
@@ -61,17 +62,20 @@ async function processBonuses() {
           saleId: pendingBonus.saleId,
         });
 
-        console.log(`Processed bonus for ${pendingBonus.phoneNumber}: ${pendingBonus.bonusAmount} bonuses`);
-
+        console.log(
+          `Processed bonus for ${pendingBonus.phoneNumber}: ${pendingBonus.bonusAmount} bonuses`
+        );
       } catch (error) {
-        console.error(`Failed to process bonus for ${pendingBonus.phoneNumber}:`, error);
+        console.error(
+          `Failed to process bonus for ${pendingBonus.phoneNumber}:`,
+          error
+        );
         continue;
       }
     }
 
     console.log(`Successfully processed ${processedBonuses.length} bonuses`);
     console.log('Bonus processing completed');
-
   } catch (error) {
     console.error('Failed to process bonuses:', error);
     process.exit(1);
@@ -85,7 +89,7 @@ if (require.main === module) {
       console.log('Script completed successfully');
       process.exit(0);
     })
-    .catch((error) => {
+    .catch(error => {
       console.error('Script failed:', error);
       process.exit(1);
     });

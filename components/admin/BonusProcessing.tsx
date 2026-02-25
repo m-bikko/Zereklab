@@ -1,9 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { formatBonus, formatNumber } from '@/lib/formatNumber';
+
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Clock, CheckCircle, RefreshCw, Play, Calendar, User, Users } from 'lucide-react';
-import { formatNumber, formatBonus } from '@/lib/formatNumber';
+
+import {
+  Calendar,
+  CheckCircle,
+  Clock,
+  Play,
+  RefreshCw,
+  User,
+  Users,
+} from 'lucide-react';
 
 interface BonusStats {
   totalPending: number;
@@ -29,7 +39,9 @@ interface PendingCustomer {
 
 export default function BonusProcessing() {
   const [stats, setStats] = useState<BonusStats | null>(null);
-  const [pendingCustomers, setPendingCustomers] = useState<PendingCustomer[]>([]);
+  const [pendingCustomers, setPendingCustomers] = useState<PendingCustomer[]>(
+    []
+  );
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [showCustomers, setShowCustomers] = useState(false);
@@ -59,7 +71,7 @@ export default function BonusProcessing() {
       const response = await fetch('/api/process-bonuses', {
         method: 'POST',
       });
-      
+
       if (response.ok) {
         const result = await response.json();
         toast.success(`Обработано ${result.processedCount} бонусов`);
@@ -113,9 +125,15 @@ export default function BonusProcessing() {
                 <Clock className="h-6 w-6 text-white" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-yellow-800">Готовы к начислению</p>
-                <p className="text-2xl font-bold text-yellow-900">{stats.readyForProcessing}</p>
-                <p className="text-sm text-yellow-700">{formatBonus(stats.readyAmount)}</p>
+                <p className="text-sm font-medium text-yellow-800">
+                  Готовы к начислению
+                </p>
+                <p className="text-2xl font-bold text-yellow-900">
+                  {stats.readyForProcessing}
+                </p>
+                <p className="text-sm text-yellow-700">
+                  {formatBonus(stats.readyAmount)}
+                </p>
               </div>
             </div>
           </div>
@@ -128,8 +146,12 @@ export default function BonusProcessing() {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-orange-800">Ожидают</p>
-                <p className="text-2xl font-bold text-orange-900">{stats.totalPending}</p>
-                <p className="text-sm text-orange-700">{formatBonus(stats.totalPendingAmount)}</p>
+                <p className="text-2xl font-bold text-orange-900">
+                  {stats.totalPending}
+                </p>
+                <p className="text-sm text-orange-700">
+                  {formatBonus(stats.totalPendingAmount)}
+                </p>
               </div>
             </div>
           </div>
@@ -142,7 +164,9 @@ export default function BonusProcessing() {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-green-800">Обработано</p>
-                <p className="text-2xl font-bold text-green-900">{stats.totalProcessed}</p>
+                <p className="text-2xl font-bold text-green-900">
+                  {stats.totalProcessed}
+                </p>
                 <p className="text-sm text-green-700">всего начислений</p>
               </div>
             </div>
@@ -155,9 +179,12 @@ export default function BonusProcessing() {
         <div className="rounded-lg border border-gray-200 bg-white p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h4 className="font-medium text-gray-900">Обработать готовые бонусы</h4>
+              <h4 className="font-medium text-gray-900">
+                Обработать готовые бонусы
+              </h4>
               <p className="text-sm text-gray-600">
-                {stats.readyForProcessing} бонусных начислений готовы к обработке
+                {stats.readyForProcessing} бонусных начислений готовы к
+                обработке
               </p>
             </div>
             <button
@@ -187,7 +214,9 @@ export default function BonusProcessing() {
           <div className="flex items-center justify-between border-b border-gray-200 p-6">
             <div className="flex items-center space-x-3">
               <Users className="h-6 w-6 text-gray-600" />
-              <h4 className="font-medium text-gray-900">Люди в ожидании бонусов</h4>
+              <h4 className="font-medium text-gray-900">
+                Люди в ожидании бонусов
+              </h4>
               <span className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600">
                 {pendingCustomers.length} клиентов
               </span>
@@ -202,10 +231,12 @@ export default function BonusProcessing() {
 
           {showCustomers && (
             <div className="divide-y divide-gray-200">
-              {pendingCustomers.map((customer) => {
+              {pendingCustomers.map(customer => {
                 const readyBonuses = customer.bonuses.filter(b => b.isReady);
-                const upcomingBonuses = customer.bonuses.filter(b => !b.isReady);
-                
+                const upcomingBonuses = customer.bonuses.filter(
+                  b => !b.isReady
+                );
+
                 return (
                   <div key={customer._id} className="p-6">
                     <div className="flex items-start justify-between">
@@ -218,23 +249,34 @@ export default function BonusProcessing() {
                             <h5 className="font-medium text-gray-900">
                               {customer.fullName || 'Имя не указано'}
                             </h5>
-                            <p className="text-sm text-gray-600">{customer.phoneNumber}</p>
+                            <p className="text-sm text-gray-600">
+                              {customer.phoneNumber}
+                            </p>
                           </div>
                         </div>
-                        
+
                         <div className="mt-4 grid grid-cols-3 gap-4 text-sm">
                           <div>
                             <p className="text-gray-500">Всего покупок</p>
-                            <p className="font-medium text-gray-900">{customer.totalPurchases}</p>
+                            <p className="font-medium text-gray-900">
+                              {customer.totalPurchases}
+                            </p>
                           </div>
                           <div>
                             <p className="text-gray-500">Всего бонусов</p>
-                            <p className="font-medium text-gray-900">{formatNumber(customer.totalBonuses)}</p>
+                            <p className="font-medium text-gray-900">
+                              {formatNumber(customer.totalBonuses)}
+                            </p>
                           </div>
                           <div>
                             <p className="text-gray-500">Готовы к начислению</p>
                             <p className="font-medium text-green-600">
-                              {formatNumber(readyBonuses.reduce((sum, b) => sum + b.bonusAmount, 0))}
+                              {formatNumber(
+                                readyBonuses.reduce(
+                                  (sum, b) => sum + b.bonusAmount,
+                                  0
+                                )
+                              )}
                             </p>
                           </div>
                         </div>
@@ -242,7 +284,10 @@ export default function BonusProcessing() {
                         {/* Bonus Details */}
                         <div className="mt-4 space-y-2">
                           {readyBonuses.map((bonus, index) => (
-                            <div key={index} className="flex items-center justify-between rounded-lg bg-green-50 p-3">
+                            <div
+                              key={index}
+                              className="flex items-center justify-between rounded-lg bg-green-50 p-3"
+                            >
                               <div className="flex items-center space-x-3">
                                 <div className="h-2 w-2 rounded-full bg-green-500" />
                                 <span className="text-sm font-medium text-green-800">
@@ -253,13 +298,18 @@ export default function BonusProcessing() {
                                 </span>
                               </div>
                               <span className="text-xs text-green-600">
-                                {new Date(bonus.availableDate).toLocaleDateString('ru-RU')}
+                                {new Date(
+                                  bonus.availableDate
+                                ).toLocaleDateString('ru-RU')}
                               </span>
                             </div>
                           ))}
-                          
+
                           {upcomingBonuses.map((bonus, index) => (
-                            <div key={index} className="flex items-center justify-between rounded-lg bg-orange-50 p-3">
+                            <div
+                              key={index}
+                              className="flex items-center justify-between rounded-lg bg-orange-50 p-3"
+                            >
                               <div className="flex items-center space-x-3">
                                 <div className="h-2 w-2 rounded-full bg-orange-500" />
                                 <span className="text-sm font-medium text-orange-800">
@@ -270,7 +320,9 @@ export default function BonusProcessing() {
                                 </span>
                               </div>
                               <span className="text-xs text-orange-600">
-                                {new Date(bonus.availableDate).toLocaleDateString('ru-RU')}
+                                {new Date(
+                                  bonus.availableDate
+                                ).toLocaleDateString('ru-RU')}
                               </span>
                             </div>
                           ))}
@@ -287,7 +339,9 @@ export default function BonusProcessing() {
 
       {/* Instructions */}
       <div className="rounded-lg bg-blue-50 p-6">
-        <h4 className="mb-3 font-medium text-blue-900">Как работает автоматическое начисление</h4>
+        <h4 className="mb-3 font-medium text-blue-900">
+          Как работает автоматическое начисление
+        </h4>
         <ul className="space-y-2 text-sm text-blue-800">
           <li className="flex items-start space-x-2">
             <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-blue-500" />
@@ -295,15 +349,25 @@ export default function BonusProcessing() {
           </li>
           <li className="flex items-start space-x-2">
             <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-blue-500" />
-            <span>Система автоматически проверяет готовые к начислению бонусы</span>
+            <span>
+              Система автоматически проверяет готовые к начислению бонусы
+            </span>
           </li>
           <li className="flex items-start space-x-2">
             <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-blue-500" />
-            <span>Можно обрабатывать бонусы вручную или настроить автоматический процесс</span>
+            <span>
+              Можно обрабатывать бонусы вручную или настроить автоматический
+              процесс
+            </span>
           </li>
           <li className="flex items-start space-x-2">
             <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-blue-500" />
-            <span>Для автоматизации используйте cron job: <code className="rounded bg-blue-100 px-2 py-1 text-xs">node scripts/process-bonuses.js</code></span>
+            <span>
+              Для автоматизации используйте cron job:{' '}
+              <code className="rounded bg-blue-100 px-2 py-1 text-xs">
+                node scripts/process-bonuses.js
+              </code>
+            </span>
           </li>
         </ul>
       </div>

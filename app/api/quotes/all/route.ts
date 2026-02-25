@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET() {
   try {
     await getDatabase();
-    
+
     const quotes = await Quote.find().sort({ createdAt: -1 });
 
     return NextResponse.json({
@@ -28,7 +28,7 @@ export async function GET() {
 export async function PUT(request: NextRequest) {
   try {
     await getDatabase();
-    
+
     const body = await request.json();
     const { id, text, author, isActive } = body;
 

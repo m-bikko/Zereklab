@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Review from '@/models/Review';
+
+import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,7 +28,7 @@ export async function GET(request: NextRequest) {
         .limit(limit)
         .lean(),
       Review.countDocuments(filter),
-      Review.countDocuments({ status: 'pending' })
+      Review.countDocuments({ status: 'pending' }),
     ]);
 
     return NextResponse.json({
@@ -38,8 +39,8 @@ export async function GET(request: NextRequest) {
         limit,
         total,
         totalPages: Math.ceil(total / limit),
-        hasMore: skip + reviews.length < total
-      }
+        hasMore: skip + reviews.length < total,
+      },
     });
   } catch (error) {
     console.error('Error fetching reviews for admin:', error);

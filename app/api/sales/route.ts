@@ -1,9 +1,9 @@
 import { getDatabase } from '@/lib/mongodb';
+import { extractPhoneDigits } from '@/lib/phoneUtils';
 import Bonus from '@/models/Bonus';
+import PendingBonus from '@/models/PendingBonus';
 import Product from '@/models/Product';
 import Sale from '@/models/Sale';
-import PendingBonus from '@/models/PendingBonus';
-import { extractPhoneDigits } from '@/lib/phoneUtils';
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -108,7 +108,7 @@ export async function GET(request: NextRequest) {
     await getDatabase();
 
     const skip = (page - 1) * limit;
-    
+
     // Build filter
     const filter: Record<string, unknown> = {};
     let salesList;
@@ -116,15 +116,15 @@ export async function GET(request: NextRequest) {
       // Search by phone digits to ignore formatting
       const searchDigits = extractPhoneDigits(phone.trim());
       const allSales = await Sale.find({}).lean();
-      const matchingSales = allSales.filter(sale => 
-        extractPhoneDigits(sale.customerPhone) === searchDigits
+      const matchingSales = allSales.filter(
+        sale => extractPhoneDigits(sale.customerPhone) === searchDigits
       );
-      
+
       // Apply pagination to filtered results
       const startIndex = skip;
       const endIndex = skip + limit;
       salesList = matchingSales.slice(startIndex, endIndex);
-      
+
       // Calculate total for pagination
       const total = matchingSales.length;
       const totalPages = Math.ceil(total / limit);
@@ -168,10 +168,13 @@ export async function GET(request: NextRequest) {
       stack: error instanceof Error ? error.stack : undefined,
       phone,
       page,
-      limit
+      limit,
     });
     return NextResponse.json(
-      { error: 'Failed to fetch sales', details: error instanceof Error ? error.message : 'Unknown error' },
+      {
+        error: 'Failed to fetch sales',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
@@ -181,12 +184,17 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     await getDatabase();
-    
+
     const body = await request.json();
     const { customerPhone, customerFullName, items } = body;
 
     // Validate input
-    if (!customerPhone || !items || !Array.isArray(items) || items.length === 0) {
+    if (
+      !customerPhone ||
+      !items ||
+      !Array.isArray(items) ||
+      items.length === 0
+    ) {
       return NextResponse.json(
         { error: 'Customer phone and items are required' },
         { status: 400 }
@@ -208,7 +216,7 @@ export async function POST(request: NextRequest) {
 
     for (const item of items) {
       const { productId, quantity } = item;
-      
+
       if (!productId || !quantity || quantity <= 0) {
         return NextResponse.json(
           { error: 'Each item must have productId and positive quantity' },
@@ -226,8 +234,12 @@ export async function POST(request: NextRequest) {
       }
 
       // Check stock
-      if (!product.inStock || (product.stockQuantity && product.stockQuantity < quantity)) {
-        const productName = typeof product.name === 'string' ? product.name : product.name.ru;
+      if (
+        !product.inStock ||
+        (product.stockQuantity && product.stockQuantity < quantity)
+      ) {
+        const productName =
+          typeof product.name === 'string' ? product.name : product.name.ru;
         return NextResponse.json(
           { error: `Insufficient stock for product ${productName}` },
           { status: 400 }
@@ -241,7 +253,8 @@ export async function POST(request: NextRequest) {
 
       processedItems.push({
         productId: String(product._id),
-        productName: typeof product.name === 'string' ? product.name : product.name.ru,
+        productName:
+          typeof product.name === 'string' ? product.name : product.name.ru,
         price: product.price,
         salePrice: product.salePrice,
         quantity,
@@ -289,36 +302,39 @@ export async function POST(request: NextRequest) {
     // Get current bonus status
     const currentBonus = await Bonus.findOne({ phoneNumber: customerPhone });
 
-    return NextResponse.json({
-      sale: {
-        _id: sale._id,
-        customerPhone: sale.customerPhone,
-        items: sale.items,
-        totalAmount: sale.totalAmount,
-        bonusesEarned: sale.bonusesEarned,
-        bonusStatus: sale.bonusStatus,
-        bonusAvailableDate: sale.bonusAvailableDate,
-        saleDate: sale.saleDate,
+    return NextResponse.json(
+      {
+        sale: {
+          _id: sale._id,
+          customerPhone: sale.customerPhone,
+          items: sale.items,
+          totalAmount: sale.totalAmount,
+          bonusesEarned: sale.bonusesEarned,
+          bonusStatus: sale.bonusStatus,
+          bonusAvailableDate: sale.bonusAvailableDate,
+          saleDate: sale.saleDate,
+        },
+        customerBonuses: {
+          availableBonuses: currentBonus?.availableBonuses || 0,
+          totalBonuses: currentBonus?.totalBonuses || 0,
+        },
+        pendingBonuses: {
+          amount: bonusesEarned,
+          availableDate: sale.bonusAvailableDate,
+        },
       },
-      customerBonuses: {
-        availableBonuses: currentBonus?.availableBonuses || 0,
-        totalBonuses: currentBonus?.totalBonuses || 0,
-      },
-      pendingBonuses: {
-        amount: bonusesEarned,
-        availableDate: sale.bonusAvailableDate,
-      },
-    }, { status: 201 });
+      { status: 201 }
+    );
   } catch (error) {
     console.error('Failed to create sale:', error);
     console.error('Error details:', {
       message: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
+      stack: error instanceof Error ? error.stack : undefined,
     });
     return NextResponse.json(
-      { 
+      {
         error: 'Failed to create sale',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        details: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
     );

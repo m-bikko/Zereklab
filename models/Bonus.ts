@@ -51,12 +51,13 @@ const BonusSchema = new Schema<IBonus>(
 );
 
 // Update availableBonuses before saving
-BonusSchema.pre('save', function(next) {
+BonusSchema.pre('save', function (next) {
   this.availableBonuses = this.totalBonuses - this.usedBonuses;
   this.lastUpdated = new Date();
   next();
 });
 
-const Bonus = mongoose.models.Bonus || mongoose.model<IBonus>('Bonus', BonusSchema);
+const Bonus =
+  mongoose.models.Bonus || mongoose.model<IBonus>('Bonus', BonusSchema);
 
 export default Bonus;

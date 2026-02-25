@@ -40,10 +40,10 @@ export default function CartModal() {
     try {
       // Open WhatsApp with formatted order message
       openWhatsAppOrder(items, locale);
-      
+
       // Optionally clear cart after successful order
       // clearCart();
-      
+
       // Close cart modal
       closeCart();
     } catch (error) {

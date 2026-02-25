@@ -3,9 +3,9 @@
 import ImageModal from '@/components/ImageModal';
 import { useLocale } from '@/hooks/useLocale';
 import { formatAgeForDisplay } from '@/lib/ageUtils';
+import { formatPrice } from '@/lib/formatNumber';
 import { t } from '@/lib/i18n';
 import { openWhatsAppOrder } from '@/lib/whatsapp';
-import { formatPrice } from '@/lib/formatNumber';
 import {
   extractYouTubeVideoId,
   getYouTubeEmbedUrl,

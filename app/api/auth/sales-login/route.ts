@@ -66,7 +66,7 @@ import bcrypt from 'bcryptjs';
 export async function POST(request: NextRequest) {
   try {
     await getDatabase();
-    
+
     const body = await request.json();
     const { username, password } = body;
 
@@ -78,9 +78,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Find sales staff member
-    const staff = await SalesStaff.findOne({ 
+    const staff = await SalesStaff.findOne({
       username: username.toLowerCase(),
-      isActive: true 
+      isActive: true,
     });
 
     if (!staff) {
@@ -109,9 +109,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Sales login error:', error);
-    return NextResponse.json(
-      { error: 'Login failed' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Login failed' }, { status: 500 });
   }
 }

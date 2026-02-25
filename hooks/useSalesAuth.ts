@@ -26,12 +26,16 @@ export const useSalesAuth = () => {
       try {
         // Ensure we're in the browser
         if (typeof window === 'undefined') {
-          setAuthState({ isAuthenticated: false, isLoading: false, user: null });
+          setAuthState({
+            isAuthenticated: false,
+            isLoading: false,
+            user: null,
+          });
           return;
         }
 
         const authData = localStorage.getItem(SALES_AUTH_KEY);
-        
+
         if (authData) {
           const { timestamp, isAuthenticated, user } = JSON.parse(authData);
           const now = Date.now();
@@ -80,15 +84,15 @@ export const useSalesAuth = () => {
             fullName: userData.fullName,
           },
         };
-        
+
         if (typeof window !== 'undefined') {
           localStorage.setItem(SALES_AUTH_KEY, JSON.stringify(authData));
         }
-        
-        setAuthState({ 
-          isAuthenticated: true, 
-          isLoading: false, 
-          user: authData.user 
+
+        setAuthState({
+          isAuthenticated: true,
+          isLoading: false,
+          user: authData.user,
         });
         return true;
       }

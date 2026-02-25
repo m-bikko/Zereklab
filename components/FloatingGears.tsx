@@ -1,7 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+
+import { motion } from 'framer-motion';
 
 interface GearProps {
   size: number;
@@ -13,13 +14,13 @@ interface GearProps {
   opacity: number;
 }
 
-const GearSVG = ({ 
-  size, 
-  color, 
-  className = '' 
-}: { 
-  size: number; 
-  color: string; 
+const GearSVG = ({
+  size,
+  color,
+  className = '',
+}: {
+  size: number;
+  color: string;
   className?: string;
 }) => (
   <svg
@@ -30,33 +31,33 @@ const GearSVG = ({
     className={className}
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5a3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97c0-.33-.03-.66-.07-1l1.86-1.41c.2-.15.25-.42.13-.64l-1.74-3.18c-.12-.22-.39-.31-.61-.22L17.5 5.5c-.58-.45-1.27-.81-2-1.03L15.22.98c-.03-.24-.24-.4-.5-.4h-3.44c-.26 0-.47.16-.5.4L10.5 4.47c-.73.22-1.42.58-2 1.03L6.93 4.04c-.22-.09-.49 0-.61.22L4.58 7.44c-.12.22-.07.49.13.64L6.57 9.5c-.04.34-.07.67-.07 1c0 .33.03.65.07.97L4.71 12.88c-.2.15-.25.42-.13.64l1.74 3.18c.12.22.39.31.61.22l1.57-.66c.58.45 1.27.81 2 1.03l.28 3.49c.03.24.24.4.5.4h3.44c.26 0 .47-.16.5-.4l.28-3.49c.73-.22 1.42-.58 2-1.03l1.57.66c.22.09.49 0 .61-.22l1.74-3.18c.12-.22.07-.49-.13-.64L17.43 13z"/>
+    <path d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5a3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97c0-.33-.03-.66-.07-1l1.86-1.41c.2-.15.25-.42.13-.64l-1.74-3.18c-.12-.22-.39-.31-.61-.22L17.5 5.5c-.58-.45-1.27-.81-2-1.03L15.22.98c-.03-.24-.24-.4-.5-.4h-3.44c-.26 0-.47.16-.5.4L10.5 4.47c-.73.22-1.42.58-2 1.03L6.93 4.04c-.22-.09-.49 0-.61.22L4.58 7.44c-.12.22-.07.49.13.64L6.57 9.5c-.04.34-.07.67-.07 1c0 .33.03.65.07.97L4.71 12.88c-.2.15-.25.42-.13.64l1.74 3.18c.12.22.39.31.61.22l1.57-.66c.58.45 1.27.81 2 1.03l.28 3.49c.03.24.24.4.5.4h3.44c.26 0 .47-.16.5-.4l.28-3.49c.73-.22 1.42-.58 2-1.03l1.57.66c.22.09.49 0 .61-.22l1.74-3.18c.12-.22.07-.49-.13-.64L17.43 13z" />
   </svg>
 );
 
-const FloatingGear = ({ 
-  size, 
-  color, 
-  rotation, 
-  duration, 
-  x, 
-  y, 
-  opacity 
+const FloatingGear = ({
+  size,
+  color,
+  rotation,
+  duration,
+  x,
+  y,
+  opacity,
 }: GearProps) => {
   return (
     <motion.div
-      className="absolute pointer-events-none"
+      className="pointer-events-none absolute"
       style={{
         left: `${x}%`,
         top: `${y}%`,
         opacity,
       }}
-      initial={{ 
+      initial={{
         rotate: rotation,
         scale: 0,
-        opacity: 0 
+        opacity: 0,
       }}
-      animate={{ 
+      animate={{
         rotate: rotation + 360,
         scale: 1,
         opacity,
@@ -76,7 +77,7 @@ const FloatingGear = ({
           duration: 0.8,
           ease: 'easeOut',
           delay: Math.random() * 2,
-        }
+        },
       }}
     >
       <motion.div
@@ -103,9 +104,9 @@ interface FloatingGearsProps {
   className?: string;
 }
 
-export default function FloatingGears({ 
+export default function FloatingGears({
   gearCount = 6,
-  containerHeight = "100%",
+  containerHeight = '100%',
   colors = [
     '#f97316', // Primary orange
     '#fb923c', // Primary orange 400
@@ -116,7 +117,7 @@ export default function FloatingGears({
     'rgba(249, 115, 22, 0.6)', // Semi-transparent orange
     'rgba(59, 130, 246, 0.6)', // Semi-transparent blue
   ],
-  className = ""
+  className = '',
 }: FloatingGearsProps) {
   const [gears, setGears] = useState<GearProps[]>([]);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -136,7 +137,10 @@ export default function FloatingGears({
     if (containerWidth === 0) return;
 
     const newGears: GearProps[] = [];
-    const adjustedGearCount = Math.min(gearCount, Math.floor(containerWidth / 200)); // Responsive gear count
+    const adjustedGearCount = Math.min(
+      gearCount,
+      Math.floor(containerWidth / 200)
+    ); // Responsive gear count
 
     for (let i = 0; i < adjustedGearCount; i++) {
       newGears.push({
@@ -154,8 +158,8 @@ export default function FloatingGears({
   }, [containerWidth, gearCount, colors]);
 
   return (
-    <div 
-      className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
+    <div
+      className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}
       style={{ height: containerHeight }}
     >
       {gears.map((gear, index) => (
@@ -171,7 +175,7 @@ export const StaticGear = ({
   color = '#f97316',
   duration = 15,
   className = '',
-  direction = 'clockwise'
+  direction = 'clockwise',
 }: {
   size?: number;
   color?: string;
@@ -182,8 +186,8 @@ export const StaticGear = ({
   return (
     <motion.div
       className={`inline-block ${className}`}
-      animate={{ 
-        rotate: direction === 'clockwise' ? 360 : -360 
+      animate={{
+        rotate: direction === 'clockwise' ? 360 : -360,
       }}
       transition={{
         duration,

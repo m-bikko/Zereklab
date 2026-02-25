@@ -1,7 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
+
+import { useRouter } from 'next/navigation';
 
 export default function QRRedirect() {
   const router = useRouter();

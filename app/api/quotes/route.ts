@@ -51,13 +51,13 @@ const DEFAULT_QUOTES = [
 export async function GET() {
   try {
     await getDatabase();
-    
+
     // Try to get quotes from database
     const quotes = await Quote.find({ isActive: true });
-    
+
     // If no quotes in database, use defaults
     const availableQuotes = quotes.length > 0 ? quotes : DEFAULT_QUOTES;
-    
+
     // Get random quote
     const randomIndex = Math.floor(Math.random() * availableQuotes.length);
     const randomQuote = availableQuotes[randomIndex];
@@ -69,10 +69,11 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error getting random quote:', error);
-    
+
     // Return a default quote if everything fails
-    const fallbackQuote = DEFAULT_QUOTES[Math.floor(Math.random() * DEFAULT_QUOTES.length)];
-    
+    const fallbackQuote =
+      DEFAULT_QUOTES[Math.floor(Math.random() * DEFAULT_QUOTES.length)];
+
     return NextResponse.json({
       success: true,
       data: fallbackQuote,
@@ -86,7 +87,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     await getDatabase();
-    
+
     const body = await request.json();
     const { text, author } = body;
 
@@ -123,7 +124,7 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     await getDatabase();
-    
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 

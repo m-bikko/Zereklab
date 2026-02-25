@@ -3,16 +3,16 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  EyeOff, 
-  User, 
-  UserCheck, 
+import {
+  Edit,
+  Eye,
+  EyeOff,
+  Plus,
+  RefreshCw,
+  Trash2,
+  User,
+  UserCheck,
   UserX,
-  RefreshCw
 } from 'lucide-react';
 
 interface SalesStaffMember {
@@ -30,10 +30,14 @@ interface SalesStaffManagementProps {
   onRefresh: () => void;
 }
 
-export default function SalesStaffManagement({ loading }: SalesStaffManagementProps) {
+export default function SalesStaffManagement({
+  loading,
+}: SalesStaffManagementProps) {
   const [staff, setStaff] = useState<SalesStaffMember[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [editingStaff, setEditingStaff] = useState<SalesStaffMember | null>(null);
+  const [editingStaff, setEditingStaff] = useState<SalesStaffMember | null>(
+    null
+  );
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -175,8 +179,12 @@ export default function SalesStaffManagement({ loading }: SalesStaffManagementPr
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">Сотрудники отдела продаж</h2>
-          <p className="text-gray-600">Управление аккаунтами сотрудников для системы продаж</p>
+          <h2 className="text-xl font-semibold text-gray-900">
+            Сотрудники отдела продаж
+          </h2>
+          <p className="text-gray-600">
+            Управление аккаунтами сотрудников для системы продаж
+          </p>
         </div>
         <div className="flex items-center space-x-4">
           <button
@@ -223,7 +231,7 @@ export default function SalesStaffManagement({ loading }: SalesStaffManagementPr
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {staff.map((member) => (
+            {staff.map(member => (
               <tr key={member._id} className="hover:bg-gray-50">
                 <td className="whitespace-nowrap px-6 py-4">
                   <div className="flex items-center">
@@ -231,7 +239,9 @@ export default function SalesStaffManagement({ loading }: SalesStaffManagementPr
                       <User className="h-5 w-5 text-blue-600" />
                     </div>
                     <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">{member.fullName}</div>
+                      <div className="text-sm font-medium text-gray-900">
+                        {member.fullName}
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -239,11 +249,13 @@ export default function SalesStaffManagement({ loading }: SalesStaffManagementPr
                   <div className="text-sm text-gray-900">{member.username}</div>
                 </td>
                 <td className="whitespace-nowrap px-6 py-4">
-                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                    member.isActive
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-red-100 text-red-800'
-                  }`}>
+                  <span
+                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                      member.isActive
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-red-100 text-red-800'
+                    }`}
+                  >
                     {member.isActive ? (
                       <>
                         <UserCheck className="mr-1 h-3 w-3" />
@@ -300,11 +312,13 @@ export default function SalesStaffManagement({ loading }: SalesStaffManagementPr
       {/* Add/Edit Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md rounded-lg bg-white p-6 m-4">
+          <div className="m-4 w-full max-w-md rounded-lg bg-white p-6">
             <h3 className="mb-4 text-lg font-semibold">
-              {editingStaff ? 'Редактировать сотрудника' : 'Добавить сотрудника'}
+              {editingStaff
+                ? 'Редактировать сотрудника'
+                : 'Добавить сотрудника'}
             </h3>
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="mb-1 block text-sm font-medium text-gray-700">
@@ -313,7 +327,9 @@ export default function SalesStaffManagement({ loading }: SalesStaffManagementPr
                 <input
                   type="text"
                   value={formData.fullName}
-                  onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
+                  onChange={e =>
+                    setFormData(prev => ({ ...prev, fullName: e.target.value }))
+                  }
                   className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   required
                 />
@@ -327,7 +343,12 @@ export default function SalesStaffManagement({ loading }: SalesStaffManagementPr
                   <input
                     type="text"
                     value={formData.username}
-                    onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
+                    onChange={e =>
+                      setFormData(prev => ({
+                        ...prev,
+                        username: e.target.value,
+                      }))
+                    }
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     required
                   />
@@ -336,13 +357,20 @@ export default function SalesStaffManagement({ loading }: SalesStaffManagementPr
 
               <div>
                 <label className="mb-1 block text-sm font-medium text-gray-700">
-                  {editingStaff ? 'Новый пароль (оставьте пустым, чтобы не менять)' : 'Пароль'}
+                  {editingStaff
+                    ? 'Новый пароль (оставьте пустым, чтобы не менять)'
+                    : 'Пароль'}
                 </label>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={formData.password}
-                    onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                    onChange={e =>
+                      setFormData(prev => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
+                    }
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     required={!editingStaff}
                     minLength={6}
@@ -352,7 +380,11 @@ export default function SalesStaffManagement({ loading }: SalesStaffManagementPr
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -362,10 +394,17 @@ export default function SalesStaffManagement({ loading }: SalesStaffManagementPr
                   <input
                     type="checkbox"
                     checked={formData.isActive}
-                    onChange={(e) => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
+                    onChange={e =>
+                      setFormData(prev => ({
+                        ...prev,
+                        isActive: e.target.checked,
+                      }))
+                    }
                     className="rounded border-gray-300 focus:ring-blue-500"
                   />
-                  <span className="text-sm text-gray-700">Активный сотрудник</span>
+                  <span className="text-sm text-gray-700">
+                    Активный сотрудник
+                  </span>
                 </label>
               </div>
 
@@ -385,7 +424,11 @@ export default function SalesStaffManagement({ loading }: SalesStaffManagementPr
                   disabled={submitting}
                   className="rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {submitting ? 'Сохранение...' : editingStaff ? 'Обновить' : 'Создать'}
+                  {submitting
+                    ? 'Сохранение...'
+                    : editingStaff
+                      ? 'Обновить'
+                      : 'Создать'}
                 </button>
               </div>
             </form>

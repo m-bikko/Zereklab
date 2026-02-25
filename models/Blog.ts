@@ -94,184 +94,197 @@ const AuthorSchema = new mongoose.Schema({
 });
 
 // Схема для источника информации
-const SourceInfoSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true,
-    maxlength: [100, 'Название источника не может быть длиннее 100 символов']
-  },
-  url: {
-    type: String,
-    required: true,
-    trim: true,
-    validate: {
-      validator: function(v: string) {
-        return /^https?:\/\/.+/.test(v);
+const SourceInfoSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: [100, 'Название источника не может быть длиннее 100 символов'],
+    },
+    url: {
+      type: String,
+      required: true,
+      trim: true,
+      validate: {
+        validator: function (v: string) {
+          return /^https?:\/\/.+/.test(v);
+        },
+        message: 'URL должен начинаться с http:// или https://',
       },
-      message: 'URL должен начинаться с http:// или https://'
-    }
-  }
-}, { _id: false });
+    },
+  },
+  { _id: false }
+);
 
 // Основная схема блога
-const BlogSchema = new mongoose.Schema({
-  title: {
-    ru: { 
-      type: String, 
-      required: [true, 'Заголовок на русском языке обязателен'],
-      trim: true,
-      maxlength: [200, 'Заголовок не может быть длиннее 200 символов']
-    },
-    kk: { 
-      type: String, 
-      required: [true, 'Заголовок на казахском языке обязателен'],
-      trim: true,
-      maxlength: [200, 'Заголовок не может быть длиннее 200 символов']
-    },
-    en: { 
-      type: String, 
-      required: [true, 'Заголовок на английском языке обязателен'],
-      trim: true,
-      maxlength: [200, 'Заголовок не может быть длиннее 200 символов']
-    },
-  },
-  slug: {
-    type: String,
-    required: [true, 'Slug обязателен'],
-    trim: true,
-    lowercase: true,
-    match: [/^[a-z0-9-]+$/, 'Slug может содержать только строчные буквы, цифры и дефисы'],
-    index: { unique: true },
-  },
-  excerpt: {
-    ru: { 
-      type: String, 
-      required: [true, 'Краткое описание на русском языке обязательно'],
-      trim: true,
-      maxlength: [300, 'Краткое описание не может быть длиннее 300 символов']
-    },
-    kk: { 
-      type: String, 
-      required: [true, 'Краткое описание на казахском языке обязательно'],
-      trim: true,
-      maxlength: [300, 'Краткое описание не может быть длиннее 300 символов']
-    },
-    en: { 
-      type: String, 
-      required: [true, 'Краткое описание на английском языке обязательно'],
-      trim: true,
-      maxlength: [300, 'Краткое описание не может быть длиннее 300 символов']
-    },
-  },
-  content: {
-    ru: { 
-      type: String, 
-      required: [true, 'Содержание на русском языке обязательно'],
-      trim: true,
-    },
-    kk: { 
-      type: String, 
-      required: [true, 'Содержание на казахском языке обязательно'],
-      trim: true,
-    },
-    en: { 
-      type: String, 
-      required: [true, 'Содержание на английском языке обязательно'],
-      trim: true,
-    },
-  },
-  previewImage: {
-    type: String,
-    required: [true, 'Превью изображение обязательно'],
-  },
-  media: [MediaContentSchema],
-  sources: {
-    type: [SourceInfoSchema],
-    default: [],
-    validate: {
-      validator: function(sources: SourceInfo[]) {
-        return sources.length <= 10;
+const BlogSchema = new mongoose.Schema(
+  {
+    title: {
+      ru: {
+        type: String,
+        required: [true, 'Заголовок на русском языке обязателен'],
+        trim: true,
+        maxlength: [200, 'Заголовок не может быть длиннее 200 символов'],
       },
-      message: 'Максимально можно указать 10 источников'
-    }
+      kk: {
+        type: String,
+        required: [true, 'Заголовок на казахском языке обязателен'],
+        trim: true,
+        maxlength: [200, 'Заголовок не может быть длиннее 200 символов'],
+      },
+      en: {
+        type: String,
+        required: [true, 'Заголовок на английском языке обязателен'],
+        trim: true,
+        maxlength: [200, 'Заголовок не может быть длиннее 200 символов'],
+      },
+    },
+    slug: {
+      type: String,
+      required: [true, 'Slug обязателен'],
+      trim: true,
+      lowercase: true,
+      match: [
+        /^[a-z0-9-]+$/,
+        'Slug может содержать только строчные буквы, цифры и дефисы',
+      ],
+      index: { unique: true },
+    },
+    excerpt: {
+      ru: {
+        type: String,
+        required: [true, 'Краткое описание на русском языке обязательно'],
+        trim: true,
+        maxlength: [300, 'Краткое описание не может быть длиннее 300 символов'],
+      },
+      kk: {
+        type: String,
+        required: [true, 'Краткое описание на казахском языке обязательно'],
+        trim: true,
+        maxlength: [300, 'Краткое описание не может быть длиннее 300 символов'],
+      },
+      en: {
+        type: String,
+        required: [true, 'Краткое описание на английском языке обязательно'],
+        trim: true,
+        maxlength: [300, 'Краткое описание не может быть длиннее 300 символов'],
+      },
+    },
+    content: {
+      ru: {
+        type: String,
+        required: [true, 'Содержание на русском языке обязательно'],
+        trim: true,
+      },
+      kk: {
+        type: String,
+        required: [true, 'Содержание на казахском языке обязательно'],
+        trim: true,
+      },
+      en: {
+        type: String,
+        required: [true, 'Содержание на английском языке обязательно'],
+        trim: true,
+      },
+    },
+    previewImage: {
+      type: String,
+      required: [true, 'Превью изображение обязательно'],
+    },
+    media: [MediaContentSchema],
+    sources: {
+      type: [SourceInfoSchema],
+      default: [],
+      validate: {
+        validator: function (sources: SourceInfo[]) {
+          return sources.length <= 10;
+        },
+        message: 'Максимально можно указать 10 источников',
+      },
+    },
+    tags: [
+      {
+        type: String,
+        trim: true,
+        lowercase: true,
+      },
+    ],
+    category: {
+      type: String,
+      trim: true,
+      default: 'общие',
+    },
+    status: {
+      type: String,
+      enum: ['draft', 'scheduled', 'published'],
+      default: 'draft',
+      index: true,
+    },
+    isPublished: {
+      type: Boolean,
+      default: false,
+    },
+    isFeatured: {
+      type: Boolean,
+      default: false,
+    },
+    scheduledAt: {
+      type: Date,
+      default: null,
+      required: false,
+      index: true,
+    },
+    publishedAt: {
+      type: Date,
+      default: null,
+      required: false,
+    },
+    views: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    likes: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    author: {
+      type: AuthorSchema,
+      default: () => ({
+        name: 'ZerekLab Team',
+        avatar: '',
+      }),
+    },
+    seoTitle: {
+      ru: { type: String, trim: true, maxlength: 60 },
+      kk: { type: String, trim: true, maxlength: 60 },
+      en: { type: String, trim: true, maxlength: 60 },
+    },
+    seoDescription: {
+      ru: { type: String, trim: true, maxlength: 160 },
+      kk: { type: String, trim: true, maxlength: 160 },
+      en: { type: String, trim: true, maxlength: 160 },
+    },
+    relatedPosts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Blog',
+      },
+    ],
+    readingTime: {
+      type: Number,
+      min: 1,
+      default: 1,
+    },
   },
-  tags: [{
-    type: String,
-    trim: true,
-    lowercase: true,
-  }],
-  category: {
-    type: String,
-    trim: true,
-    default: 'общие',
-  },
-  status: {
-    type: String,
-    enum: ['draft', 'scheduled', 'published'],
-    default: 'draft',
-    index: true,
-  },
-  isPublished: {
-    type: Boolean,
-    default: false,
-  },
-  isFeatured: {
-    type: Boolean,
-    default: false,
-  },
-  scheduledAt: {
-    type: Date,
-    default: null,
-    required: false,
-    index: true,
-  },
-  publishedAt: {
-    type: Date,
-    default: null,
-    required: false,
-  },
-  views: {
-    type: Number,
-    default: 0,
-    min: 0,
-  },
-  likes: {
-    type: Number,
-    default: 0,
-    min: 0,
-  },
-  author: {
-    type: AuthorSchema,
-    default: () => ({
-      name: 'ZerekLab Team',
-      avatar: '',
-    }),
-  },
-  seoTitle: {
-    ru: { type: String, trim: true, maxlength: 60 },
-    kk: { type: String, trim: true, maxlength: 60 },
-    en: { type: String, trim: true, maxlength: 60 },
-  },
-  seoDescription: {
-    ru: { type: String, trim: true, maxlength: 160 },
-    kk: { type: String, trim: true, maxlength: 160 },
-    en: { type: String, trim: true, maxlength: 160 },
-  },
-  relatedPosts: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Blog',
-  }],
-  readingTime: {
-    type: Number,
-    min: 1,
-    default: 1,
-  },
-}, {
-  timestamps: true,
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true },
-});
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
 
 // Индексы для оптимизации поиска (slug уже имеет уникальный индекс в схеме)
 BlogSchema.index({ isPublished: 1, publishedAt: -1 });
@@ -282,12 +295,12 @@ BlogSchema.index({ views: -1 });
 BlogSchema.index({ createdAt: -1 });
 
 // Виртуальное поле для полного URL
-BlogSchema.virtual('url').get(function() {
+BlogSchema.virtual('url').get(function () {
   return `/blog/${this.slug}`;
 });
 
 // Автоматически устанавливать publishedAt при публикации и синхронизировать isPublished со status
-BlogSchema.pre('save', function(next) {
+BlogSchema.pre('save', function (next) {
   // Синхронизация status с isPublished для обратной совместимости
   if (this.status === 'published') {
     this.isPublished = true;
@@ -312,7 +325,9 @@ BlogSchema.pre('save', function(next) {
 });
 
 // Метод для подсчета времени чтения
-BlogSchema.methods.calculateReadingTime = function(locale: 'ru' | 'kk' | 'en' = 'ru') {
+BlogSchema.methods.calculateReadingTime = function (
+  locale: 'ru' | 'kk' | 'en' = 'ru'
+) {
   const content = this.content[locale] || this.content.ru;
   const wordsPerMinute = 200; // Средняя скорость чтения
   const wordCount = content.split(/\s+/).length;
@@ -321,18 +336,21 @@ BlogSchema.methods.calculateReadingTime = function(locale: 'ru' | 'kk' | 'en' = 
 };
 
 // Метод для увеличения просмотров
-BlogSchema.methods.incrementViews = function() {
+BlogSchema.methods.incrementViews = function () {
   this.views += 1;
   return this.save();
 };
 
 // Метод для получения превью контента
-BlogSchema.methods.getPreview = function(locale: 'ru' | 'kk' | 'en' = 'ru', length: number = 150) {
+BlogSchema.methods.getPreview = function (
+  locale: 'ru' | 'kk' | 'en' = 'ru',
+  length: number = 150
+) {
   const content = this.content[locale] || this.content.ru;
   // Удаляем HTML теги для превью
   const plainText = content.replace(/<[^>]*>/g, '');
-  return plainText.length > length 
-    ? plainText.substring(0, length) + '...' 
+  return plainText.length > length
+    ? plainText.substring(0, length) + '...'
     : plainText;
 };
 
@@ -341,12 +359,12 @@ const publishedFilter = {
   $or: [
     { status: 'published' },
     { isPublished: true, status: { $exists: false } },
-    { isPublished: true, status: null }
-  ]
+    { isPublished: true, status: null },
+  ],
 };
 
 // Статический метод для получения популярных статей
-BlogSchema.statics.getPopular = function(limit: number = 10) {
+BlogSchema.statics.getPopular = function (limit: number = 10) {
   return this.find(publishedFilter)
     .sort({ views: -1, likes: -1 })
     .limit(limit)
@@ -354,7 +372,7 @@ BlogSchema.statics.getPopular = function(limit: number = 10) {
 };
 
 // Статический метод для получения рекомендуемых статей
-BlogSchema.statics.getFeatured = function(limit: number = 3) {
+BlogSchema.statics.getFeatured = function (limit: number = 3) {
   return this.find({ ...publishedFilter, isFeatured: true })
     .sort({ publishedAt: -1 })
     .limit(limit)
@@ -362,7 +380,7 @@ BlogSchema.statics.getFeatured = function(limit: number = 3) {
 };
 
 // Статический метод для получения последних статей
-BlogSchema.statics.getLatest = function(limit: number = 10) {
+BlogSchema.statics.getLatest = function (limit: number = 10) {
   return this.find(publishedFilter)
     .sort({ publishedAt: -1 })
     .limit(limit)
@@ -370,19 +388,19 @@ BlogSchema.statics.getLatest = function(limit: number = 10) {
 };
 
 // Статический метод для публикации запланированных постов
-BlogSchema.statics.publishScheduledPosts = async function() {
+BlogSchema.statics.publishScheduledPosts = async function () {
   const now = new Date();
   const result = await this.updateMany(
     {
       status: 'scheduled',
-      scheduledAt: { $lte: now }
+      scheduledAt: { $lte: now },
     },
     {
       $set: {
         status: 'published',
         isPublished: true,
-        publishedAt: now
-      }
+        publishedAt: now,
+      },
     }
   );
   return result.modifiedCount;
@@ -396,6 +414,7 @@ interface BlogModel extends mongoose.Model<IBlog> {
   publishScheduledPosts(): Promise<number>;
 }
 
-const Blog = (mongoose.models.Blog || mongoose.model<IBlog, BlogModel>('Blog', BlogSchema)) as unknown as BlogModel;
+const Blog = (mongoose.models.Blog ||
+  mongoose.model<IBlog, BlogModel>('Blog', BlogSchema)) as unknown as BlogModel;
 
 export default Blog;

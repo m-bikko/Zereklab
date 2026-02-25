@@ -1,6 +1,5 @@
-import { getLocalizedText } from '@/types';
-
 import type { CartItem } from '@/store/cartStore';
+import { getLocalizedText } from '@/types';
 
 /**
  * Formats cart items into a WhatsApp message
@@ -51,7 +50,8 @@ export function createWhatsAppOrderMessage(
     },
   };
 
-  const t = translations[locale as keyof typeof translations] || translations.ru;
+  const t =
+    translations[locale as keyof typeof translations] || translations.ru;
 
   // Calculate total
   const totalPrice = items.reduce(
@@ -66,7 +66,7 @@ export function createWhatsAppOrderMessage(
   items.forEach((item, index) => {
     const itemName = getLocalizedText(item.name, locale as 'ru' | 'kk' | 'en');
     // const itemTotal = item.price * item.quantity;
-    
+
     message += `${index + 1}. ${itemName}\n`;
     message += `   ${t.quantity}: ${item.quantity}\n`;
     message += `   ${t.price}: ${item.price.toLocaleString('ru-RU')} ${t.currency}\n`;
@@ -93,14 +93,15 @@ export function createWhatsAppOrderUrl(
   whatsappNumber?: string
 ): string {
   const message = createWhatsAppOrderMessage(items, locale);
-  const phoneNumber = whatsappNumber || process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '77753084648';
-  
+  const phoneNumber =
+    whatsappNumber || process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '77753084648';
+
   // Clean phone number (remove non-digits except +)
   const cleanPhoneNumber = phoneNumber.replace(/[^\d+]/g, '');
-  
+
   // Encode message for URL
   const encodedMessage = encodeURIComponent(message);
-  
+
   return `https://wa.me/${cleanPhoneNumber}?text=${encodedMessage}`;
 }
 
@@ -126,4 +127,4 @@ export function openWhatsAppOrder(
 export function isWhatsAppConfigured(): boolean {
   const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   return !!phoneNumber && phoneNumber.length > 0;
-} 
+}

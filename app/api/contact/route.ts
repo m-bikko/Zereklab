@@ -19,7 +19,10 @@ const contactSchema = z.object({
     .trim(),
   whatsapp: z
     .string()
-    .regex(/^\+?[1-9]\d{1,14}$/, 'Please provide a valid WhatsApp number (e.g., +77753084648)')
+    .regex(
+      /^\+?[1-9]\d{1,14}$/,
+      'Please provide a valid WhatsApp number (e.g., +77753084648)'
+    )
     .min(10, 'WhatsApp number must be at least 10 digits')
     .max(16, 'WhatsApp number cannot exceed 16 characters')
     .trim(),
@@ -139,7 +142,7 @@ const contactSchema = z.object({
 // POST - Create new contact submission
 export async function POST(request: NextRequest) {
   console.log('🔥 Contact API POST called');
-  
+
   try {
     console.log('📡 Connecting to database...');
     await getDatabase();
@@ -180,7 +183,8 @@ export async function POST(request: NextRequest) {
       console.log('⏰ Rate limit hit for WhatsApp:', whatsapp);
       return NextResponse.json(
         {
-          error: 'Too many submissions. Please wait before sending another message.',
+          error:
+            'Too many submissions. Please wait before sending another message.',
         },
         { status: 429 }
       );
@@ -217,16 +221,24 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error('❌ Contact form submission error:', error);
-    const errorDetails = error instanceof Error ? {
-      name: error.name,
-      message: error.message,
-      stack: error.stack,
-    } : { message: 'Unknown error' };
+    const errorDetails =
+      error instanceof Error
+        ? {
+            name: error.name,
+            message: error.message,
+            stack: error.stack,
+          }
+        : { message: 'Unknown error' };
     console.error('Error details:', errorDetails);
     return NextResponse.json(
       {
         error: 'Internal server error. Please try again later.',
-        details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : 'Unknown error') : undefined,
+        details:
+          process.env.NODE_ENV === 'development'
+            ? error instanceof Error
+              ? error.message
+              : 'Unknown error'
+            : undefined,
       },
       { status: 500 }
     );
@@ -316,10 +328,7 @@ export async function PUT(request: NextRequest) {
     );
 
     if (!contact) {
-      return NextResponse.json(
-        { error: 'Contact not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Contact not found' }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -336,4 +345,4 @@ export async function PUT(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

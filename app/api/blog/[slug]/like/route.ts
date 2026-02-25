@@ -52,9 +52,9 @@ export async function POST(
   try {
     await getDatabase();
 
-    const blog = await Blog.findOne({ 
+    const blog = await Blog.findOne({
       slug: params.slug,
-      isPublished: true 
+      isPublished: true,
     });
 
     if (!blog) {

@@ -201,7 +201,7 @@ export async function PUT(
     delete updateData._id;
     delete updateData.createdAt;
     delete updateData.updatedAt;
-    
+
     // Handle salePrice removal - if salePrice is null, explicitly unset it
     if (updateData.salePrice === null) {
       updateData.$unset = { salePrice: 1 };
