@@ -15,6 +15,7 @@ export interface ISocialProject {
   content: MultilingualContent; // Full content
   beforeImage: string;
   afterImage: string;
+  gallery?: { beforeImage: string; afterImage: string }[];
   referenceLink?: string; // Optional reference or source link
   isPublished: boolean;
   publishedAt?: Date;
@@ -57,6 +58,12 @@ const SocialProjectSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    gallery: [
+      {
+        beforeImage: String,
+        afterImage: String,
+      },
+    ],
     referenceLink: {
       type: String,
       trim: true,

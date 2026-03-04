@@ -118,7 +118,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       totalCount,
       periodCount: dailyCounts.reduce(
-        (sum: number, entry: { count: string | number }) => sum + Number(entry.count),
+        (sum: number, entry: { count: string | number }) =>
+          sum + Number(entry.count),
         0
       ),
       dailyCounts: result,

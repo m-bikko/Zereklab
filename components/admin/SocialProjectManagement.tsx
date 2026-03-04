@@ -42,6 +42,7 @@ interface SocialProjectFormData {
   };
   beforeImage: string;
   afterImage: string;
+  gallery: { beforeImage: string; afterImage: string }[];
   referenceLink: string;
   isPublished: boolean;
 }
@@ -53,6 +54,7 @@ const INITIAL_FORM_DATA: SocialProjectFormData = {
   content: { ru: '', kk: '', en: '' },
   beforeImage: '',
   afterImage: '',
+  gallery: [],
   referenceLink: '',
   isPublished: false,
 };
@@ -70,7 +72,10 @@ export default function SocialProjectManagement({
     useState<SocialProjectFormData>(INITIAL_FORM_DATA);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentTab, setCurrentTab] = useState<'ru' | 'kk' | 'en'>('ru');
-  const [uploadingImage, setUploadingImage] = useState<string | null>(null); // 'before' or 'after' or null
+  const [uploadingImage, setUploadingImage] = useState<{
+    type: 'before' | 'after';
+    index: number;
+  } | null>(null); // index: -1 for main thumbnail, >= 0 for gallery
 
   const t = (key: string) => {
     const translations: Record<string, Record<string, string>> = {
@@ -95,6 +100,9 @@ export default function SocialProjectManagement({
         'sp.image_upload': 'Загрузить изображение',
         'sp.date': 'Дата',
         'sp.reference_link': 'Ссылка на источник/проект',
+        'sp.gallery': 'Галерея (До/После)',
+        'sp.add_gallery_item': 'Добавить пару фото',
+        'sp.remove_gallery_item': 'Удалить эту пару',
       },
       kk: {
         'sp.management': 'Әлеуметтік жобаларды басқару',
@@ -117,6 +125,9 @@ export default function SocialProjectManagement({
         'sp.image_upload': 'Суретті жүктеу',
         'sp.date': 'Күні',
         'sp.reference_link': 'Дереккөз/жоба сілтемесі',
+        'sp.gallery': 'Галерея (Дейін/Кейін)',
+        'sp.add_gallery_item': 'Фотосурет жұбын қосу',
+        'sp.remove_gallery_item': 'Осы жұпты жою',
       },
       en: {
         'sp.management': 'Social Projects Management',
@@ -139,6 +150,9 @@ export default function SocialProjectManagement({
         'sp.image_upload': 'Upload Image',
         'sp.date': 'Date',
         'sp.reference_link': 'Reference/Source Link',
+        'sp.gallery': 'Gallery (Before/After)',
+        'sp.add_gallery_item': 'Add Photo Pair',
+        'sp.remove_gallery_item': 'Remove this pair',
       },
     };
 
@@ -187,6 +201,7 @@ export default function SocialProjectManagement({
         },
         beforeImage: project.beforeImage,
         afterImage: project.afterImage,
+        gallery: project.gallery || [],
         referenceLink: project.referenceLink || '',
         isPublished: project.isPublished,
       });
@@ -263,7 +278,8 @@ export default function SocialProjectManagement({
 
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>,
-    type: 'before' | 'after'
+    type: 'before' | 'after',
+    index = -1
   ) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -278,15 +294,31 @@ export default function SocialProjectManagement({
       return;
     }
 
-    setUploadingImage(type);
+    setUploadingImage({ type, index });
     const toastId = toast.loading('Загрузка изображения...');
 
     try {
       const imageUrl = await uploadImageToCloudinary(file);
-      setFormData(prev => ({
-        ...prev,
-        [type === 'before' ? 'beforeImage' : 'afterImage']: imageUrl,
-      }));
+      setFormData(prev => {
+        if (index === -1) {
+          // Main thumbnail
+          return {
+            ...prev,
+            [type === 'before' ? 'beforeImage' : 'afterImage']: imageUrl,
+          };
+        } else {
+          // Gallery image
+          const newGallery = [...prev.gallery];
+          newGallery[index] = {
+            ...newGallery[index],
+            [type === 'before' ? 'beforeImage' : 'afterImage']: imageUrl,
+          };
+          return {
+            ...prev,
+            gallery: newGallery,
+          };
+        }
+      });
       toast.success('Изображение успешно загружено', { id: toastId });
     } catch (error) {
       toast.error(`Ошибка загрузки: ${error}`, { id: toastId });
@@ -673,7 +705,7 @@ export default function SocialProjectManagement({
                         </div>
                       ) : (
                         <div className="space-y-1 text-center">
-                          {uploadingImage === 'before' ? (
+                          {uploadingImage?.type === 'before' && uploadingImage?.index === -1 ? (
                             <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-blue-500"></div>
                           ) : (
                             <>
@@ -728,7 +760,7 @@ export default function SocialProjectManagement({
                         </div>
                       ) : (
                         <div className="space-y-1 text-center">
-                          {uploadingImage === 'after' ? (
+                          {uploadingImage?.type === 'after' && uploadingImage?.index === -1 ? (
                             <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-blue-500"></div>
                           ) : (
                             <>
@@ -751,6 +783,189 @@ export default function SocialProjectManagement({
                         </div>
                       )}
                     </div>
+                  </div>
+                </div>
+
+                {/* Gallery Section */}
+                <div className="border-t border-gray-200 pt-6">
+                  <div className="mb-4 flex items-center justify-between">
+                    <h3 className="text-lg font-medium text-gray-900">
+                      {t('sp.gallery')}
+                    </h3>
+                    <button
+                      onClick={() =>
+                        setFormData(prev => ({
+                          ...prev,
+                          gallery: [
+                            ...prev.gallery,
+                            { beforeImage: '', afterImage: '' },
+                          ],
+                        }))
+                      }
+                      className="inline-flex items-center rounded-lg bg-gray-100 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    >
+                      <Plus className="mr-1 h-4 w-4" />
+                      {t('sp.add_gallery_item')}
+                    </button>
+                  </div>
+
+                  <div className="space-y-6">
+                    {formData.gallery.map((item, index) => (
+                      <div
+                        key={index}
+                        className="relative rounded-lg border border-gray-200 bg-gray-50 p-4"
+                      >
+                        <button
+                          onClick={() =>
+                            setFormData(prev => ({
+                              ...prev,
+                              gallery: prev.gallery.filter(
+                                (_, i) => i !== index
+                              ),
+                            }))
+                          }
+                          className="absolute right-2 top-2 rounded-md p-1 text-gray-400 hover:bg-gray-200 hover:text-red-500"
+                          title={t('sp.remove_gallery_item')}
+                        >
+                          <Trash2 className="h-5 w-5" />
+                        </button>
+                        
+                        <div className="mb-2 text-sm font-medium text-gray-500">
+                          Пара #{index + 1}
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                          {/* Gallery Before Image */}
+                          <div>
+                            <label className="mb-2 block text-sm font-medium text-gray-700">
+                              {t('sp.before')}
+                            </label>
+                            <div className="relative mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pb-6 pt-5 transition-colors hover:border-blue-500 bg-white">
+                              {item.beforeImage ? (
+                                <div className="w-full space-y-1 text-center">
+                                  <div className="relative mb-4 h-48 w-full">
+                                    <Image
+                                      src={item.beforeImage}
+                                      alt="Gallery Before"
+                                      fill
+                                      className="rounded-md object-cover"
+                                    />
+                                    <button
+                                      onClick={() => {
+                                        const newGallery = [...formData.gallery];
+                                        newGallery[index].beforeImage = '';
+                                        setFormData(prev => ({
+                                          ...prev,
+                                          gallery: newGallery,
+                                        }));
+                                      }}
+                                      className="absolute right-2 top-2 rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
+                                    >
+                                      <X className="h-4 w-4" />
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="space-y-1 text-center">
+                                  {uploadingImage?.type === 'before' &&
+                                  uploadingImage?.index === index ? (
+                                    <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-blue-500"></div>
+                                  ) : (
+                                    <>
+                                      <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
+                                      <div className="flex text-sm text-gray-600">
+                                        <label className="relative cursor-pointer rounded-md bg-white font-medium text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 hover:text-blue-500">
+                                          <span>{t('sp.image_upload')}</span>
+                                          <input
+                                            type="file"
+                                            className="sr-only"
+                                            accept="image/*"
+                                            onChange={e =>
+                                              handleImageUpload(
+                                                e,
+                                                'before',
+                                                index
+                                              )
+                                            }
+                                          />
+                                        </label>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Gallery After Image */}
+                          <div>
+                            <label className="mb-2 block text-sm font-medium text-gray-700">
+                              {t('sp.after')}
+                            </label>
+                            <div className="relative mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pb-6 pt-5 transition-colors hover:border-blue-500 bg-white">
+                              {item.afterImage ? (
+                                <div className="w-full space-y-1 text-center">
+                                  <div className="relative mb-4 h-48 w-full">
+                                    <Image
+                                      src={item.afterImage}
+                                      alt="Gallery After"
+                                      fill
+                                      className="rounded-md object-cover"
+                                    />
+                                    <button
+                                      onClick={() => {
+                                        const newGallery = [...formData.gallery];
+                                        newGallery[index].afterImage = '';
+                                        setFormData(prev => ({
+                                          ...prev,
+                                          gallery: newGallery,
+                                        }));
+                                      }}
+                                      className="absolute right-2 top-2 rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
+                                    >
+                                      <X className="h-4 w-4" />
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="space-y-1 text-center">
+                                  {uploadingImage?.type === 'after' &&
+                                  uploadingImage?.index === index ? (
+                                    <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-blue-500"></div>
+                                  ) : (
+                                    <>
+                                      <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
+                                      <div className="flex text-sm text-gray-600">
+                                        <label className="relative cursor-pointer rounded-md bg-white font-medium text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 hover:text-blue-500">
+                                          <span>{t('sp.image_upload')}</span>
+                                          <input
+                                            type="file"
+                                            className="sr-only"
+                                            accept="image/*"
+                                            onChange={e =>
+                                              handleImageUpload(
+                                                e,
+                                                'after',
+                                                index
+                                              )
+                                            }
+                                          />
+                                        </label>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {formData.gallery.length === 0 && (
+                      <div className="rounded-lg border-2 border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
+                        Галерея пуста. Нажмите &quot;Добавить пару фото&quot;, чтобы добавить дополнительные фотографии &quot;До и после&quot;.
+                      </div>
+                    )}
                   </div>
                 </div>
 
