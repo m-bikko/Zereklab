@@ -7,10 +7,16 @@ import { getLocalizedText } from '@/types';
 
 import { useEffect, useState } from 'react';
 
-import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
-import { Calendar, ChevronLeft, ChevronRight, ExternalLink, Eye } from 'lucide-react';
+import {
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  Eye,
+} from 'lucide-react';
 
 interface SocialProjectPageProps {
   params: { locale: string; slug: string };
@@ -136,7 +142,7 @@ export default function SocialProjectPage({
         {/* Gallery Navigation */}
         {allImagePairs.length > 1 && (
           <div className="mb-12 flex flex-col items-center">
-            <div className="flex w-full items-center justify-between gap-4 sm:justify-center mb-4">
+            <div className="mb-4 flex w-full items-center justify-between gap-4 sm:justify-center">
               <button
                 onClick={handlePrev}
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-600 shadow-md transition-all hover:bg-primary-50 hover:text-primary-600"
@@ -144,10 +150,12 @@ export default function SocialProjectPage({
               >
                 <ChevronLeft className="h-6 w-6" />
               </button>
-              
-              <div className="flex gap-2 overflow-x-auto px-4 py-2 scrollbar-hide flex-wrap justify-center flex-1 sm:flex-none">
+
+              <div className="scrollbar-hide flex flex-1 flex-wrap justify-center gap-2 overflow-x-auto px-4 py-2 sm:flex-none">
                 {allImagePairs.map((pair, idx) => {
-                  const isActive = (idx === 0 && currentGalleryIndex === -1) || idx === currentGalleryIndex + 1;
+                  const isActive =
+                    (idx === 0 && currentGalleryIndex === -1) ||
+                    idx === currentGalleryIndex + 1;
                   return (
                     <button
                       key={idx}

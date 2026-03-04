@@ -705,7 +705,8 @@ export default function SocialProjectManagement({
                         </div>
                       ) : (
                         <div className="space-y-1 text-center">
-                          {uploadingImage?.type === 'before' && uploadingImage?.index === -1 ? (
+                          {uploadingImage?.type === 'before' &&
+                          uploadingImage?.index === -1 ? (
                             <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-blue-500"></div>
                           ) : (
                             <>
@@ -760,7 +761,8 @@ export default function SocialProjectManagement({
                         </div>
                       ) : (
                         <div className="space-y-1 text-center">
-                          {uploadingImage?.type === 'after' && uploadingImage?.index === -1 ? (
+                          {uploadingImage?.type === 'after' &&
+                          uploadingImage?.index === -1 ? (
                             <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-blue-500"></div>
                           ) : (
                             <>
@@ -829,7 +831,7 @@ export default function SocialProjectManagement({
                         >
                           <Trash2 className="h-5 w-5" />
                         </button>
-                        
+
                         <div className="mb-2 text-sm font-medium text-gray-500">
                           Пара #{index + 1}
                         </div>
@@ -840,7 +842,7 @@ export default function SocialProjectManagement({
                             <label className="mb-2 block text-sm font-medium text-gray-700">
                               {t('sp.before')}
                             </label>
-                            <div className="relative mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pb-6 pt-5 transition-colors hover:border-blue-500 bg-white">
+                            <div className="relative mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 bg-white px-6 pb-6 pt-5 transition-colors hover:border-blue-500">
                               {item.beforeImage ? (
                                 <div className="w-full space-y-1 text-center">
                                   <div className="relative mb-4 h-48 w-full">
@@ -852,7 +854,9 @@ export default function SocialProjectManagement({
                                     />
                                     <button
                                       onClick={() => {
-                                        const newGallery = [...formData.gallery];
+                                        const newGallery = [
+                                          ...formData.gallery,
+                                        ];
                                         newGallery[index].beforeImage = '';
                                         setFormData(prev => ({
                                           ...prev,
@@ -902,7 +906,7 @@ export default function SocialProjectManagement({
                             <label className="mb-2 block text-sm font-medium text-gray-700">
                               {t('sp.after')}
                             </label>
-                            <div className="relative mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pb-6 pt-5 transition-colors hover:border-blue-500 bg-white">
+                            <div className="relative mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 bg-white px-6 pb-6 pt-5 transition-colors hover:border-blue-500">
                               {item.afterImage ? (
                                 <div className="w-full space-y-1 text-center">
                                   <div className="relative mb-4 h-48 w-full">
@@ -914,7 +918,9 @@ export default function SocialProjectManagement({
                                     />
                                     <button
                                       onClick={() => {
-                                        const newGallery = [...formData.gallery];
+                                        const newGallery = [
+                                          ...formData.gallery,
+                                        ];
                                         newGallery[index].afterImage = '';
                                         setFormData(prev => ({
                                           ...prev,
@@ -963,7 +969,9 @@ export default function SocialProjectManagement({
                     ))}
                     {formData.gallery.length === 0 && (
                       <div className="rounded-lg border-2 border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
-                        Галерея пуста. Нажмите &quot;Добавить пару фото&quot;, чтобы добавить дополнительные фотографии &quot;До и после&quot;.
+                        Галерея пуста. Нажмите &quot;Добавить пару фото&quot;,
+                        чтобы добавить дополнительные фотографии &quot;До и
+                        после&quot;.
                       </div>
                     )}
                   </div>
