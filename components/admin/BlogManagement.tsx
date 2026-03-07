@@ -1226,7 +1226,6 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
                       onChange={e =>
                         handleInputChange('scheduledAt', e.target.value)
                       }
-                      min={new Date().toISOString().slice(0, 16)}
                       className="w-full max-w-xs rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
                     />
                     <p className="mt-1 text-xs text-gray-500">
