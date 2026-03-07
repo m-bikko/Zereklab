@@ -316,6 +316,14 @@ BlogSchema.pre('save', function (next) {
     this.scheduledAt = new Date(Date.now() + 60 * 60 * 1000);
   }
 
+  // Если дата публикации была выставлена в прошедшем времени,
+  // сразу же публикуем её "задним числом"
+  if (this.status === 'scheduled' && this.scheduledAt && this.scheduledAt <= new Date()) {
+    this.status = 'published';
+    this.isPublished = true;
+    this.publishedAt = this.scheduledAt;
+  }
+
   // Если сбросили статус в draft - очищаем scheduledAt
   if (this.status === 'draft') {
     (this as unknown as Record<string, unknown>).scheduledAt = undefined;

@@ -143,7 +143,7 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
         'blog.delete.confirm': 'Вы уверены, что хотите удалить эту статью?',
         'blog.status': 'Статус публикации',
         'blog.status.draft': 'Черновик',
-        'blog.status.scheduled': 'Запланировать',
+        'blog.status.scheduled': 'Задать дату и время',
         'blog.status.published': 'Опубликовать сейчас',
         'blog.scheduledAt': 'Дата и время публикации',
       },
@@ -175,7 +175,7 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
         'blog.delete.confirm': 'Бұл мақаланы жойғыңыз келе ме?',
         'blog.status': 'Жариялау күйі',
         'blog.status.draft': 'Жоба',
-        'blog.status.scheduled': 'Жоспарлау',
+        'blog.status.scheduled': 'Күн мен уақытты орнату',
         'blog.status.published': 'Қазір жариялау',
         'blog.scheduledAt': 'Жариялау күні мен уақыты',
       },
@@ -207,7 +207,7 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
         'blog.delete.confirm': 'Are you sure you want to delete this article?',
         'blog.status': 'Publication status',
         'blog.status.draft': 'Draft',
-        'blog.status.scheduled': 'Schedule',
+        'blog.status.scheduled': 'Set date and time',
         'blog.status.published': 'Publish now',
         'blog.scheduledAt': 'Publication date and time',
       },
@@ -505,12 +505,7 @@ export default function BlogManagement({ locale }: BlogManagementProps) {
       // Валидация для запланированных постов
       if (formData.status === 'scheduled') {
         if (!formData.scheduledAt) {
-          toast.error('Укажите дату и время публикации');
-          return;
-        }
-        const scheduledDate = new Date(formData.scheduledAt);
-        if (scheduledDate <= new Date()) {
-          toast.error('Дата публикации должна быть в будущем');
+          toast.error('Укажите дату и время');
           return;
         }
       }
