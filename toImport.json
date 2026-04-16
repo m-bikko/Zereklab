@@ -1,0 +1,2503 @@
+[
+  {
+    "sku": "TOY-SUN-001",
+    "name": {
+      "ru": "Настольная игра «Раскачивающийся подсолнух»",
+      "kk": "«Тербелетін күнбағыс» үстел үсті ойыны",
+      "en": "Shaking Sunflower Interactive Table Game"
+    },
+    "description": {
+      "ru": "Развивающая игровая игрушка, имитирующая подсолнух с подвижными шариками и вращающимися элементами. Стимулирует моторику, координацию и внимание у малышей.",
+      "kk": "Қозғалмалы шарлар мен айналатын элементтері бар күнбағысты еліктейтін дамытушы ойыншық. Балалардың моторикасын, үйлестіруін және зейінін ынталандырады.",
+      "en": "Interactive toy simulating a sunflower with moving balls and rotating elements. Stimulates motor skills, coordination and attention in young children."
+    },
+    "price": 10071,
+    "salePrice": 8560,
+    "category": "Настольные игры",
+    "subcategory": "Развивающие игрушки для малышей",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/shaking-sunflower.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 36,
+    "ageRange": "4+",
+    "difficulty": "Beginner",
+    "tags": [
+      "подсолнух",
+      "моторика",
+      "малыши",
+      "звук",
+      "батарейки"
+    ],
+    "features": [
+      {
+        "ru": "Звуковые эффекты при игре",
+        "kk": "Ойын кезіндегі дыбыстық эффектілер",
+        "en": "Sound effects during play"
+      },
+      {
+        "ru": "Вращающиеся цветные шарики",
+        "kk": "Айналмалы түрлі-түсті шарлар",
+        "en": "Rotating colorful balls"
+      },
+      {
+        "ru": "Безопасный ударостойкий пластик",
+        "kk": "Қауіпсіз соққыға төзімді пластик",
+        "en": "Safe impact-resistant plastic"
+      }
+    ],
+    "specifications": {
+      "Размеры коробки": "87 x 30.5 x 112 см",
+      "Вес брутто": "26 кг",
+      "Вес нетто": "23 кг",
+      "Количество в упаковке": "36 шт",
+      "Тип упаковки": "Цветная коробка"
+    },
+    "parameters": {
+      "Power Source": "Battery",
+      "Material": "ABS Plastic",
+      "Players": "2-4"
+    }
+  },
+  {
+    "sku": "TOY-CNS-002",
+    "name": {
+      "ru": "Керамический конструктор «Рыцарский Замок»",
+      "kk": "«Рыцарлар сарайы» керамикалық конструктор",
+      "en": "Gold Brick Bricklayer Knight's Castle Constructor"
+    },
+    "description": {
+      "ru": "Набор из более чем 500 кирпичиков для строительства средневековых замков и архитектурных сооружений. Развивает мелкую моторику, творческое мышление и воображение.",
+      "kk": "Ортағасырлық сарайлар мен сәулет ғимараттарын салуға арналған 500-ден астам кірпіш жиынтығы. Ұсақ моторика, шығармашылық ойлау мен қиялды дамытады.",
+      "en": "Set of 500+ bricks for building medieval castles and architectural structures. Develops fine motor skills, creative thinking and imagination."
+    },
+    "price": 17118,
+    "salePrice": 14550,
+    "category": "Конструкторы",
+    "subcategory": "Строительные конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/knight-castle.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 8,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "замок",
+      "кирпичики",
+      "строительство",
+      "архитектура",
+      "500 деталей"
+    ],
+    "features": [
+      {
+        "ru": "Более 500 кирпичиков в наборе",
+        "kk": "Жиынтықта 500-ден астам кірпіш",
+        "en": "Over 500 bricks included"
+      },
+      {
+        "ru": "Удобная коробка с ручкой",
+        "kk": "Ыңғайлы тұтқасы бар қорап",
+        "en": "Handy box with carrying handle"
+      },
+      {
+        "ru": "Безопасный пластик для детей",
+        "kk": "Балаларға арналған қауіпсіз пластик",
+        "en": "Child-safe plastic materials"
+      }
+    ],
+    "specifications": {
+      "Размеры коробки": "38 x 33.5 x 9.5 см",
+      "Вес брутто": "23 кг",
+      "Вес нетто": "21 кг",
+      "Количество кирпичиков": "500+",
+      "Размер конструкции": "39.5 x 38 x 69 см"
+    },
+    "parameters": {
+      "Material": "Plastic + Brick Powder",
+      "Control Method": "Manual",
+      "Assembly Type": "Stacking"
+    }
+  },
+  {
+    "sku": "TOY-MAG-003",
+    "name": {
+      "ru": "Магнитный конструктор «Разнообразие радужных листов»",
+      "kk": "«Кемпірқосақ парақтарының алуан түрлілігі» магниттік конструктор",
+      "en": "Variety Rainbow Sheet Magnetic Constructor"
+    },
+    "description": {
+      "ru": "Набор из 48 ярких цветных магнитных элементов для сборки разнообразных фигур и моделей. Стимулирует воображение, моторику и навыки конструирования у детей.",
+      "kk": "Алуан түрлі фигуралар мен модельдерді құрастыруға арналған 48 жарқын түрлі-түсті магниттік элементтер жиынтығы. Балалардың қиялын, моторикасын дамытады.",
+      "en": "Set of 48 bright colorful magnetic elements for building various shapes and models. Stimulates imagination, motor skills and construction abilities."
+    },
+    "price": 19872,
+    "salePrice": 16891,
+    "category": "Конструкторы",
+    "subcategory": "Магнитные конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/rainbow-magnetic.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 15,
+    "ageRange": "3+",
+    "difficulty": "Beginner",
+    "tags": [
+      "магнитный",
+      "радуга",
+      "48 деталей",
+      "цветной",
+      "3D"
+    ],
+    "features": [
+      {
+        "ru": "48 цветных магнитных деталей",
+        "kk": "48 түрлі-түсті магниттік бөлік",
+        "en": "48 colorful magnetic pieces"
+      },
+      {
+        "ru": "Безопасные магниты для детей",
+        "kk": "Балаларға арналған қауіпсіз магниттер",
+        "en": "Child-safe magnets"
+      },
+      {
+        "ru": "Яркие цвета для развития восприятия",
+        "kk": "Қабылдауды дамытуға арналған жарқын түстер",
+        "en": "Bright colors for perceptual development"
+      }
+    ],
+    "specifications": {
+      "Размеры упаковки": "36.5 x 36.5 x 6.5 см",
+      "Вес брутто": "17 кг",
+      "Вес нетто": "15 кг",
+      "Количество деталей": "48 шт",
+      "Размеры фигур": "63.5 x 42 x 79 см"
+    },
+    "parameters": {
+      "Connection Type": "Magnetic",
+      "Material": "Safe Plastic",
+      "Control Method": "Manual"
+    }
+  },
+  {
+    "sku": "TOY-SCI-004",
+    "name": {
+      "ru": "Набор для научных экспериментов «6 в 1»",
+      "kk": "Ғылыми эксперименттерге арналған «6-да-1» жиынтық",
+      "en": "Science Experiment Kit 6-in-1"
+    },
+    "description": {
+      "ru": "Образовательный набор для проведения 6 механических экспериментов. Позволяет изучать законы механики, силу, движение и баланс в увлекательной форме.",
+      "kk": "6 механикалық эксперимент жүргізуге арналған білім беру жиынтығы. Механика заңдарын, күш, қозғалыс және тепе-теңдікті қызықты түрде зерттеуге мүмкіндік береді.",
+      "en": "Educational kit for conducting 6 mechanical experiments. Allows studying laws of mechanics, force, motion and balance in an engaging way."
+    },
+    "price": 10287,
+    "salePrice": 8744,
+    "category": "Наборы для экспериментов",
+    "subcategory": "Механика и физика",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/science-6in1.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 48,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "наука",
+      "механика",
+      "эксперименты",
+      "STEM",
+      "дерево"
+    ],
+    "features": [
+      {
+        "ru": "6 увлекательных проектов",
+        "kk": "6 қызықты жоба",
+        "en": "6 fascinating projects"
+      },
+      {
+        "ru": "Деревянные детали высокого качества",
+        "kk": "Жоғары сапалы ағаш бөліктер",
+        "en": "High-quality wooden parts"
+      },
+      {
+        "ru": "Наклейки и подробные инструкции",
+        "kk": "Жапсырмалар және егжей-тегжейлі нұсқаулар",
+        "en": "Stickers and detailed instructions"
+      }
+    ],
+    "specifications": {
+      "Размеры коробки": "54 x 48 x 51 см",
+      "Вес брутто": "23 кг",
+      "Вес нетто": "21 кг",
+      "Количество элементов": "48 шт",
+      "Размеры набора": "16 x 6 x 23 см"
+    },
+    "parameters": {
+      "Material": "Wood",
+      "Projects": "6",
+      "Control Method": "Manual"
+    }
+  },
+  {
+    "sku": "TOY-SCI-005",
+    "name": {
+      "ru": "Набор для научных открытий «Science Discovery Kit»",
+      "kk": "«Science Discovery Kit» ғылыми жаңалықтар жиынтығы",
+      "en": "Science Discovery Kit — 73 Experiments"
+    },
+    "description": {
+      "ru": "Комплексный научный набор для проведения 73 экспериментов в области химии и науки. Включает пробирки, колбы и безопасные химические реактивы для детей от 8 лет.",
+      "kk": "Химия және ғылым саласында 73 эксперимент жүргізуге арналған кешенді ғылыми жиынтық. Пробиркалар, колбалар және 8 жастан жоғары балаларға арналған қауіпсіз химиялық реагенттерді қамтиды.",
+      "en": "Comprehensive science kit for 73 chemistry and science experiments. Includes test tubes, flasks and safe chemical reagents for children aged 8+."
+    },
+    "price": 13635,
+    "salePrice": 11590,
+    "category": "Наборы для экспериментов",
+    "subcategory": "Химия и наука",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/science-discovery.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 12,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "химия",
+      "наука",
+      "73 эксперимента",
+      "пробирки",
+      "лаборатория"
+    ],
+    "features": [
+      {
+        "ru": "73 химических эксперимента",
+        "kk": "73 химиялық эксперимент",
+        "en": "73 chemistry experiments"
+      },
+      {
+        "ru": "Безопасные реактивы в комплекте",
+        "kk": "Жиынтықта қауіпсіз реагенттер",
+        "en": "Safe reagents included"
+      },
+      {
+        "ru": "Полное руководство по экспериментам",
+        "kk": "Эксперименттерге арналған толық нұсқаулық",
+        "en": "Complete experiment guidebook"
+      }
+    ],
+    "specifications": {
+      "Размеры коробки": "49 x 30.5 x 52 см",
+      "Вес брутто": "9.5 кг",
+      "Вес нетто": "8 кг",
+      "Количество элементов": "73 шт",
+      "Количество комплектов": "12"
+    },
+    "parameters": {
+      "Material": "Plastic + Glass",
+      "Experiments": "73",
+      "Subject": "Chemistry & Science"
+    }
+  },
+  {
+    "sku": "TOY-ROB-006",
+    "name": {
+      "ru": "Роботы-конструкторы STEM «Паук и Солнечный Робот»",
+      "kk": "«Өрмекші және Күн Роботы» STEM робот-конструкторлары",
+      "en": "Spider & Solar Robot STEM Constructor Kit"
+    },
+    "description": {
+      "ru": "Образовательный конструктор для сборки двух роботов на солнечной энергии: паука и солнечного робота. Развивает интерес к экологии, науке и технике. Батарейки не нужны!",
+      "kk": "Күн энергиясымен жұмыс істейтін екі роботты — өрмекші мен күн роботын жасауға арналған білім беру конструкторы. Экология, ғылым және технологияға деген қызығушылықты дамытады. Батарея қажет емес!",
+      "en": "Educational constructor for building two solar-powered robots: a spider and a solar robot. Develops interest in ecology, science and technology. No batteries needed!"
+    },
+    "price": 9612,
+    "salePrice": 8170,
+    "category": "Робототехника",
+    "subcategory": "Роботы на солнечных батареях",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/spider-solar-robot.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 20,
+    "ageRange": "4+",
+    "difficulty": "Beginner",
+    "tags": [
+      "солнечный",
+      "экология",
+      "паук",
+      "STEM",
+      "робот"
+    ],
+    "features": [
+      {
+        "ru": "Работает на солнечной энергии",
+        "kk": "Күн энергиясымен жұмыс істейді",
+        "en": "Runs on solar energy"
+      },
+      {
+        "ru": "2 робота в одном наборе",
+        "kk": "Бір жиынтықта 2 робот",
+        "en": "2 robots in one set"
+      },
+      {
+        "ru": "Батарейки не требуются",
+        "kk": "Батарея талап етілмейді",
+        "en": "No batteries required"
+      }
+    ],
+    "specifications": {
+      "Размеры упаковки": "35 x 5 x 23 см",
+      "Вес брутто": "24 кг",
+      "Вес нетто": "22 кг",
+      "Роботов в комплекте": "2 (паук + солнечный)",
+      "Источник питания": "Солнечная панель"
+    },
+    "parameters": {
+      "Power Source": "Solar",
+      "Material": "Safe Plastic",
+      "Control Method": "Manual + Solar"
+    }
+  },
+  {
+    "sku": "TOY-ROB-007",
+    "name": {
+      "ru": "Конструктор «Механический сборный дракон»",
+      "kk": "«Механикалық жиналмалы айдаhар» конструкторы",
+      "en": "Mechanical DIY Dragon Constructor Kit"
+    },
+    "description": {
+      "ru": "Образовательный конструктор для сборки механического дракона. Знакомит с основами инженерии и механики. Собранный дракон двигается и имитирует настоящего дракона.",
+      "kk": "Механикалық айдаhарды жасауға арналған білім беру конструкторы. Инженерия мен механиканың негіздерімен таныстырады. Жиналған айдаhар қозғалып, нақты айдаhарды еліктейді.",
+      "en": "Educational constructor for building a mechanical dragon. Introduces basics of engineering and mechanics. The assembled dragon moves and imitates a real dragon."
+    },
+    "price": 6534,
+    "salePrice": 5554,
+    "category": "Конструкторы",
+    "subcategory": "Механические конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/mechanical-dragon.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 48,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "дракон",
+      "механика",
+      "STEM",
+      "инженерия",
+      "движущиеся части"
+    ],
+    "features": [
+      {
+        "ru": "Двигается после сборки",
+        "kk": "Жинағаннан кейін қозғалады",
+        "en": "Moves after assembly"
+      },
+      {
+        "ru": "48 деталей для сборки",
+        "kk": "Жинауға арналған 48 бөлік",
+        "en": "48 parts for assembly"
+      },
+      {
+        "ru": "Развивает инженерное мышление",
+        "kk": "Инженерлік ойлауды дамытады",
+        "en": "Develops engineering thinking"
+      }
+    ],
+    "specifications": {
+      "Размеры коробки": "17.5 x 6.3 x 26.5 см",
+      "Вес брутто": "21.3 кг",
+      "Вес нетто": "19.2 кг",
+      "Количество деталей": "48 шт"
+    },
+    "parameters": {
+      "Material": "Safe Plastic",
+      "Moving Parts": "Yes",
+      "Control Method": "Manual"
+    }
+  },
+  {
+    "sku": "TOY-PZL-008",
+    "name": {
+      "ru": "Головоломка «Магический Куб»",
+      "kk": "«Сиқырлы куб» басқатырғысы",
+      "en": "Magic Cube 3-in-1 Puzzle Set"
+    },
+    "description": {
+      "ru": "Развивающая головоломка из 3 элементов: кубик 3x3, мигающий треугольник и мягкий интерактивный шар с подсветкой. Тренирует логику, внимательность и пространственное восприятие.",
+      "kk": "3 элементтен тұратын дамытушы басқатырғы: 3x3 кубик, жыпылықтаушы үшбұрыш және жарықтандырылған жұмсақ интерактивті доп. Логика, зейін және кеңістіктік қабылдауды жаттықтырады.",
+      "en": "Educational puzzle with 3 elements: 3x3 cube, flashing triangle and soft interactive ball with lighting. Trains logic, attention and spatial perception."
+    },
+    "price": 6912,
+    "salePrice": 5875,
+    "category": "Головоломки",
+    "subcategory": "Логические головоломки",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/magic-cube.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 15,
+    "ageRange": "6+",
+    "difficulty": "Beginner",
+    "tags": [
+      "куб",
+      "головоломка",
+      "логика",
+      "светодиоды",
+      "3 в 1"
+    ],
+    "features": [
+      {
+        "ru": "3 игрушки в одной коробке",
+        "kk": "Бір қорапта 3 ойыншық",
+        "en": "3 toys in one box"
+      },
+      {
+        "ru": "Подсветка и звуковые эффекты",
+        "kk": "Жарықтандыру және дыбыстық эффектілер",
+        "en": "Lighting and sound effects"
+      },
+      {
+        "ru": "Прозрачное окно на упаковке",
+        "kk": "Орамада мөлдір терезе",
+        "en": "Transparent window on packaging"
+      }
+    ],
+    "specifications": {
+      "Размеры упаковки": "18 x 9 x 23 см",
+      "Вес брутто": "21 кг",
+      "Вес нетто": "19 кг",
+      "Количество элементов": "3 (куб, треугольник, шар)"
+    },
+    "parameters": {
+      "Material": "High-Quality Plastic",
+      "Lighting": "Yes",
+      "Control Method": "Manual"
+    }
+  },
+  {
+    "sku": "TOY-CNS-009",
+    "name": {
+      "ru": "Конструктор с присосками «Suction Cup Building Block»",
+      "kk": "Сорғыштары бар конструктор «Suction Cup Building Block»",
+      "en": "Suction Cup Building Block Constructor"
+    },
+    "description": {
+      "ru": "60 разноцветных силиконовых деталей с присосками для создания уникальных фигур и конструкций. Развивает творческие и моторные навыки у детей от 3 лет.",
+      "kk": "Бірегей фигуралар мен конструкциялар жасауға арналған сорғыштары бар 60 түрлі-түсті силикон бөліктер. 3 жастан жоғары балалардың шығармашылық және моторикасын дамытады.",
+      "en": "60 colorful silicone pieces with suction cups for creating unique shapes and constructions. Develops creative and motor skills in children from 3 years."
+    },
+    "price": 8748,
+    "salePrice": 7436,
+    "category": "Конструкторы",
+    "subcategory": "Мягкие конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/suction-cup-blocks.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 20,
+    "ageRange": "3+",
+    "difficulty": "Beginner",
+    "tags": [
+      "присоски",
+      "силикон",
+      "60 деталей",
+      "цветной",
+      "творчество"
+    ],
+    "features": [
+      {
+        "ru": "60 силиконовых элементов",
+        "kk": "60 силикон элемент",
+        "en": "60 silicone elements"
+      },
+      {
+        "ru": "Легко соединяются присосками",
+        "kk": "Сорғыштармен оңай қосылады",
+        "en": "Easy to connect with suction cups"
+      },
+      {
+        "ru": "Безопасная силиконовая резина",
+        "kk": "Қауіпсіз силикон резина",
+        "en": "Safe silicone rubber"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "23 x 19 x 5 см",
+      "Вес брутто": "20 кг",
+      "Вес нетто": "18 кг",
+      "Количество деталей": "60 шт",
+      "Материал": "Силиконовая резина"
+    },
+    "parameters": {
+      "Material": "Silicone Rubber",
+      "Connection Type": "Suction Cup",
+      "Control Method": "Manual"
+    }
+  },
+  {
+    "sku": "TOY-SCI-010",
+    "name": {
+      "ru": "Набор для механических экспериментов «3 в 1»",
+      "kk": "Механикалық эксперименттерге арналған «3-де-1» жиынтық",
+      "en": "Science Mechanical Experiment Kit 3-in-1"
+    },
+    "description": {
+      "ru": "Набор для физических экспериментов по механике. Позволяет изучать законы движения, трения и другие физические явления. Деревянные детали промежуточного уровня сложности.",
+      "kk": "Механика бойынша физикалық эксперименттерге арналған жиынтық. Қозғалыс заңдарын, үйкелісті және басқа физикалық құбылыстарды зерттеуге мүмкіндік береді.",
+      "en": "Kit for physical mechanics experiments. Allows studying laws of motion, friction and other physical phenomena. Wooden parts of intermediate complexity."
+    },
+    "price": 5427,
+    "salePrice": 4613,
+    "category": "Наборы для экспериментов",
+    "subcategory": "Механика и физика",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/experiment-3in1.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 25,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "механика",
+      "физика",
+      "дерево",
+      "3 в 1",
+      "эксперименты"
+    ],
+    "features": [
+      {
+        "ru": "3 механических эксперимента",
+        "kk": "3 механикалық эксперимент",
+        "en": "3 mechanical experiments"
+      },
+      {
+        "ru": "Высококачественные деревянные детали",
+        "kk": "Жоғары сапалы ағаш бөліктер",
+        "en": "High-quality wooden parts"
+      },
+      {
+        "ru": "Подробные инструкции по сборке",
+        "kk": "Егжей-тегжейлі монтаж нұсқаулары",
+        "en": "Detailed assembly instructions"
+      }
+    ],
+    "specifications": {
+      "Размер упаковки": "16 x 5 x 23 см",
+      "Вес брутто": "18.5 кг",
+      "Вес нетто": "16.5 кг"
+    },
+    "parameters": {
+      "Material": "Wood",
+      "Projects": "3",
+      "Subject": "Physics / Mechanics"
+    }
+  },
+  {
+    "sku": "TOY-SCI-011",
+    "name": {
+      "ru": "Набор для оптических экспериментов «4 в 1»",
+      "kk": "Оптикалық эксперименттерге арналған «4-де-1» жиынтық",
+      "en": "Optical Science Experiment Kit 4-in-1"
+    },
+    "description": {
+      "ru": "Набор для оптических экспериментов: перископы, бинокли, проекционные устройства. Изучение света и его свойств в игровой форме. Деревянные детали высокого качества.",
+      "kk": "Оптикалық эксперименттерге арналған жиынтық: перископтар, дүрбілер, проекциялық құрылғылар. Жарықты және оның қасиеттерін ойын түрінде зерттеу.",
+      "en": "Kit for optical experiments: periscopes, binoculars, projection devices. Studying light and its properties in a playful way. High-quality wooden parts."
+    },
+    "price": 7587,
+    "salePrice": 6449,
+    "category": "Наборы для экспериментов",
+    "subcategory": "Оптика и физика",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/optics-4in1.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 20,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "оптика",
+      "перископ",
+      "физика",
+      "4 в 1",
+      "дерево"
+    ],
+    "features": [
+      {
+        "ru": "Сборка перископов и биноклей",
+        "kk": "Перископтар мен дүрбілерді жинау",
+        "en": "Build periscopes and binoculars"
+      },
+      {
+        "ru": "Изучение оптики и света",
+        "kk": "Оптика мен жарықты зерттеу",
+        "en": "Study optics and light"
+      },
+      {
+        "ru": "4 проекта в одном наборе",
+        "kk": "Бір жиынтықта 4 жоба",
+        "en": "4 projects in one kit"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "16 x 5 x 23 см",
+      "Вес брутто": "21 кг",
+      "Вес нетто": "19 кг"
+    },
+    "parameters": {
+      "Material": "Wood",
+      "Projects": "4",
+      "Subject": "Optics / Physics"
+    }
+  },
+  {
+    "sku": "TOY-CNS-012",
+    "name": {
+      "ru": "Мягкий конструктор «Динозавр из 3D Блоков»",
+      "kk": "«3D блоктардан жасалған динозавр» жұмсақ конструкторы",
+      "en": "3D Foam Block Dinosaur Constructor"
+    },
+    "description": {
+      "ru": "60 деталей из лёгкой ева-пенки для сборки 3D-динозавра. Развивает творческое мышление и мелкую моторику. Лёгкие и безопасные детали для малышей от 3 лет.",
+      "kk": "3D-динозавр жинауға арналған жеңіл eva-köpік 60 бөлік. Шығармашылық ойлау мен ұсақ моториканы дамытады. 3 жастан жоғары балаларға арналған жеңіл және қауіпсіз бөліктер.",
+      "en": "60 lightweight EVA foam pieces for assembling a 3D dinosaur. Develops creative thinking and fine motor skills. Light and safe pieces for children from 3 years."
+    },
+    "price": 3348,
+    "salePrice": 2846,
+    "category": "Конструкторы",
+    "subcategory": "Мягкие конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/3d-dinosaur.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 30,
+    "ageRange": "3+",
+    "difficulty": "Beginner",
+    "tags": [
+      "динозавр",
+      "3D",
+      "пенка",
+      "60 деталей",
+      "малыши"
+    ],
+    "features": [
+      {
+        "ru": "Лёгкий материал EVA-пенка",
+        "kk": "Жеңіл EVA-köpік материал",
+        "en": "Lightweight EVA foam material"
+      },
+      {
+        "ru": "60 деталей для сборки",
+        "kk": "Жинауға арналған 60 бөлік",
+        "en": "60 assembly pieces"
+      },
+      {
+        "ru": "Безопасно для малышей",
+        "kk": "Кішкентай балаларға қауіпсіз",
+        "en": "Safe for toddlers"
+      }
+    ],
+    "specifications": {
+      "Размер динозавра": "25.8 x 19.2 x 5.8 см",
+      "Вес брутто": "24 кг",
+      "Вес нетто": "22 кг",
+      "Количество деталей": "60 шт",
+      "Материал": "EVA-пенка"
+    },
+    "parameters": {
+      "Material": "EVA Foam",
+      "Control Method": "Manual",
+      "3D Assembly": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-CNS-013",
+    "name": {
+      "ru": "Мягкий конструктор «Животные мира из 3D Блоков»",
+      "kk": "«3D блоктардан жасалған әлем жануарлары» жұмсақ конструкторы",
+      "en": "3D Foam Block World Animals Constructor"
+    },
+    "description": {
+      "ru": "350 деталей из ева-пенки для сборки разнообразных животных: жирафов, зебр, львов. Стимулирует интерес к природе и животному миру у детей от 3 лет.",
+      "kk": "Алуан түрлі жануарларды жинауға арналған eva-köpік 350 бөлік: жирафтар, зебралар, арыстандар. 3 жастан жоғары балалардың табиғат пен жануарлар әлеміне деген қызығушылығын ынталандырады.",
+      "en": "350 EVA foam pieces for assembling various animals: giraffes, zebras, lions. Stimulates interest in nature and wildlife for children from 3 years."
+    },
+    "price": 9639,
+    "salePrice": 8193,
+    "category": "Конструкторы",
+    "subcategory": "Мягкие конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/3d-animals.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 20,
+    "ageRange": "3+",
+    "difficulty": "Beginner",
+    "tags": [
+      "животные",
+      "3D",
+      "пенка",
+      "350 деталей",
+      "природа"
+    ],
+    "features": [
+      {
+        "ru": "350 деталей для сборки животных",
+        "kk": "Жануарларды жинауға арналған 350 бөлік",
+        "en": "350 pieces for animal assembly"
+      },
+      {
+        "ru": "Жираф, зебра, лев и другие",
+        "kk": "Жираф, зебра, арыстан және басқалар",
+        "en": "Giraffe, zebra, lion and more"
+      },
+      {
+        "ru": "Лёгкий и безопасный материал",
+        "kk": "Жеңіл және қауіпсіз материал",
+        "en": "Lightweight and safe material"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "31.5 x 26 x 9 см",
+      "Вес брутто": "24 кг",
+      "Вес нетто": "22 кг",
+      "Количество деталей": "350 шт",
+      "Материал": "EVA-пенка"
+    },
+    "parameters": {
+      "Material": "EVA Foam",
+      "Control Method": "Manual",
+      "3D Assembly": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-CNS-014",
+    "name": {
+      "ru": "Металлический конструктор «Тачки — Вертолёт»",
+      "kk": "«Машиналар — тікұшақ» металл конструкторы",
+      "en": "Metal Construction Set Cars & Helicopter"
+    },
+    "description": {
+      "ru": "60 металлических деталей (шестерни, балки, колёса) для сборки реалистичных моделей техники с подвижными частями. Развивает логическое мышление и инженерные навыки.",
+      "kk": "Қозғалмалы бөліктері бар техниканың реалистік модельдерін жинауға арналған 60 металл бөлік (беріліс, арқалық, дөңгелек). Логикалық ойлау мен инженерлік дағдыларды дамытады.",
+      "en": "60 metal parts (gears, beams, wheels) for assembling realistic models with moving parts. Develops logical thinking and engineering skills."
+    },
+    "price": 6345,
+    "salePrice": 5393,
+    "category": "Конструкторы",
+    "subcategory": "Металлические конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/metal-constructor.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 10,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "металл",
+      "шестерни",
+      "60 деталей",
+      "транспорт",
+      "вертолёт"
+    ],
+    "features": [
+      {
+        "ru": "60 металлических деталей",
+        "kk": "60 металл бөлік",
+        "en": "60 metal parts"
+      },
+      {
+        "ru": "Подвижные части у моделей",
+        "kk": "Модельдердің қозғалмалы бөліктері",
+        "en": "Moving parts on models"
+      },
+      {
+        "ru": "Высококачественная сталь",
+        "kk": "Жоғары сапалы болат",
+        "en": "High-quality steel"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "31.5 x 6 x 23 см",
+      "Размер модели": "24.3 x 10 x 15.8 см",
+      "Вес брутто": "1.2 кг",
+      "Вес нетто": "1 кг",
+      "Количество деталей": "60 шт"
+    },
+    "parameters": {
+      "Material": "Steel + Plastic",
+      "Moving Parts": "Yes",
+      "Control Method": "Manual"
+    }
+  },
+  {
+    "sku": "TOY-CNS-015",
+    "name": {
+      "ru": "Сборная игрушка «Гиппопотам на колёсиках»",
+      "kk": "«Доңғалақтағы бегемот» жиналмалы ойыншық",
+      "en": "Puzzle Assembly Hippo on Wheels"
+    },
+    "description": {
+      "ru": "41 деталь из мягкой резины для сборки яркого гиппопотама с колёсами. Развивает мелкую моторику и логическое мышление. Готовую игрушку можно катать и играть.",
+      "kk": "Дөңгелектері бар жарқын бегемотты жинауға арналған жұмсақ резиналы 41 бөлік. Ұсақ моторика мен логикалық ойлауды дамытады. Дайын ойыншықты домалатуға және ойнауға болады.",
+      "en": "41 soft rubber pieces for assembling a bright hippo with wheels. Develops fine motor skills and logical thinking. The finished toy can be rolled and played with."
+    },
+    "price": 3834,
+    "salePrice": 3259,
+    "category": "Конструкторы",
+    "subcategory": "Мягкие конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/hippo-wheels.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 30,
+    "ageRange": "3+",
+    "difficulty": "Beginner",
+    "tags": [
+      "бегемот",
+      "колёса",
+      "резина",
+      "41 деталь",
+      "малыши"
+    ],
+    "features": [
+      {
+        "ru": "Мягкая резина, безопасна для детей",
+        "kk": "Балаларға қауіпсіз жұмсақ резина",
+        "en": "Soft rubber, safe for children"
+      },
+      {
+        "ru": "Готовая игрушка катается",
+        "kk": "Дайын ойыншық домалайды",
+        "en": "Finished toy can be rolled"
+      },
+      {
+        "ru": "41 деталь для сборки",
+        "kk": "Жинауға арналған 41 бөлік",
+        "en": "41 assembly pieces"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "14 x 8 x 19 см",
+      "Вес брутто": "21.5 кг",
+      "Вес нетто": "18.5 кг",
+      "Количество деталей": "41 шт",
+      "Материал": "Мягкая резина"
+    },
+    "parameters": {
+      "Material": "Soft Rubber",
+      "Wheels": "Yes",
+      "Control Method": "Manual"
+    }
+  },
+  {
+    "sku": "TOY-STM-016",
+    "name": {
+      "ru": "Набор STEM «Средний уровень» — конструктор 4 модели",
+      "kk": "STEM «Орта деңгей» жиынтығы — 4 модель конструкторы",
+      "en": "STEM Intermediate Builder Kit — 4 Models"
+    },
+    "description": {
+      "ru": "Деревянный конструктор для сборки 4 моделей: самолёт с пропеллером, гидравлическая платформа, карусель и светофор. Обучает механике, гидравлике и конструированию.",
+      "kk": "4 модель жинауға арналған ағаш конструктор: ұшақ, гидравликалық платформа, карусель және жол белгісі. Механика, гидравлика және конструкциялауды үйретеді.",
+      "en": "Wooden constructor for assembling 4 models: propeller plane, hydraulic platform, carousel and traffic light. Teaches mechanics, hydraulics and construction."
+    },
+    "price": 12177,
+    "salePrice": 10350,
+    "category": "Конструкторы",
+    "subcategory": "STEM конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/stem-intermediate.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 15,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "STEM",
+      "дерево",
+      "гидравлика",
+      "4 модели",
+      "инженерия"
+    ],
+    "features": [
+      {
+        "ru": "4 модели: самолёт, карусель, светофор, платформа",
+        "kk": "4 модель: ұшақ, карусель, жол белгісі, платформа",
+        "en": "4 models: plane, carousel, traffic light, platform"
+      },
+      {
+        "ru": "Деревянные детали высокого качества",
+        "kk": "Жоғары сапалы ағаш бөліктер",
+        "en": "High-quality wooden parts"
+      },
+      {
+        "ru": "Изучение гидравлики и механики",
+        "kk": "Гидравлика мен механиканы зерттеу",
+        "en": "Study hydraulics and mechanics"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "27 x 21 x 2 см",
+      "Вес брутто": "24.5 кг",
+      "Вес нетто": "23 кг",
+      "Моделей в наборе": "4"
+    },
+    "parameters": {
+      "Material": "Wood",
+      "Projects": "4",
+      "Difficulty": "Intermediate"
+    }
+  },
+  {
+    "sku": "TOY-STM-017",
+    "name": {
+      "ru": "Конструктор «Mechanical Lockbox» — Механический сейф",
+      "kk": "«Mechanical Lockbox» конструкторы — Механикалық сейф",
+      "en": "Mechanical Lockbox Constructor"
+    },
+    "description": {
+      "ru": "Учебно-игровой набор для сборки механического сейфа с замком. Развивает инженерные навыки и понимание принципов работы замков. Деревянный корпус и металлический механизм.",
+      "kk": "Құлыпы бар механикалық сейфті жинауға арналған оқу-ойын жиынтығы. Инженерлік дағдылар мен құлып жұмыс принциптерін түсінуді дамытады. Ағаш корпус және металл механизм.",
+      "en": "Educational game kit for assembling a mechanical safe with lock. Develops engineering skills and understanding of lock mechanisms. Wooden body and metal mechanism."
+    },
+    "price": 3915,
+    "salePrice": 3328,
+    "category": "Конструкторы",
+    "subcategory": "Механические конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/lockbox.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 20,
+    "ageRange": "12+",
+    "difficulty": "Advanced",
+    "tags": [
+      "сейф",
+      "замок",
+      "дерево",
+      "механика",
+      "инженерия"
+    ],
+    "features": [
+      {
+        "ru": "Рабочий механизм замка",
+        "kk": "Жұмысшы құлып механизмі",
+        "en": "Working lock mechanism"
+      },
+      {
+        "ru": "Деревянный и металлический корпус",
+        "kk": "Ағаш және металл корпус",
+        "en": "Wood and metal body"
+      },
+      {
+        "ru": "Понимание работы механизмов",
+        "kk": "Механизмдер жұмысын түсіну",
+        "en": "Understanding how mechanisms work"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "16.5 x 5.5 x 26.1 см",
+      "Размер изделия": "60.5 x 28 x 66 см",
+      "Вес брутто": "12 кг",
+      "Вес нетто": "10 кг"
+    },
+    "parameters": {
+      "Material": "Wood + Metal",
+      "Lock": "Yes",
+      "Control Method": "Manual"
+    }
+  },
+  {
+    "sku": "TOY-STM-018",
+    "name": {
+      "ru": "Конструктор STEM «Слайд-проектор»",
+      "kk": "STEM конструкторы «Слайд проектор»",
+      "en": "STEM Assemble Series Slide Projector Kit"
+    },
+    "description": {
+      "ru": "72 детали для сборки работающего слайд-проектора с освещением и механикой. Работает на батарейках. Развивает инженерное мышление и технические навыки.",
+      "kk": "Жарықтандыру мен механикасы бар жұмыс жасайтын слайд-проекторды жинауға арналған 72 бөлік. Батареяда жұмыс істейді. Инженерлік ойлау мен техникалық дағдыларды дамытады.",
+      "en": "72 pieces for assembling a working slide projector with lighting and mechanics. Battery powered. Develops engineering thinking and technical skills."
+    },
+    "price": 3024,
+    "salePrice": 2570,
+    "category": "Конструкторы",
+    "subcategory": "STEM конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/slide-projector.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 15,
+    "ageRange": "12+",
+    "difficulty": "Advanced",
+    "tags": [
+      "проектор",
+      "электроника",
+      "72 детали",
+      "STEM",
+      "батарейки"
+    ],
+    "features": [
+      {
+        "ru": "Рабочий проектор после сборки",
+        "kk": "Жинағаннан кейін жұмысшы проектор",
+        "en": "Working projector after assembly"
+      },
+      {
+        "ru": "72 детали: дерево, пластик, электроника",
+        "kk": "72 бөлік: ағаш, пластик, электроника",
+        "en": "72 parts: wood, plastic, electronics"
+      },
+      {
+        "ru": "Световые и механические элементы",
+        "kk": "Жарық және механикалық элементтер",
+        "en": "Light and mechanical elements"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "16.5 x 5.5 x 26.1 см",
+      "Размер модели": "60.5 x 28 x 66 см",
+      "Вес брутто": "1.2 кг",
+      "Вес нетто": "1 кг",
+      "Количество деталей": "72 шт"
+    },
+    "parameters": {
+      "Power Source": "Battery",
+      "Material": "Wood + Plastic + Electronics",
+      "Lighting": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-PZL-019",
+    "name": {
+      "ru": "3D Головоломка «Intelligent Puzzle Game»",
+      "kk": "«Intelligent Puzzle Game» 3D басқатырғысы",
+      "en": "Intelligent 3D Puzzle Game"
+    },
+    "description": {
+      "ru": "128 деревянных деталей для тренировки мышления, цветового восприятия и пространственного воображения. Развивает логику, внимание и умственные способности у детей от 3 лет.",
+      "kk": "Ойлауды, түсті қабылдауды және кеңістіктік қиялды жаттықтыруға арналған 128 ағаш бөлік. 3 жастан жоғары балалардың логикасын, зейінін және ақыл-ой қабілеттерін дамытады.",
+      "en": "128 wooden pieces for training thinking, color perception and spatial imagination. Develops logic, attention and mental abilities in children from 3 years."
+    },
+    "price": 3429,
+    "salePrice": 2915,
+    "category": "Головоломки",
+    "subcategory": "Развивающие головоломки",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/intelligent-puzzle.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 25,
+    "ageRange": "3+",
+    "difficulty": "Beginner",
+    "tags": [
+      "головоломка",
+      "128 деталей",
+      "дерево",
+      "логика",
+      "3D"
+    ],
+    "features": [
+      {
+        "ru": "128 деревянных элементов",
+        "kk": "128 ағаш элемент",
+        "en": "128 wooden elements"
+      },
+      {
+        "ru": "Развивает цветовое восприятие",
+        "kk": "Түсті қабылдауды дамытады",
+        "en": "Develops color perception"
+      },
+      {
+        "ru": "3D пространственное мышление",
+        "kk": "3D кеңістіктік ойлау",
+        "en": "3D spatial thinking"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "15 x 4 x 15 см",
+      "Размер упаковки": "51.5 x 31.5 x 47 см",
+      "Вес брутто": "23 кг",
+      "Вес нетто": "20.5 кг",
+      "Количество деталей": "128 шт"
+    },
+    "parameters": {
+      "Material": "Wood",
+      "Control Method": "Manual",
+      "3D": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-EDU-020",
+    "name": {
+      "ru": "Монтессори-книга «Busy Book» для малышей",
+      "kk": "Кішкентай балаларға арналған Монтессори «Busy Book»",
+      "en": "Busy Book Montessori Activity Book for Toddlers"
+    },
+    "description": {
+      "ru": "48 тканевых элементов: карточки, фигурки, кнопки, часы, буквы. Помогает детям от 3 лет развивать внимательность, мелкую моторику, умение узнавать предметы и цвета.",
+      "kk": "48 мата элементтер: карточкалар, фигуралар, батырмалар, сағат, әріптер. 3 жастан жоғары балалардың зейінін, ұсақ моторикасын, заттарды тану қабілетін дамытуға көмектеседі.",
+      "en": "48 fabric elements: cards, figures, buttons, clock, letters. Helps children from 3 years develop attention, fine motor skills and ability to recognize objects and colors."
+    },
+    "price": 13851,
+    "salePrice": 11773,
+    "category": "Развивающие игрушки",
+    "subcategory": "Монтессори",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/busy-book.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 16,
+    "ageRange": "3+",
+    "difficulty": "Beginner",
+    "tags": [
+      "Монтессори",
+      "ткань",
+      "буквы",
+      "часы",
+      "48 элементов"
+    ],
+    "features": [
+      {
+        "ru": "48 мягких тканевых элементов",
+        "kk": "48 жұмсақ мата элемент",
+        "en": "48 soft fabric elements"
+      },
+      {
+        "ru": "Буквы, цифры, часы и формы",
+        "kk": "Әріптер, сандар, сағат және пішіндер",
+        "en": "Letters, numbers, clock and shapes"
+      },
+      {
+        "ru": "Метод Монтессори",
+        "kk": "Монтессори әдісі",
+        "en": "Montessori method"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "61 x 46 x 58 см",
+      "Вес брутто": "17.5 кг",
+      "Вес нетто": "16 кг",
+      "Количество элементов": "48 шт",
+      "Материал": "Мягкая ткань"
+    },
+    "parameters": {
+      "Material": "Soft Fabric",
+      "Method": "Montessori",
+      "Control Method": "Manual"
+    }
+  },
+  {
+    "sku": "TOY-EDU-021",
+    "name": {
+      "ru": "Магнитная доска и головоломка «Magnetic Puzzle»",
+      "kk": "«Magnetic Puzzle» магниттік тақта және басқатырғы",
+      "en": "Magnetic Puzzle & Drawing Board"
+    },
+    "description": {
+      "ru": "30 магнитных букв и слов + доска для рисования. Дети учатся писать, узнавать слова и развивают моторику. Деревянная основа, идеально для раннего обучения.",
+      "kk": "30 магниттік әріп пен сөз + сурет салуға арналған тақта. Балалар жазуды, сөздерді тануды үйренеді және моториканы дамытады. Ағаш негіз, ерте оқытуға өте қолайлы.",
+      "en": "30 magnetic letters and words + drawing board. Children learn to write, recognize words and develop motor skills. Wooden base, ideal for early learning."
+    },
+    "price": 9477,
+    "salePrice": 8055,
+    "category": "Развивающие игрушки",
+    "subcategory": "Обучающие доски",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/magnetic-board.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 20,
+    "ageRange": "3+",
+    "difficulty": "Beginner",
+    "tags": [
+      "магнит",
+      "буквы",
+      "доска",
+      "рисование",
+      "дерево"
+    ],
+    "features": [
+      {
+        "ru": "30 магнитных букв в наборе",
+        "kk": "Жиынтықта 30 магниттік әріп",
+        "en": "30 magnetic letters included"
+      },
+      {
+        "ru": "Встроенная доска для рисования",
+        "kk": "Кірістірілген сурет салу тақтасы",
+        "en": "Built-in drawing board"
+      },
+      {
+        "ru": "Деревянная основа",
+        "kk": "Ағаш негіз",
+        "en": "Wooden base"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "27 x 27 x 4.5 см",
+      "Вес брутто": "30 кг",
+      "Вес нетто": "28 кг",
+      "Количество элементов": "30 магнитных букв"
+    },
+    "parameters": {
+      "Material": "Wood",
+      "Magnetic": "Yes",
+      "Board": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-CNS-022",
+    "name": {
+      "ru": "Конструктор «Build & Play» — 8 механических моделей",
+      "kk": "«Build & Play» конструкторы — 8 механикалық модель",
+      "en": "Build & Play Constructor — 8 Mechanical Models"
+    },
+    "description": {
+      "ru": "24 детали из мягкой резины для сборки 8 различных моделей: машинки, роботы, самолёты. Лёгкая сборка, развивает моторику и воображение у детей от 3 лет.",
+      "kk": "8 түрлі модель жинауға арналған жұмсақ резиналы 24 бөлік: машиналар, роботтар, ұшақтар. Оңай жинаудың, 3 жастан жоғары балалардың моторикасы мен қиялын дамытады.",
+      "en": "24 soft rubber pieces for assembling 8 different models: cars, robots, planes. Easy assembly, develops motor skills and imagination for children from 3 years."
+    },
+    "price": 12933,
+    "salePrice": 10993,
+    "category": "Конструкторы",
+    "subcategory": "Мягкие конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/build-play.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 20,
+    "ageRange": "3+",
+    "difficulty": "Beginner",
+    "tags": [
+      "резина",
+      "8 моделей",
+      "машинки",
+      "роботы",
+      "самолёты"
+    ],
+    "features": [
+      {
+        "ru": "8 моделей из одного набора",
+        "kk": "Бір жиынтықтан 8 модель",
+        "en": "8 models from one set"
+      },
+      {
+        "ru": "Мягкая резина, безопасна для детей",
+        "kk": "Балаларға қауіпсіз жұмсақ резина",
+        "en": "Soft rubber, safe for children"
+      },
+      {
+        "ru": "24 детали для сборки",
+        "kk": "Жинауға арналған 24 бөлік",
+        "en": "24 assembly pieces"
+      }
+    ],
+    "specifications": {
+      "Размер упаковки": "39.5 x 8.2 x 29.5 см",
+      "Размеры моделей": "от 11.7 до 23 см",
+      "Вес брутто": "28.8 кг",
+      "Вес нетто": "26.8 кг",
+      "Количество деталей": "24 шт"
+    },
+    "parameters": {
+      "Material": "Soft Rubber",
+      "Models": "8",
+      "Control Method": "Manual"
+    }
+  },
+  {
+    "sku": "TOY-ROB-023",
+    "name": {
+      "ru": "Деревянный 3D-Конструктор «Марсоход»",
+      "kk": "«Марс жер серуендегіші» ағаш 3D конструкторы",
+      "en": "Mars Exploration Vehicle 3D Wooden Constructor"
+    },
+    "description": {
+      "ru": "Экологичная модель марсохода из дерева и пластика. В комплекте электромотор, вентилятор и солнечная панель. Для обучения основам робототехники и космических исследований.",
+      "kk": "Ағаш пен пластиктен жасалған экологиялық марс жер серуендегіші моделі. Жиынтықта электромотор, желдеткіш және күн панелі. Робототехника мен ғарышты зерттеудің негіздерін үйрену үшін.",
+      "en": "Eco-friendly Mars rover model made of wood and plastic. Includes electric motor, fan and solar panel. For learning basics of robotics and space exploration."
+    },
+    "price": 3915,
+    "salePrice": 3328,
+    "category": "Робототехника",
+    "subcategory": "Космические роботы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/mars-rover-wood.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 15,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "марсоход",
+      "космос",
+      "дерево",
+      "солнечный",
+      "электромотор"
+    ],
+    "features": [
+      {
+        "ru": "Электромотор и солнечная панель",
+        "kk": "Электромотор және күн панелі",
+        "en": "Electric motor and solar panel"
+      },
+      {
+        "ru": "Экологичный материал — дерево",
+        "kk": "Экологиялық материал — ағаш",
+        "en": "Eco-friendly material — wood"
+      },
+      {
+        "ru": "Модель реального марсохода",
+        "kk": "Нақты марс жер серуендегішінің моделі",
+        "en": "Model of a real Mars rover"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "27.5 x 18.5 x 6.5 см",
+      "Размер модели": "16.5 x 8 x 6.5 см",
+      "Вес брутто": "17 кг",
+      "Вес нетто": "16 кг"
+    },
+    "parameters": {
+      "Power Source": "Solar + Electric",
+      "Material": "Wood + Plastic",
+      "Theme": "Space"
+    }
+  },
+  {
+    "sku": "TOY-ROB-024",
+    "name": {
+      "ru": "Роботизированная рука с ДУ «Robotic Arm»",
+      "kk": "«Robotic Arm» қашықтан басқарылатын роботтық қол",
+      "en": "Wireless Robotic Arm with Remote Control"
+    },
+    "description": {
+      "ru": "Набор для сборки роботизированной руки с дистанционным управлением. 4 переключателя для различных движений. Развивает техническое мышление и навыки программирования у подростков.",
+      "kk": "Қашықтан басқаруы бар роботтық қолды жинауға арналған жиынтық. Түрлі қозғалыстар үшін 4 ауыстырғыш. Жасөспірімдердің техникалық ойлауы мен бағдарламалау дағдыларын дамытады.",
+      "en": "Kit for assembling a robotic arm with remote control. 4 switches for various movements. Develops technical thinking and programming skills in teenagers."
+    },
+    "price": 37152,
+    "salePrice": 31579,
+    "category": "Робототехника",
+    "subcategory": "Роботизированные руки",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/robotic-arm.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 10,
+    "ageRange": "13+",
+    "difficulty": "Advanced",
+    "tags": [
+      "робот",
+      "рука",
+      "ДУ",
+      "программирование",
+      "электроника"
+    ],
+    "features": [
+      {
+        "ru": "Дистанционное управление в комплекте",
+        "kk": "Жиынтықта қашықтан басқару",
+        "en": "Remote control included"
+      },
+      {
+        "ru": "4 переключателя для движений",
+        "kk": "Қозғалыстар үшін 4 ауыстырғыш",
+        "en": "4 switches for movements"
+      },
+      {
+        "ru": "Полная самостоятельная сборка",
+        "kk": "Толық өзіндік жинау",
+        "en": "Full self-assembly"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "39 x 8.2 x 29.5 см",
+      "Размер робота": "15 x 17 x 23 см",
+      "Вес брутто": "16.5 кг",
+      "Вес нетто": "14.5 кг"
+    },
+    "parameters": {
+      "Control Method": "Remote Control",
+      "Power Source": "Battery",
+      "Material": "Safe Plastic"
+    }
+  },
+  {
+    "sku": "TOY-ROB-025",
+    "name": {
+      "ru": "Гидравлическая рука-робот «Hydraulic Robot Arm»",
+      "kk": "«Hydraulic Robot Arm» гидравликалық роботтық қол",
+      "en": "Hydraulic Robot Arm Kit"
+    },
+    "description": {
+      "ru": "220 деталей для сборки гидравлической роботизированной руки. Функции движения, вращения и захвата. Работает на солнечной энергии или батарейках. Обучает гидравлике и механике.",
+      "kk": "Гидравликалық роботтық қолды жинауға арналған 220 бөлік. Қозғалыс, айналу және ұстап алу функциялары. Күн энергиясы немесе батареяда жұмыс істейді. Гидравлика мен механиканы үйретеді.",
+      "en": "220 parts for assembling a hydraulic robotic arm. Movement, rotation and gripping functions. Runs on solar energy or batteries. Teaches hydraulics and mechanics."
+    },
+    "price": 23300,
+    "salePrice": 19805,
+    "category": "Робототехника",
+    "subcategory": "Роботизированные руки",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/hydraulic-arm.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 12,
+    "ageRange": "8+",
+    "difficulty": "Advanced",
+    "tags": [
+      "гидравлика",
+      "рука-робот",
+      "220 деталей",
+      "солнечный",
+      "ДУ"
+    ],
+    "features": [
+      {
+        "ru": "Гидравлический механизм движения",
+        "kk": "Гидравликалық қозғалыс механизмі",
+        "en": "Hydraulic movement mechanism"
+      },
+      {
+        "ru": "Солнечная панель + аккумулятор",
+        "kk": "Күн панелі + аккумулятор",
+        "en": "Solar panel + battery"
+      },
+      {
+        "ru": "220 деталей для сборки",
+        "kk": "Жинауға арналған 220 бөлік",
+        "en": "220 assembly parts"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "40.5 x 10.5 x 29.5 см",
+      "Размер модели": "28.5 см в длину",
+      "Вес брутто": "23 кг",
+      "Вес нетто": "20.5 кг",
+      "Количество деталей": "220 шт"
+    },
+    "parameters": {
+      "Power Source": "Solar + Battery",
+      "Control Method": "Remote Control",
+      "Material": "Safe Plastic"
+    }
+  },
+  {
+    "sku": "TOY-ROB-026",
+    "name": {
+      "ru": "Гидравлические инженерные машины «3 в 1»",
+      "kk": "«3-де-1» гидравликалық инженерлік машиналар",
+      "en": "3-in-1 Hydraulic Engineering Kit"
+    },
+    "description": {
+      "ru": "168 деталей для сборки 3 гидравлических машин: экскаватора, крана и погрузчика. Управление через гидравлический механизм. Изучение принципов гидравлики и механики.",
+      "kk": "3 гидравликалық машина жинауға арналған 168 бөлік: экскаватор, кран және тиегіш. Гидравликалық механизм арқылы басқару. Гидравлика мен механика принциптерін зерттеу.",
+      "en": "168 parts for assembling 3 hydraulic machines: excavator, crane and loader. Controlled via hydraulic mechanism. Study principles of hydraulics and mechanics."
+    },
+    "price": 16335,
+    "salePrice": 13885,
+    "category": "Робототехника",
+    "subcategory": "Строительная техника",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/hydraulic-3in1.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 12,
+    "ageRange": "8+",
+    "difficulty": "Advanced",
+    "tags": [
+      "гидравлика",
+      "экскаватор",
+      "кран",
+      "168 деталей",
+      "инженерия"
+    ],
+    "features": [
+      {
+        "ru": "3 модели: экскаватор, кран, погрузчик",
+        "kk": "3 модель: экскаватор, кран, тиегіш",
+        "en": "3 models: excavator, crane, loader"
+      },
+      {
+        "ru": "Реальная гидравлическая система",
+        "kk": "Нақты гидравликалық жүйе",
+        "en": "Real hydraulic system"
+      },
+      {
+        "ru": "168 деталей для сборки",
+        "kk": "Жинауға арналған 168 бөлік",
+        "en": "168 assembly parts"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "40.9 x 10 x 24.2 см",
+      "Высота моделей": "до 24.5 см",
+      "Вес брутто": "21.7 кг",
+      "Вес нетто": "20 кг",
+      "Количество деталей": "168 шт"
+    },
+    "parameters": {
+      "Control Method": "Hydraulic Manual",
+      "Material": "Safe Plastic",
+      "Models": "3"
+    }
+  },
+  {
+    "sku": "TOY-ROB-027",
+    "name": {
+      "ru": "Конструктор «Space Mecha Dog» — Собака-Робот",
+      "kk": "«Space Mecha Dog» конструкторы — Робот-Ит",
+      "en": "Space Mecha Dog Robot Constructor"
+    },
+    "description": {
+      "ru": "89 деталей для сборки робота-собаки с функциями передвижения, вращения и световых эффектов. Управляется дистанционно. Работает на солнечной энергии и батарейках.",
+      "kk": "Қозғалу, айналу және жарық эффектілерінің функциялары бар робот-ит жинауға арналған 89 бөлік. Қашықтан басқарылады. Күн энергиясы мен батареяда жұмыс істейді.",
+      "en": "89 parts for assembling a robot dog with movement, rotation and light effects. Remote controlled. Runs on solar energy and batteries."
+    },
+    "price": 7992,
+    "salePrice": 6793,
+    "category": "Робототехника",
+    "subcategory": "Роботы-животные",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/space-dog.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 15,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "собака",
+      "космос",
+      "робот",
+      "89 деталей",
+      "ДУ"
+    ],
+    "features": [
+      {
+        "ru": "Световые эффекты и движение",
+        "kk": "Жарық эффектілері мен қозғалыс",
+        "en": "Light effects and movement"
+      },
+      {
+        "ru": "Солнечная панель в комплекте",
+        "kk": "Жиынтықта күн панелі",
+        "en": "Solar panel included"
+      },
+      {
+        "ru": "89 деталей для сборки",
+        "kk": "Жинауға арналған 89 бөлік",
+        "en": "89 assembly parts"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "22.5 x 20.4 x 6.7 см",
+      "Размер модели": "19.5 x 13.2 x 5.3 см",
+      "Вес брутто": "21.7 кг",
+      "Вес нетто": "20 кг",
+      "Количество деталей": "89 шт"
+    },
+    "parameters": {
+      "Power Source": "Solar + Battery",
+      "Control Method": "Remote Control",
+      "Light Effects": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-ROB-028",
+    "name": {
+      "ru": "Конструктор «6 в 1» Механические роботы на гироскопе",
+      "kk": "«6-да-1» Гироскоптағы механикалық роботтар конструкторы",
+      "en": "6-in-1 Mechanical Gyrobot Kit"
+    },
+    "description": {
+      "ru": "136 деталей для сборки 6 моделей роботов-балансиров с гироскопами. Управление дистанционное или ручное. Работает на батарейках. Развивает инженерное мышление и интерес к робототехнике.",
+      "kk": "Гироскоптары бар 6 балансирлік робот моделін жинауға арналған 136 бөлік. Қашықтан немесе қолмен басқару. Батареяда жұмыс істейді. Инженерлік ойлауды дамытады.",
+      "en": "136 parts for assembling 6 gyroscope balancing robot models. Remote or manual control. Battery powered. Develops engineering thinking and interest in robotics."
+    },
+    "price": 15903,
+    "salePrice": 13518,
+    "category": "Робототехника",
+    "subcategory": "Балансирующие роботы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/gyrobot-6in1.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 10,
+    "ageRange": "8+",
+    "difficulty": "Advanced",
+    "tags": [
+      "гироскоп",
+      "баланс",
+      "6 моделей",
+      "136 деталей",
+      "ДУ"
+    ],
+    "features": [
+      {
+        "ru": "6 различных моделей роботов",
+        "kk": "6 түрлі робот моделі",
+        "en": "6 different robot models"
+      },
+      {
+        "ru": "Гироскопы для балансировки",
+        "kk": "Теңестіру үшін гироскоптар",
+        "en": "Gyroscopes for balancing"
+      },
+      {
+        "ru": "136 деталей для сборки",
+        "kk": "Жинауға арналған 136 бөлік",
+        "en": "136 assembly parts"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "42 x 32 x 6.7 см",
+      "Вес брутто": "21.6 кг",
+      "Вес нетто": "19.5 кг",
+      "Количество деталей": "136 шт",
+      "Моделей": "6"
+    },
+    "parameters": {
+      "Power Source": "Battery",
+      "Control Method": "Remote + Manual",
+      "Gyroscope": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-STM-029",
+    "name": {
+      "ru": "Набор «Circuit & Machinery» — Электрические цепи",
+      "kk": "«Circuit & Machinery» жиынтығы — Электр тізбектері",
+      "en": "Circuit & Machinery Variety Painting Instrument"
+    },
+    "description": {
+      "ru": "37 деталей для сборки электромеханических цепей, вращающихся механизмов и двигателей. Дети от 8 лет познают основы электротехники, механики и физики на практике.",
+      "kk": "Электромеханикалық тізбектер, айналмалы механизмдер мен қозғалтқыштарды жинауға арналған 37 бөлік. 8 жастан жоғары балалар электротехника, механика мен физика негіздерін іс жүзінде үйренеді.",
+      "en": "37 parts for assembling electromechanical circuits, rotating mechanisms and motors. Children from 8 years learn basics of electronics, mechanics and physics in practice."
+    },
+    "price": 10503,
+    "salePrice": 8928,
+    "category": "Наборы для экспериментов",
+    "subcategory": "Электроника и механика",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/circuit-machinery.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 15,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "электроника",
+      "цепи",
+      "механика",
+      "37 деталей",
+      "STEM"
+    ],
+    "features": [
+      {
+        "ru": "Изучение электрических цепей",
+        "kk": "Электр тізбектерін зерттеу",
+        "en": "Study electrical circuits"
+      },
+      {
+        "ru": "Вращающиеся и световые элементы",
+        "kk": "Айналмалы және жарық элементтер",
+        "en": "Rotating and light elements"
+      },
+      {
+        "ru": "37 деталей для сборки",
+        "kk": "Жинауға арналған 37 бөлік",
+        "en": "37 assembly parts"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "37 x 6.7 x 29.5 см",
+      "Вес брутто": "21 кг",
+      "Вес нетто": "19 кг",
+      "Количество деталей": "37 шт"
+    },
+    "parameters": {
+      "Material": "Safe Plastic + Electronics",
+      "Lighting": "Yes",
+      "Power Source": "Battery"
+    }
+  },
+  {
+    "sku": "TOY-ROB-030",
+    "name": {
+      "ru": "Солнечный марсоход «Solar Mars Rover»",
+      "kk": "«Solar Mars Rover» күн марсоходы",
+      "en": "Solar Mars Rover Constructor Kit"
+    },
+    "description": {
+      "ru": "50 деталей для сборки марсохода на солнечных панелях с дистанционным управлением. Световые эффекты и подвижные части. Изучение робототехники, механики и физики.",
+      "kk": "Қашықтан басқарылатын күн панельдері бар марс жер серуендегішін жинауға арналған 50 бөлік. Жарық эффектілері мен қозғалмалы бөліктер. Робототехника, механика мен физиканы зерттеу.",
+      "en": "50 parts for assembling a solar-powered Mars rover with remote control. Light effects and moving parts. Study robotics, mechanics and physics."
+    },
+    "price": 7587,
+    "salePrice": 6449,
+    "category": "Робототехника",
+    "subcategory": "Космические роботы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/solar-mars-rover.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 15,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "марсоход",
+      "солнечный",
+      "космос",
+      "50 деталей",
+      "ДУ"
+    ],
+    "features": [
+      {
+        "ru": "Работает на солнечной энергии",
+        "kk": "Күн энергиясымен жұмыс істейді",
+        "en": "Runs on solar energy"
+      },
+      {
+        "ru": "Пульт ДУ в комплекте",
+        "kk": "Жиынтықта қашықтан басқару пульті",
+        "en": "Remote control included"
+      },
+      {
+        "ru": "Световые эффекты и движение",
+        "kk": "Жарық эффектілері мен қозғалыс",
+        "en": "Light effects and movement"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "25 x 20 x 6 см",
+      "Размер модели": "22.5 x 14 x 14 см",
+      "Вес брутто": "13.2 кг",
+      "Вес нетто": "11.2 кг",
+      "Количество деталей": "50 шт"
+    },
+    "parameters": {
+      "Power Source": "Solar + Battery",
+      "Control Method": "Remote Control",
+      "Theme": "Space"
+    }
+  },
+  {
+    "sku": "TOY-CNS-031",
+    "name": {
+      "ru": "Конструктор «Building Blocks» — 226 деталей",
+      "kk": "«Building Blocks» конструкторы — 226 бөлік",
+      "en": "Building Blocks Constructor — 226 Parts"
+    },
+    "description": {
+      "ru": "226 разноцветных деталей для создания роботов, машин, башен, мостов. Плоские и объёмные конструкции. Развивает моторику, инженерное мышление и пространственное восприятие от 6 лет.",
+      "kk": "Роботтар, машиналар, мұнаралар, көпірлер жасауға арналған 226 түрлі-түсті бөлік. Жазық және көлемді конструкциялар. 6 жастан жоғары балалардың моторикасы мен инженерлік ойлауын дамытады.",
+      "en": "226 colorful pieces for creating robots, cars, towers, bridges. Flat and 3D constructions. Develops motor skills, engineering thinking and spatial perception from age 6."
+    },
+    "price": 12987,
+    "salePrice": 11039,
+    "category": "Конструкторы",
+    "subcategory": "Строительные конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/building-blocks-226.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 15,
+    "ageRange": "6+",
+    "difficulty": "Beginner",
+    "tags": [
+      "конструктор",
+      "226 деталей",
+      "цветной",
+      "пластик",
+      "роботы"
+    ],
+    "features": [
+      {
+        "ru": "226 деталей разных форм и цветов",
+        "kk": "Түрлі пішін мен түстегі 226 бөлік",
+        "en": "226 parts of different shapes and colors"
+      },
+      {
+        "ru": "Плоские и объёмные конструкции",
+        "kk": "Жазық және көлемді конструкциялар",
+        "en": "Flat and 3D constructions"
+      },
+      {
+        "ru": "Безопасный детский пластик",
+        "kk": "Қауіпсіз балалық пластик",
+        "en": "Child-safe plastic"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "43 x 8 x 31 см",
+      "Длина моделей": "до 33 см",
+      "Вес брутто": "26 кг",
+      "Вес нетто": "23 кг",
+      "Количество деталей": "226 шт"
+    },
+    "parameters": {
+      "Material": "Safe Plastic",
+      "Control Method": "Manual",
+      "3D Assembly": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-ROB-032",
+    "name": {
+      "ru": "Набор «13 в 1 Solar Robot Kit» — Солнечные роботы",
+      "kk": "«13-де-1 Solar Robot Kit» жиынтығы — Күн роботтары",
+      "en": "13-in-1 Solar Robot Kit"
+    },
+    "description": {
+      "ru": "Конструктор для сборки 13 различных моделей роботов на солнечной энергии: боевики, животные, транспорт. Развивает логику, инженерные навыки и экологическое сознание от 8 лет.",
+      "kk": "Күн энергиясындағы 13 түрлі робот моделін жинауға арналған конструктор: жауынгерлер, жануарлар, транспорт. 8 жастан жоғары балалардың логикасы, инженерлік дағдылары мен экологиялық санасын дамытады.",
+      "en": "Constructor for assembling 13 different solar-powered robot models: warriors, animals, transport. Develops logic, engineering skills and ecological awareness from age 8."
+    },
+    "price": 8181,
+    "salePrice": 6954,
+    "category": "Робототехника",
+    "subcategory": "Роботы на солнечных батареях",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/solar-13in1.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 12,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "солнечный",
+      "13 моделей",
+      "робот",
+      "экология",
+      "трансформация"
+    ],
+    "features": [
+      {
+        "ru": "13 различных моделей роботов",
+        "kk": "13 түрлі робот моделі",
+        "en": "13 different robot models"
+      },
+      {
+        "ru": "Только солнечная энергия — без батареек",
+        "kk": "Тек күн энергиясы — батарея жоқ",
+        "en": "Solar power only — no batteries"
+      },
+      {
+        "ru": "Трансформирующийся дизайн",
+        "kk": "Трансформацияланатын дизайн",
+        "en": "Transforming design"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "38 x 28 x 6 см",
+      "Вес брутто": "28.5 кг",
+      "Вес нетто": "24.6 кг",
+      "Моделей": "13"
+    },
+    "parameters": {
+      "Power Source": "Solar Only",
+      "Models": "13",
+      "Material": "Safe Plastic"
+    }
+  },
+  {
+    "sku": "TOY-ROB-033",
+    "name": {
+      "ru": "Конструктор «Солнечный домик-робот»",
+      "kk": "«Күн энергиясындағы үй-робот» конструкторы",
+      "en": "Solar House Robot Constructor"
+    },
+    "description": {
+      "ru": "Модель солнечного домика с ветряной мельницей и музыкальным мегафоном. Работает на солнечной энергии. Световые и звуковые эффекты. Изучение солнечных батарей и электроники.",
+      "kk": "Желдіруші және музыкалық мегафоны бар күн үйінің моделі. Күн энергиясымен жұмыс істейді. Жарық және дыбыстық эффектілер. Күн батареялары мен электроника туралы зерттеу.",
+      "en": "Solar house model with windmill and musical megaphone. Runs on solar energy. Light and sound effects. Study of solar batteries and electronics."
+    },
+    "price": 11340,
+    "salePrice": 9639,
+    "category": "Робототехника",
+    "subcategory": "Роботы на солнечных батареях",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/solar-house.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 12,
+    "ageRange": "8+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "солнечный",
+      "домик",
+      "звук",
+      "свет",
+      "ветряная мельница"
+    ],
+    "features": [
+      {
+        "ru": "Ветряная мельница и мегафон",
+        "kk": "Желдіруші және мегафон",
+        "en": "Windmill and megaphone"
+      },
+      {
+        "ru": "Световые и звуковые эффекты",
+        "kk": "Жарық және дыбыстық эффектілер",
+        "en": "Light and sound effects"
+      },
+      {
+        "ru": "ABS пластик + металл",
+        "kk": "ABS пластик + металл",
+        "en": "ABS plastic + metal"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "23 x 20 x 6 см",
+      "Вес брутто": "30.2 кг",
+      "Вес нетто": "26.1 кг",
+      "Материал": "ABS + металл + электроника"
+    },
+    "parameters": {
+      "Power Source": "Solar",
+      "Sound": "Yes",
+      "Lighting": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-EDU-034",
+    "name": {
+      "ru": "Магнитная книга с животными «Magnetic Book»",
+      "kk": "Жануарлары бар «Magnetic Book» магниттік кітап",
+      "en": "Magnetic Book with Animal Puzzles"
+    },
+    "description": {
+      "ru": "Интерактивная книга с магнитными карточками животных и дополнительными фигурками. Создавайте сцены на страницах книги. Развивает воображение, логику и моторику от 3 лет.",
+      "kk": "Жануарлардың магниттік карточкалары мен қосымша фигуралары бар интерактивті кітап. Кітаптың беттерінде сахналар жасаңыз. 3 жастан жоғары балалардың қиялы, логикасы мен моторикасын дамытады.",
+      "en": "Interactive book with magnetic animal cards and additional figures. Create scenes on book pages. Develops imagination, logic and motor skills from age 3."
+    },
+    "price": 7695,
+    "salePrice": 6541,
+    "category": "Развивающие игрушки",
+    "subcategory": "Магнитные игрушки",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/magnetic-book.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 20,
+    "ageRange": "3+",
+    "difficulty": "Beginner",
+    "tags": [
+      "магнит",
+      "книга",
+      "животные",
+      "карточки",
+      "интерактивный"
+    ],
+    "features": [
+      {
+        "ru": "Магнитные карточки с животными",
+        "kk": "Жануарлары бар магниттік карточкалар",
+        "en": "Magnetic cards with animals"
+      },
+      {
+        "ru": "Создание сцен на страницах",
+        "kk": "Беттерде сахналар жасау",
+        "en": "Create scenes on pages"
+      },
+      {
+        "ru": "Безопасные магниты для детей",
+        "kk": "Балаларға арналған қауіпсіз магниттер",
+        "en": "Child-safe magnets"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "12 x 12 x 4 см",
+      "Вес брутто": "26 кг",
+      "Вес нетто": "24.5 кг"
+    },
+    "parameters": {
+      "Material": "Safe Plastic + Cardboard",
+      "Magnetic": "Yes",
+      "Interactive": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-PZL-035",
+    "name": {
+      "ru": "Головоломка «Geometric Puzzle Game» — Геометрия",
+      "kk": "«Geometric Puzzle Game» басқатырғысы — Геометрия",
+      "en": "Geometric Puzzle Game"
+    },
+    "description": {
+      "ru": "9 геометрических фигур и 4 карточки с заданиями. Тренирует логическое мышление, внимание и пространственное восприятие. Безопасный пластик, подходит для детей от 3 лет.",
+      "kk": "9 геометриялық фигура және 4 тапсырмалы карточка. Логикалық ойлау, зейін және кеңістіктік қабылдауды жаттықтырады. Қауіпсіз пластик, 3 жастан жоғары балаларға қолайлы.",
+      "en": "9 geometric shapes and 4 task cards. Trains logical thinking, attention and spatial perception. Safe plastic, suitable for children from 3 years."
+    },
+    "price": 11772,
+    "salePrice": 10006,
+    "category": "Головоломки",
+    "subcategory": "Геометрические головоломки",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/geometric-puzzle.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 20,
+    "ageRange": "3+",
+    "difficulty": "Beginner",
+    "tags": [
+      "геометрия",
+      "фигуры",
+      "карточки",
+      "логика",
+      "пластик"
+    ],
+    "features": [
+      {
+        "ru": "9 геометрических фигур",
+        "kk": "9 геометриялық фигура",
+        "en": "9 geometric shapes"
+      },
+      {
+        "ru": "4 карточки с заданиями",
+        "kk": "4 тапсырмалы карточка",
+        "en": "4 task cards"
+      },
+      {
+        "ru": "Яркий безопасный пластик",
+        "kk": "Жарқын қауіпсіз пластик",
+        "en": "Bright safe plastic"
+      }
+    ],
+    "specifications": {
+      "Размер упаковки": "20 x 15 x 4 см",
+      "Вес брутто": "19 кг",
+      "Вес нетто": "17.5 кг",
+      "Количество деталей": "9 фигур + 4 карточки"
+    },
+    "parameters": {
+      "Material": "Safe Plastic",
+      "Control Method": "Manual",
+      "Educational": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-EDU-036",
+    "name": {
+      "ru": "Многофункциональный обучающий игровой стол",
+      "kk": "Көп функциялы оқыту ойын үстелі",
+      "en": "MultiFunctionLearningGame Table"
+    },
+    "description": {
+      "ru": "Игровой стол-конструктор с электродрелью, шестернями и инструментами. 24 детали для сборки механических устройств. Развивает логику, моторику и технические навыки от 3 лет.",
+      "kk": "Электр бұрғысы, беріліс және құралдары бар ойын үстелі-конструкторы. Механикалық құрылғыларды жинауға арналған 24 бөлік. 3 жастан жоғары балалардың логикасы, моторикасы мен техникалық дағдыларын дамытады.",
+      "en": "Game table-constructor with electric drill, gears and tools. 24 parts for assembling mechanical devices. Develops logic, motor skills and technical skills from age 3."
+    },
+    "price": 13851,
+    "salePrice": 11773,
+    "category": "Развивающие игрушки",
+    "subcategory": "Игровые столы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/learning-table.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 15,
+    "ageRange": "3+",
+    "difficulty": "Beginner",
+    "tags": [
+      "стол",
+      "дрель",
+      "шестерни",
+      "24 детали",
+      "инструменты"
+    ],
+    "features": [
+      {
+        "ru": "Электродрель на батарейках",
+        "kk": "Батареядағы электр бұрғы",
+        "en": "Battery-powered electric drill"
+      },
+      {
+        "ru": "Защитный шлем в комплекте",
+        "kk": "Жиынтықта қорғаныш шлемі",
+        "en": "Protective helmet included"
+      },
+      {
+        "ru": "Игровой стол 36×25×13 см",
+        "kk": "36×25×13 см ойын үстелі",
+        "en": "Game table 36×25×13 cm"
+      }
+    ],
+    "specifications": {
+      "Размер упаковки": "36 x 25 x 13 см",
+      "Размер стола": "36 x 25 x 13 см",
+      "Вес брутто": "26 кг",
+      "Вес нетто": "24 кг",
+      "Количество деталей": "24 шт"
+    },
+    "parameters": {
+      "Power Source": "Battery",
+      "Material": "Safe Plastic + Metal",
+      "Drill Included": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-SCI-037",
+    "name": {
+      "ru": "Набор «Маленький Учёный» — 10 физических экспериментов",
+      "kk": "«Кіші Ғалым» жиынтығы — 10 физика эксперименті",
+      "en": "Little Scientist Kit — 10 Physics Experiments"
+    },
+    "description": {
+      "ru": "10 экспериментов по физике: настольная лампа, обезьяна-скалолаз, граффити-робот, электровентилятор и другие. Деревянные и пластиковые детали для детей от 6 лет.",
+      "kk": "Физика бойынша 10 эксперимент: үстел шамы, альпинист маймыл, граффити-робот, электр желдеткіш және басқалар. 6 жастан жоғары балаларға арналған ағаш пен пластик бөліктер.",
+      "en": "10 physics experiments: desk lamp, climbing monkey, graffiti robot, electric fan and more. Wood and plastic parts for children from age 6."
+    },
+    "price": 17091,
+    "salePrice": 14527,
+    "category": "Наборы для экспериментов",
+    "subcategory": "Физика",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/little-scientist.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 12,
+    "ageRange": "6+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "физика",
+      "10 экспериментов",
+      "дерево",
+      "пластик",
+      "наука"
+    ],
+    "features": [
+      {
+        "ru": "10 уникальных физических экспериментов",
+        "kk": "10 бірегей физикалық эксперимент",
+        "en": "10 unique physics experiments"
+      },
+      {
+        "ru": "Граффити-робот и вентилятор",
+        "kk": "Граффити-робот және желдеткіш",
+        "en": "Graffiti robot and fan"
+      },
+      {
+        "ru": "Дерево + безопасный пластик",
+        "kk": "Ағаш + қауіпсіз пластик",
+        "en": "Wood + safe plastic"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "64 x 32 x 72 см",
+      "Вес брутто": "19.5 кг",
+      "Вес нетто": "17 кг",
+      "Экспериментов": "10"
+    },
+    "parameters": {
+      "Material": "Wood + Plastic",
+      "Experiments": "10",
+      "Subject": "Physics"
+    }
+  },
+  {
+    "sku": "TOY-CNS-038",
+    "name": {
+      "ru": "Конструктор «Sibelly Pops» — 80 деталей",
+      "kk": "«Sibelly Pops» конструкторы — 80 бөлік",
+      "en": "Sibelly Pops Creative Constructor"
+    },
+    "description": {
+      "ru": "80 ярких пластиковых деталей для создания движущихся и статичных фигур. Лёгкое соединение и разъединение деталей. Развивает моторику и творческое мышление от 5 лет.",
+      "kk": "Қозғалмалы және статикалық фигуралар жасауға арналған 80 жарқын пластик бөлік. Оңай қосылу және ажырату. 5 жастан жоғары балалардың моторикасы мен шығармашылық ойлауын дамытады.",
+      "en": "80 bright plastic pieces for creating moving and static figures. Easy to connect and disconnect. Develops motor skills and creative thinking from age 5."
+    },
+    "price": 8640,
+    "salePrice": 7344,
+    "category": "Конструкторы",
+    "subcategory": "Творческие конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/sibelly-pops.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 20,
+    "ageRange": "5+",
+    "difficulty": "Beginner",
+    "tags": [
+      "пластик",
+      "80 деталей",
+      "творчество",
+      "фигуры",
+      "яркий"
+    ],
+    "features": [
+      {
+        "ru": "80 ярких разноцветных деталей",
+        "kk": "80 жарқын түрлі-түсті бөлік",
+        "en": "80 bright colorful pieces"
+      },
+      {
+        "ru": "Движущиеся и статичные фигуры",
+        "kk": "Қозғалмалы және статикалық фигуралар",
+        "en": "Moving and static figures"
+      },
+      {
+        "ru": "Лёгкое соединение деталей",
+        "kk": "Бөліктерді оңай қосу",
+        "en": "Easy connection of parts"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "20.5 x 20.5 x 4.5 см",
+      "Вес брутто": "0.2 кг",
+      "Вес нетто": "0.2 кг",
+      "Количество деталей": "80 шт"
+    },
+    "parameters": {
+      "Material": "Safe Bright Plastic",
+      "Control Method": "Manual",
+      "Moving Parts": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-PZL-039",
+    "name": {
+      "ru": "Головоломки «IQ Competition» — животные 4 в 1",
+      "kk": "«IQ Competition» басқатырғылары — 4-де-1 жануарлар",
+      "en": "IQ Competition Perplexing Puzzles"
+    },
+    "description": {
+      "ru": "16 деталей для сборки 4 фигур животных: слон, бегемот, носорог, тигр. Развивает пространственное мышление, логику и моторику. Яркий безопасный пластик для детей от 6 лет.",
+      "kk": "4 жануар фигурасын жинауға арналған 16 бөлік: пыл, бегемот, мүйізтұмсық, жолбарыс. Кеңістіктік ойлау, логика және моториканы дамытады. 6 жастан жоғары балаларға арналған жарқын қауіпсіз пластик.",
+      "en": "16 parts for assembling 4 animal figures: elephant, hippo, rhino, tiger. Develops spatial thinking, logic and motor skills. Bright safe plastic for children from 6 years."
+    },
+    "price": 1620,
+    "salePrice": 1377,
+    "category": "Головоломки",
+    "subcategory": "Логические головоломки",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/iq-puzzles.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 30,
+    "ageRange": "6+",
+    "difficulty": "Beginner",
+    "tags": [
+      "IQ",
+      "животные",
+      "16 деталей",
+      "4 фигуры",
+      "логика"
+    ],
+    "features": [
+      {
+        "ru": "4 фигуры животных для сборки",
+        "kk": "Жинауға арналған 4 жануар фигурасы",
+        "en": "4 animal figures to assemble"
+      },
+      {
+        "ru": "Слон, бегемот, носорог, тигр",
+        "kk": "Пыл, бегемот, мүйізтұмсық, жолбарыс",
+        "en": "Elephant, hippo, rhino, tiger"
+      },
+      {
+        "ru": "Развивает IQ и логику",
+        "kk": "IQ мен логиканы дамытады",
+        "en": "Develops IQ and logic"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "28.8 x 21.3 x 6.2 см",
+      "Высота фигур": "~13.2 см",
+      "Вес брутто": "26 кг",
+      "Вес нетто": "24 кг",
+      "Количество деталей": "16 шт"
+    },
+    "parameters": {
+      "Material": "Safe Plastic",
+      "Figures": "4",
+      "Control Method": "Manual"
+    }
+  },
+  {
+    "sku": "TOY-CNS-040",
+    "name": {
+      "ru": "Конструктор с шестерёнками «Building Blocks Gear Wheel»",
+      "kk": "«Building Blocks Gear Wheel» берілістерімен конструктор",
+      "en": "Building Blocks Gear Wheel Constructor"
+    },
+    "description": {
+      "ru": "36 деталей: шестерни, колёса, платформы для сборки динамичных механических моделей. Создание башен, вращающихся конструкций. Развивает моторику и инженерные навыки от 3 лет.",
+      "kk": "Динамикалық механикалық модельдер жинауға арналған 36 бөлік: берілістер, дөңгелектер, платформалар. Мұнаралар, айналмалы конструкциялар жасау. 3 жастан жоғары балалардың моторикасы мен инженерлік дағдыларын дамытады.",
+      "en": "36 parts: gears, wheels, platforms for assembling dynamic mechanical models. Build towers, rotating constructions. Develops motor skills and engineering skills from age 3."
+    },
+    "price": 5292,
+    "salePrice": 4498,
+    "category": "Конструкторы",
+    "subcategory": "Механические конструкторы",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/gear-wheel.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 20,
+    "ageRange": "3+",
+    "difficulty": "Beginner",
+    "tags": [
+      "шестерни",
+      "колёса",
+      "36 деталей",
+      "вращение",
+      "механика"
+    ],
+    "features": [
+      {
+        "ru": "Вращающиеся шестерни в действии",
+        "kk": "Іс жүзінде айналмалы берілістер",
+        "en": "Rotating gears in action"
+      },
+      {
+        "ru": "36 деталей: шестерни, колёса, платформы",
+        "kk": "36 бөлік: берілістер, дөңгелектер, платформалар",
+        "en": "36 parts: gears, wheels, platforms"
+      },
+      {
+        "ru": "Движущиеся механические конструкции",
+        "kk": "Қозғалмалы механикалық конструкциялар",
+        "en": "Moving mechanical constructions"
+      }
+    ],
+    "specifications": {
+      "Размер коробки": "33 x 8.2 x 21.5 см",
+      "Размер модели": "76.5 x 36.5 x 92 см",
+      "Вес брутто": "23.6 кг",
+      "Вес нетто": "21.6 кг",
+      "Количество деталей": "36 шт"
+    },
+    "parameters": {
+      "Material": "Safe Plastic",
+      "Gears": "Yes",
+      "Moving Parts": "Yes"
+    }
+  },
+  {
+    "sku": "TOY-SCI-041",
+    "name": {
+      "ru": "Научная лаборатория «Science Lab» — 238+ экспериментов",
+      "kk": "«Science Lab» ғылыми зертхана — 238+ эксперимент",
+      "en": "Science Lab Kit — 238+ Experiments"
+    },
+    "description": {
+      "ru": "Более 238 экспериментов по химии, физике и биологии. Пипетки, колбы, пробирки, реактивы. 72 страницы цветных инструкций. Безопасные материалы для детей от 5 лет.",
+      "kk": "Химия, физика және биология бойынша 238-ден астам эксперимент. Пипеткалар, колбалар, пробиркалар, реагенттер. 72 бет түрлі-түсті нұсқаулар. 5 жастан жоғары балаларға арналған қауіпсіз материалдар.",
+      "en": "Over 238 experiments in chemistry, physics and biology. Pipettes, flasks, test tubes, reagents. 72 pages of colorful instructions. Safe materials for children from 5 years."
+    },
+    "price": 21735,
+    "salePrice": 18475,
+    "category": "Наборы для экспериментов",
+    "subcategory": "Научная лаборатория",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/science-lab.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 10,
+    "ageRange": "5+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "лаборатория",
+      "238 экспериментов",
+      "химия",
+      "физика",
+      "биология"
+    ],
+    "features": [
+      {
+        "ru": "Более 238 различных экспериментов",
+        "kk": "238-ден астам түрлі эксперимент",
+        "en": "Over 238 different experiments"
+      },
+      {
+        "ru": "72 страницы цветных инструкций",
+        "kk": "72 бет түрлі-түсті нұсқаулар",
+        "en": "72 pages of colorful instructions"
+      },
+      {
+        "ru": "Безопасные реактивы в комплекте",
+        "kk": "Жиынтықта қауіпсіз реагенттер",
+        "en": "Safe reagents included"
+      }
+    ],
+    "specifications": {
+      "Размеры коробки": "54 x 32 x 24 см",
+      "Вес брутто": "16.5 кг",
+      "Вес нетто": "15.5 кг",
+      "Экспериментов": "238+",
+      "Страниц инструкций": "72"
+    },
+    "parameters": {
+      "Material": "Safe Plastic",
+      "Experiments": "238+",
+      "Subjects": "Chemistry + Physics + Biology"
+    }
+  },
+  {
+    "sku": "TOY-PZL-042",
+    "name": {
+      "ru": "Умная арт-головоломка «Smart Puzzle-Art»",
+      "kk": "«Smart Puzzle-Art» ақылды арт-басқатырғысы",
+      "en": "Smart Puzzle-Art Version"
+    },
+    "description": {
+      "ru": "60 деталей из ABS-пластика с электронными компонентами (сенсорные кнопки, светодиоды) для сборки картин и узоров. Развивает логику, воображение и творчество от 6 лет.",
+      "kk": "Суреттер мен өрнектерді жинауға арналған электрондық компоненттері (сенсорлы батырмалар, жарықдиодтар) бар ABS-пластик 60 бөлік. 6 жастан жоғары балалардың логикасы, қиялы мен шығармашылығын дамытады.",
+      "en": "60 ABS plastic parts with electronic components (touch buttons, LEDs) for assembling pictures and patterns. Develops logic, imagination and creativity from age 6."
+    },
+    "price": 29322,
+    "salePrice": 24924,
+    "category": "Головоломки",
+    "subcategory": "Электронные головоломки",
+    "images": [
+      "https://res.cloudinary.com/dompaomgm/image/upload/v1/products/smart-puzzle-art.jpg"
+    ],
+    "inStock": true,
+    "stockQuantity": 10,
+    "ageRange": "6+",
+    "difficulty": "Intermediate",
+    "tags": [
+      "арт",
+      "LED",
+      "сенсор",
+      "60 деталей",
+      "электроника"
+    ],
+    "features": [
+      {
+        "ru": "60 деталей + электронные компоненты",
+        "kk": "60 бөлік + электрондық компоненттер",
+        "en": "60 parts + electronic components"
+      },
+      {
+        "ru": "Сенсорные кнопки и LED-подсветка",
+        "kk": "Сенсорлы батырмалар және LED-жарықтандыру",
+        "en": "Touch buttons and LED lighting"
+      },
+      {
+        "ru": "Создание картин и узоров",
+        "kk": "Суреттер мен өрнектер жасау",
+        "en": "Create pictures and patterns"
+      }
+    ],
+    "specifications": {
+      "Размер продукта": "181 x 131 x 27 мм",
+      "Размер коробки": "58 x 49 x 53 см",
+      "Вес брутто": "27.5 кг",
+      "Вес нетто": "25.3 кг",
+      "Количество деталей": "60 шт"
+    },
+    "parameters": {
+      "Material": "ABS Plastic + Electronics",
+      "LED": "Yes",
+      "Touch Sensors": "Yes"
+    }
+  }
+]

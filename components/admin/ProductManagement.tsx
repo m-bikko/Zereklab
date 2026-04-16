@@ -90,47 +90,31 @@ const fileToBase64 = (file: File): Promise<string> => {
   });
 };
 
-// Helper function to upload images to Cloudinary
-const uploadToCloudinary = async (files: File[]): Promise<string[]> => {
-  try {
-    // Конвертируем файлы в base64
-    const filePromises = files.map(async file => ({
-      data: await fileToBase64(file),
-      name: file.name,
-      type: file.type,
-    }));
+// Helper function to upload a single image to Cloudinary
+const uploadSingleToCloudinary = async (file: File): Promise<string> => {
+  const data = await fileToBase64(file);
 
-    const fileData = await Promise.all(filePromises);
+  const response = await fetch('/api/upload', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      files: [{ data, name: file.name, type: file.type }],
+      folder: 'zereklab/products',
+    }),
+  });
 
-    // Отправляем на сервер
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        files: fileData,
-        folder: 'zereklab/products',
-      }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Ошибка загрузки');
-    }
-
-    const result = await response.json();
-
-    if (!result.success) {
-      throw new Error(result.error || 'Загрузка не удалась');
-    }
-
-    // Возвращаем URL'ы загруженных изображений
-    return result.uploaded.map((item: UploadedItem) => item.url);
-  } catch (error) {
-    console.error('Cloudinary upload error:', error);
-    throw error;
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || 'Ошибка загрузки');
   }
+
+  const result = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.error || 'Загрузка не удалась');
+  }
+
+  return result.uploaded.map((item: UploadedItem) => item.url)[0];
 };
 
 // Helper function to delete images from Cloudinary
@@ -371,8 +355,21 @@ export default function ProductManagement({
         id: toastId,
       });
 
-      // Upload to Cloudinary
-      const uploadedUrls = await uploadToCloudinary(validFiles);
+      // Upload to Cloudinary one by one to avoid body size limits
+      const uploadedUrls: string[] = [];
+      for (let i = 0; i < validFiles.length; i++) {
+        try {
+          setUploadProgress({ current: i + 1, total: validFiles.length });
+          toast.loading(
+            `Загрузка изображений: ${i + 1} из ${validFiles.length}`,
+            { id: toastId }
+          );
+          const url = await uploadSingleToCloudinary(validFiles[i]);
+          uploadedUrls.push(url);
+        } catch (err) {
+          console.error(`Error uploading ${validFiles[i].name}:`, err);
+        }
+      }
 
       if (uploadedUrls.length > 0) {
         setFormData(prev => ({
@@ -381,7 +378,7 @@ export default function ProductManagement({
         }));
 
         const successMessage =
-          rejectedCount > 0
+          rejectedCount > 0 || uploadedUrls.length < validFiles.length
             ? `Загружено ${uploadedUrls.length} из ${files.length} изображений`
             : `Успешно загружено ${uploadedUrls.length} изображений`;
 
