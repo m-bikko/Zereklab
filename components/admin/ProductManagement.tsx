@@ -152,6 +152,8 @@ export default function ProductManagement({
   const [newFeature, setNewFeature] = useState('');
   const [newTag, setNewTag] = useState('');
   const [newImageUrl, setNewImageUrl] = useState('');
+  const [newSpecKey, setNewSpecKey] = useState('');
+  const [newSpecValue, setNewSpecValue] = useState('');
   const [uploadingImage, setUploadingImage] = useState(false);
   const [activeLanguage, setActiveLanguage] = useState<'ru' | 'kk' | 'en'>(
     'ru'
@@ -484,6 +486,8 @@ export default function ProductManagement({
     setNewFeature('');
     setNewTag('');
     setNewImageUrl('');
+    setNewSpecKey('');
+    setNewSpecValue('');
     setActiveLanguage('ru');
   };
 
@@ -1435,6 +1439,84 @@ export default function ProductManagement({
                             type="button"
                             onClick={() => handleArrayAdd('tags', newTag)}
                             disabled={!newTag.trim()}
+                            className="rounded-md bg-gray-500 px-4 py-2 text-sm text-white hover:bg-gray-600 disabled:opacity-50"
+                          >
+                            Добавить
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Specifications */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Характеристики
+                      </label>
+                      <div className="mt-1 space-y-2">
+                        {Object.entries(formData.specifications).map(
+                          ([key, value]) => (
+                            <div
+                              key={key}
+                              className="flex items-center gap-2 rounded-md bg-gray-50 px-3 py-2 text-sm"
+                            >
+                              <span className="font-medium text-gray-700">
+                                {key}:
+                              </span>
+                              <span className="flex-1 text-gray-600">
+                                {value}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setFormData(prev => {
+                                    const updated = { ...prev.specifications };
+                                    delete updated[key];
+                                    return {
+                                      ...prev,
+                                      specifications: updated,
+                                    };
+                                  });
+                                }}
+                                className="text-red-500 hover:text-red-700"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </div>
+                          )
+                        )}
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={newSpecKey}
+                            onChange={e => setNewSpecKey(e.target.value)}
+                            placeholder="Название (напр. Размер)"
+                            className="w-2/5 rounded-md border-gray-300 px-3 py-2 text-sm"
+                          />
+                          <input
+                            type="text"
+                            value={newSpecValue}
+                            onChange={e => setNewSpecValue(e.target.value)}
+                            placeholder="Значение (напр. 30 x 20 x 10 см)"
+                            className="flex-1 rounded-md border-gray-300 px-3 py-2 text-sm"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (newSpecKey.trim() && newSpecValue.trim()) {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  specifications: {
+                                    ...prev.specifications,
+                                    [newSpecKey.trim()]: newSpecValue.trim(),
+                                  },
+                                }));
+                                setNewSpecKey('');
+                                setNewSpecValue('');
+                              }
+                            }}
+                            disabled={
+                              !newSpecKey.trim() || !newSpecValue.trim()
+                            }
                             className="rounded-md bg-gray-500 px-4 py-2 text-sm text-white hover:bg-gray-600 disabled:opacity-50"
                           >
                             Добавить

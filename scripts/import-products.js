@@ -11,7 +11,11 @@ if (!MONGODB_URI) {
 }
 
 const MultilingualTextSchema = new mongoose.Schema(
-  { ru: { type: String, required: true, trim: true }, kk: { type: String, required: true, trim: true }, en: { type: String, required: true, trim: true } },
+  {
+    ru: { type: String, required: true, trim: true },
+    kk: { type: String, required: true, trim: true },
+    en: { type: String, required: true, trim: true },
+  },
   { _id: false }
 );
 
@@ -41,7 +45,11 @@ const ProductSchema = new mongoose.Schema(
     tags: { type: [String], default: [] },
     sku: { type: String, required: true, trim: true, unique: true },
     ageRange: { type: String, trim: true },
-    difficulty: { type: String, enum: ['Beginner', 'Intermediate', 'Advanced'], default: 'Beginner' },
+    difficulty: {
+      type: String,
+      enum: ['Beginner', 'Intermediate', 'Advanced'],
+      default: 'Beginner',
+    },
     relatedProducts: { type: [String], default: [] },
     stockQuantity: { type: Number, default: 0, min: 0 },
     estimatedDelivery: { type: String, trim: true },
@@ -61,10 +69,13 @@ const Product = mongoose.model('Product', ProductSchema);
 
 const categoryTranslations = {
   'Настольные игры': { kk: 'Үстел ойындары', en: 'Board Games' },
-  'Конструкторы': { kk: 'Конструкторлар', en: 'Constructors' },
-  'Наборы для экспериментов': { kk: 'Тәжірибе жинақтары', en: 'Experiment Kits' },
-  'Робототехника': { kk: 'Робототехника', en: 'Robotics' },
-  'Головоломки': { kk: 'Жұмбақтар', en: 'Puzzles' },
+  Конструкторы: { kk: 'Конструкторлар', en: 'Constructors' },
+  'Наборы для экспериментов': {
+    kk: 'Тәжірибе жинақтары',
+    en: 'Experiment Kits',
+  },
+  Робототехника: { kk: 'Робототехника', en: 'Robotics' },
+  Головоломки: { kk: 'Жұмбақтар', en: 'Puzzles' },
   'Развивающие игрушки': { kk: 'Дамытушы ойыншықтар', en: 'Educational Toys' },
 };
 
@@ -80,7 +91,7 @@ async function run() {
   console.log(`Loaded ${products.length} products from toImport.json`);
 
   // --- Create categories ---
-  const categoryNames = [...new Set(products.map((p) => p.category))];
+  const categoryNames = [...new Set(products.map(p => p.category))];
   let createdCats = 0;
   let skippedCats = 0;
 
@@ -92,8 +103,18 @@ async function run() {
     }
 
     const tr = categoryTranslations[catRu] || { kk: catRu, en: catRu };
-    const subcategoryNames = [...new Set(products.filter((p) => p.category === catRu && p.subcategory).map((p) => p.subcategory))];
-    const subcategories = subcategoryNames.map((sub) => ({ ru: sub, kk: sub, en: sub }));
+    const subcategoryNames = [
+      ...new Set(
+        products
+          .filter(p => p.category === catRu && p.subcategory)
+          .map(p => p.subcategory)
+      ),
+    ];
+    const subcategories = subcategoryNames.map(sub => ({
+      ru: sub,
+      kk: sub,
+      en: sub,
+    }));
 
     await Category.create({
       name: { ru: catRu, kk: tr.kk, en: tr.en },
@@ -102,7 +123,9 @@ async function run() {
     });
     createdCats++;
   }
-  console.log(`Categories: ${createdCats} created, ${skippedCats} already existed`);
+  console.log(
+    `Categories: ${createdCats} created, ${skippedCats} already existed`
+  );
 
   // --- Insert products ---
   let inserted = 0;
@@ -127,14 +150,14 @@ async function run() {
   console.log(`Products: ${inserted} inserted, ${skipped} already existed`);
   if (errors.length > 0) {
     console.error('Errors:');
-    errors.forEach((e) => console.error(`  SKU ${e.sku}: ${e.error}`));
+    errors.forEach(e => console.error(`  SKU ${e.sku}: ${e.error}`));
   }
 
   await mongoose.disconnect();
   console.log('Done');
 }
 
-run().catch((err) => {
+run().catch(err => {
   console.error('Fatal error:', err);
   process.exit(1);
 });
