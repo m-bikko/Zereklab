@@ -129,19 +129,19 @@ export default function ContactPage() {
                 <>
                   {t('contact.info.email.general', locale)}:{' '}
                   <a
-                    href="mailto:info@zereklab.kz"
+                    href="mailto:zereklab@gmail.com"
                     className="text-primary-600 transition-colors hover:text-primary-700"
                   >
-                    info@zereklab.kz
+                    zereklab@gmail.com
                   </a>
                 </>,
                 <>
                   {t('contact.info.email.support', locale)}:{' '}
                   <a
-                    href="mailto:support@zereklab.kz"
+                    href="mailto:zereklab@gmail.com"
                     className="text-primary-600 transition-colors hover:text-primary-700"
                   >
-                    support@zereklab.kz
+                    zereklab@gmail.com
                   </a>
                 </>,
               ]}

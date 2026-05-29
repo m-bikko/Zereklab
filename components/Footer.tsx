@@ -141,10 +141,10 @@ export default function Footer() {
               <div className="flex items-center space-x-3 text-sm text-gray-300">
                 <Mail className="h-4 w-4 flex-shrink-0 text-primary-400" />
                 <a
-                  href="mailto:info@zereklab.com"
+                  href="mailto:zereklab@gmail.com"
                   className="hover:text-primary-400"
                 >
-                  info@zereklab.com
+                  zereklab@gmail.com
                 </a>
               </div>
               <div className="flex items-center space-x-3 text-sm text-gray-300">

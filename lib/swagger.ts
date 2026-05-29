@@ -9,7 +9,7 @@ const swaggerDefinition = {
       'API документация для интернет-магазина образовательных наборов ZerekLab',
     contact: {
       name: 'ZerekLab Team',
-      email: 'support@zereklab.com',
+      email: 'zereklab@gmail.com',
     },
   },
   servers: [
