@@ -159,9 +159,7 @@ export const validateCategory = (category: Partial<ICategory>): string[] => {
   const errors: string[] = [];
 
   const categoryName =
-    typeof category.name === 'string'
-      ? category.name
-      : category.name?.ru || '';
+    typeof category.name === 'string' ? category.name : category.name?.ru || '';
   if (!categoryName.trim() || categoryName.trim().length < 2) {
     errors.push('Название категории должно содержать минимум 2 символа');
   }
