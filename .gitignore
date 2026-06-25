@@ -5,3 +5,4 @@
 tsconfig.tsbuildinfo
 .git_backup/
 /.env.backup
+.gstack/

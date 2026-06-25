@@ -41,14 +41,16 @@ async function run() {
     const admin = client.db().admin();
     const { databases } = await admin.listDatabases();
     const userDbs = databases.filter(
-      (d) => !['admin', 'local', 'config'].includes(d.name)
+      d => !['admin', 'local', 'config'].includes(d.name)
     );
     console.log(
       'Available databases:',
-      userDbs.map((d) => `${d.name} (${(d.sizeOnDisk / 1024).toFixed(1)}KB)`).join(', ')
+      userDbs
+        .map(d => `${d.name} (${(d.sizeOnDisk / 1024).toFixed(1)}KB)`)
+        .join(', ')
     );
 
-    let pick = userDbs.find((d) => d.name.toLowerCase() === 'zereklab');
+    let pick = userDbs.find(d => d.name.toLowerCase() === 'zereklab');
     if (!pick) {
       pick = userDbs.sort((a, b) => b.sizeOnDisk - a.sizeOnDisk)[0];
     }
@@ -87,10 +89,13 @@ async function run() {
   const zipName = `zereklab-backup-${ts}.zip`;
   const zipPath = path.join(backupsDir, zipName);
 
-  execSync(`zip -r ${JSON.stringify(zipPath)} ${JSON.stringify(path.basename(dumpDir))}`, {
-    cwd: tmpDir,
-    stdio: 'inherit',
-  });
+  execSync(
+    `zip -r ${JSON.stringify(zipPath)} ${JSON.stringify(path.basename(dumpDir))}`,
+    {
+      cwd: tmpDir,
+      stdio: 'inherit',
+    }
+  );
 
   fs.rmSync(tmpDir, { recursive: true, force: true });
 
@@ -99,7 +104,7 @@ async function run() {
   console.log(`Size: ${(stat.size / 1024).toFixed(2)} KB`);
 }
 
-run().catch((err) => {
+run().catch(err => {
   console.error('Backup failed:', err);
   process.exit(1);
 });

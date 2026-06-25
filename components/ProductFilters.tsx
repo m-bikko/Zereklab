@@ -186,7 +186,7 @@ export default function ProductFilters() {
               </label>
               {availableCategories.map(category => (
                 <label
-                  key={category._id || category.name}
+                  key={category._id || getLocalizedText(category.name, locale)}
                   className="flex cursor-pointer items-center space-x-2 rounded-md p-1 hover:bg-gray-50"
                 >
                   <input
@@ -235,24 +235,32 @@ export default function ProductFilters() {
                     {t('products.allSubcategories', locale)}
                   </span>
                 </label>
-                {selectedCategoryData.subcategories.map(subcategory => (
-                  <label
-                    key={subcategory}
-                    className="flex cursor-pointer items-center space-x-2 rounded-md p-1 hover:bg-gray-50"
-                  >
-                    <input
-                      type="radio"
-                      name="subcategory"
-                      value={subcategory}
-                      checked={filters.subcategory === subcategory}
-                      onChange={e =>
-                        handleFilterChange('subcategory', e.target.value)
-                      }
-                      className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-1"
-                    />
-                    <span className="text-sm text-gray-600">{subcategory}</span>
-                  </label>
-                ))}
+                {selectedCategoryData.subcategories.map(subcategory => {
+                  const subcategoryLabel = getLocalizedText(
+                    subcategory,
+                    locale
+                  );
+                  return (
+                    <label
+                      key={subcategoryLabel}
+                      className="flex cursor-pointer items-center space-x-2 rounded-md p-1 hover:bg-gray-50"
+                    >
+                      <input
+                        type="radio"
+                        name="subcategory"
+                        value={subcategoryLabel}
+                        checked={filters.subcategory === subcategoryLabel}
+                        onChange={e =>
+                          handleFilterChange('subcategory', e.target.value)
+                        }
+                        className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 focus:ring-offset-1"
+                      />
+                      <span className="text-sm text-gray-600">
+                        {subcategoryLabel}
+                      </span>
+                    </label>
+                  );
+                })}
               </div>
             </div>
           )}

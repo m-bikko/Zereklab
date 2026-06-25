@@ -33,9 +33,9 @@ export interface IProduct {
 
 export interface ICategory {
   _id?: string;
-  name: string;
-  description?: string;
-  subcategories?: string[];
+  name: string | { ru: string; kk: string; en: string };
+  description?: string | { ru: string; kk: string; en: string };
+  subcategories?: (string | { ru: string; kk: string; en: string })[];
   parentCategory?: string;
   parameters?: Record<string, string | number | boolean>;
   createdAt?: Date;
@@ -158,7 +158,11 @@ export const validateMultilingualProduct = (product: {
 export const validateCategory = (category: Partial<ICategory>): string[] => {
   const errors: string[] = [];
 
-  if (!category.name?.trim() || category.name.trim().length < 2) {
+  const categoryName =
+    typeof category.name === 'string'
+      ? category.name
+      : category.name?.ru || '';
+  if (!categoryName.trim() || categoryName.trim().length < 2) {
     errors.push('Название категории должно содержать минимум 2 символа');
   }
 
